@@ -1,8 +1,6 @@
 <template>
   <!-- backgourd -->
-  <div class="auth-background"> 
-
-
+  <div class="auth-background">
     <v-container class="d-flex justify-center align-center" style="height: 100vh">
       <v-sheet class="login-container" width="350" height="auto">
         <v-form ref="form">
@@ -70,7 +68,6 @@ import { useRouter } from 'vue-router'
 import type { ILogin } from '../../interface/auth/auth'
 import type { IUser } from '../../interface/user/user'
 
-
 const router = useRouter()
 
 const showNotification = ref(false)
@@ -80,13 +77,13 @@ const showPassword = ref(false)
 
 const arrAccount = reactive<IUser[]>([
   {
-    id:1,
+    id: 1,
     email: 'admin@gmail.com',
     password: '1',
     role: 'admin',
   },
   {
-    id:2,
+    id: 2,
     email: 'user@gmail.com',
     password: '1',
     role: 'user',
@@ -95,13 +92,11 @@ const arrAccount = reactive<IUser[]>([
 
 // Khi trang khởi động, nếu localStorage có thông tin user thì đưa user đó vào initialForm
 const initializeUsers = () => {
-  const storedUsers = JSON.parse(localStorage.getItem('users') || '[]')
-  if (!storedUsers.length) {
+  const Users = JSON.parse(localStorage.getItem('users') || '[]')
+  if (!Users.length) {
     localStorage.setItem('users', JSON.stringify(arrAccount))
   }
 }
-
-
 
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<ILogin>({
@@ -114,8 +109,8 @@ const handleDirect = () => {
 }
 
 const handleLogin = () => {
-  const users = JSON.parse(localStorage.getItem('users')||'[]') as IUser[]
- 
+  const users = JSON.parse(localStorage.getItem('users') || '[]') as IUser[]
+
   const user = users.find(
     (account) => account.email === initialForm.email && account.password === initialForm.password,
   )
@@ -128,9 +123,18 @@ const handleLogin = () => {
     notificationColor.value = 'green'
 
     // Dùng setTimeout để trì hoãn việc chuyển hướng sang trang home
-    setTimeout(() => {
-      router.push('/home')
-    }, 1000) // Trì hoãn 2 giây (hoặc có thể thay đổi thời gian tùy theo ý muốn)
+    // Kiểm tra vai trò người dùng và chuyển hướng
+    if (user.role === 'admin') {
+      // Chuyển hướng tới trang Dashboard nếu là admin
+      setTimeout(() => {
+        router.push('/dashboard')
+      }, 1000)
+    } else {
+      // Chuyển hướng tới trang Home nếu là user
+      setTimeout(() => {
+        router.push('/home')
+      }, 1000)
+    }
   } else {
     notificationMessage.value = 'Tài khoản hoặc mật khẩu không đúng.'
     notificationColor.value = 'red'
@@ -145,7 +149,6 @@ const togglePasswordVisibility = () => {
 
 // Sử dụng onMounted để gọi initializeUsers khi ứng dụng khởi động
 onMounted(() => {
- 
   initializeUsers()
 })
 </script>
@@ -156,7 +159,6 @@ onMounted(() => {
   padding: 30px;
   border-radius: 8px; /* Bo góc */
   background-color: #fff;
- 
 }
 
 .custom-input {
@@ -179,7 +181,7 @@ onMounted(() => {
 
 .custom-snackbar {
   position: fixed !important;
-  top:60px;
+  top: 60px;
   right: 200px;
   bottom: auto !important;
   left: auto !important;
