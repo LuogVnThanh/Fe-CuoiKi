@@ -1,72 +1,79 @@
 <template>
-  <v-container class="d-flex justify-center align-center" style="height: 100vh">
-    <v-sheet class="register-container" width="350" height="auto">
-      <v-form ref="form">
-        <!-- input tài khoản -->
-        <v-text-field
-          v-model="initialForm.email"
-          type="email"
-          label="Email"
-          required
-          prepend-inner-icon="mdi-account"
-          class="custom-input"
-          style="width: 300px"
-        >
-          <!-- Icon người dùng -->
-        </v-text-field>
-
-        <!-- input mật khẩu -->
-        <v-text-field
-          v-model="initialForm.password"
-          label="Password"
-          required
-          style="width: 300px"
-          class="custom-input"
-          prepend-inner-icon="mdi-lock"
-          :type="showPassword ? 'text' : 'password'"
-          :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append-inner="togglePasswordVisibility"
-        >
-          <!-- append-icon: thêm icon ngoài inoput
-          append-inner-icon: thêm icon vào bên trong và bên phải input -->
-          <!-- prepend-inner-icon  thêm vào bên trong và bên trái input -->
-        </v-text-field>
-
-        <!-- input nhập lại mật khẩu -->
-        <v-text-field
-          v-model="initialForm.confirmPassword"
-          label="ConfirmPassword"
-          required
-          style="width: 300px"
-          class="custom-input"
-          prepend-inner-icon="mdi-lock"
-          :type="showConfirmPassword ? 'text' : 'password'"
-          :append-inner-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          @click:append-inner="toggleConfirmPasswordVisibility"
-        >
-          <!-- append-icon: thêm icon ngoài inoput
-          append-inner-icon: thêm icon vào bên trong và bên phải input -->
-          <!-- prepend-inner-icon  thêm vào bên trong và bên trái input -->
-        </v-text-field>
-
-        <div class="d-flex flex-column">
-          <v-btn class="register-button mt-4" color="success" block @click.prevent="handleRegister">
-            Đăng ký
-          </v-btn>
-          <p
-            class="mt-4 d-flex justify-end cursor-pointer"
-            color="info"
-            block
-            @click.prevent="handleDirect"
+  <div class="auth-background">
+    <v-container class="d-flex justify-center align-center" style="height: 100vh">
+      <v-sheet class="register-container" width="350" height="auto">
+        <v-form ref="form">
+          <!-- input tài khoản -->
+          <v-text-field
+            v-model="initialForm.email"
+            type="email"
+            label="Email"
+            required
+            prepend-inner-icon="mdi-account"
+            class="custom-input"
+            style="width: 300px"
           >
-            Đã có tài khoản?
-          </p>
-        </div>
-      </v-form>
+            <!-- Icon người dùng -->
+          </v-text-field>
 
-      <!-- Snackbar để hiện thị thông báo -->
-    </v-sheet>
-  </v-container>
+          <!-- input mật khẩu -->
+          <v-text-field
+            v-model="initialForm.password"
+            label="Password"
+            required
+            style="width: 300px"
+            class="custom-input"
+            prepend-inner-icon="mdi-lock"
+            :type="showPassword ? 'text' : 'password'"
+            :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="togglePasswordVisibility"
+          >
+            <!-- append-icon: thêm icon ngoài inoput
+          append-inner-icon: thêm icon vào bên trong và bên phải input -->
+            <!-- prepend-inner-icon  thêm vào bên trong và bên trái input -->
+          </v-text-field>
+
+          <!-- input nhập lại mật khẩu -->
+          <v-text-field
+            v-model="initialForm.confirmPassword"
+            label="ConfirmPassword"
+            required
+            style="width: 300px"
+            class="custom-input"
+            prepend-inner-icon="mdi-lock"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            :append-inner-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="toggleConfirmPasswordVisibility"
+          >
+            <!-- append-icon: thêm icon ngoài inoput
+          append-inner-icon: thêm icon vào bên trong và bên phải input -->
+            <!-- prepend-inner-icon  thêm vào bên trong và bên trái input -->
+          </v-text-field>
+
+          <div class="d-flex flex-column">
+            <v-btn
+              class="register-button mt-4"
+              color="success"
+              block
+              @click.prevent="handleRegister"
+            >
+              Đăng ký
+            </v-btn>
+            <p
+              class="mt-4 d-flex justify-end cursor-pointer"
+              color="info"
+              block
+              @click.prevent="handleDirect"
+            >
+              Đã có tài khoản?
+            </p>
+          </div>
+        </v-form>
+
+        <!-- Snackbar để hiện thị thông báo -->
+      </v-sheet>
+    </v-container>
+  </div>
   <v-snackbar
     v-model="showNotification"
     :color="notificationColor"
@@ -81,6 +88,8 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { ILogin, IRegister } from '../../interface/auth/auth'
+import type { IUser } from '../../interface/user/user'
+
 
 const router = useRouter()
 
@@ -89,19 +98,7 @@ const notificationMessage = ref('')
 const notificationColor = ref('')
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
-const arrAccount = reactive<ILogin[]>([
-  {
-    email: 'admin@gmail.com',
-    password: '1',
-    role: 'admin',
-  },
-  {
-    email: 'user@gmail.com',
-    password: '1',
-    role: 'user',
-  },
-])
-
+ 
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<IRegister>({
   email: '',
@@ -130,8 +127,9 @@ const handleRegister = () => {
     return
   }
 
+  const users = JSON.parse(localStorage.getItem('users')||'[]') as IUser[]
   // Kiểm tra xem email đã tồn tại trong arrAccount chưa
-  const userExists = arrAccount.find((account) => account.email === initialForm.email)
+  const userExists = users.find((account) => account.email === initialForm.email)
 
   if (userExists) {
     // Nếu email đã tồn tại
@@ -147,20 +145,25 @@ const handleRegister = () => {
     notificationColor.value = 'red'
   } else {
     // Nếu tất cả điều kiện hợp lệ
+    // Thiết lập id tự tăng
+    const maxId = users.length>0? Math.max(...users.map(user=>user.id)) : 0
     const newUser = {
+      id: maxId+1,
       email: initialForm.email,
       password: initialForm.password,
       role: 'user', // Hoặc có thể lấy role từ nơi khác
     }
 
-    // Lưu tài khoản mới vào localStorage
-    localStorage.setItem('user', JSON.stringify(newUser))
+    // Lưu tài khoản mới  và cập nhập localStorage
+    users.push(newUser)
+    localStorage.setItem('users', JSON.stringify(users))
+    console.log("Danh sách người dùng sau khi thêm:", users)
 
     notificationMessage.value = 'Tạo tài khoản thành công.'
     notificationColor.value = 'green'
-       // Dùng setTimeout để trì hoãn việc chuyển hướng sang trang home
-       setTimeout(() => {
-      router.push('/home')
+    // Dùng setTimeout để trì hoãn việc chuyển hướng sang trang home
+    setTimeout(() => {
+      router.push('/login')
     }, 1000) // Trì hoãn 2 giây (hoặc có thể thay đổi thời gian tùy theo ý muốn)
   }
   showNotification.value = true
@@ -208,5 +211,12 @@ const toggleConfirmPasswordVisibility = () => {
   right: 170px;
   bottom: auto !important;
   left: auto !important;
+}
+.auth-background {
+  background: url('https://cloud.squidex.io/api/assets/edubao/8d75d9b9-c857-43a5-a3d3-866551137ab5/edubao-6102-body1.jpg')
+    no-repeat center center fixed;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
 }
 </style>

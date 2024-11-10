@@ -2,5 +2,13 @@
 </script>
 
 <template>
- <h1>hello</h1>
+  <div class="home">
+    <h1>Hello</h1>
+
+  </div>
 </template>
+
+<style scoped>
+ 
+
+</style>
