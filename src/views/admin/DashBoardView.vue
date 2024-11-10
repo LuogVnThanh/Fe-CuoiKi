@@ -1,7 +1,9 @@
 <template>
     <div class="d-flex justify-space-between">
         <h1>Danh sách sản phẩm</h1>
-        <button>Thêm sản phẩm</button>
+        <v-btn prepend-icon="$add">
+  Button
+</v-btn>
     </div>
   <v-table height="500px">
     <thead>
@@ -32,7 +34,7 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { IProduct } from '../../interface/product/product'
+import type { IProduct } from '../../interface/product/product'
 
 const arrBooks = reactive<IProduct[]>([
   {
