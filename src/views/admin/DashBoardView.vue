@@ -1,241 +1,223 @@
 <template>
-    <div class="d-flex justify-space-between">
-        <h1>Danh sách sản phẩm</h1>
-        <v-btn prepend-icon="$add">
-  Button
-</v-btn>
-    </div>
-  <v-table height="500px">
-    <thead>
-      <tr>
-        <th class="text-left">Id</th>
-        <th class="text-left">Tên sách</th>
-        <th class="text-left">Tên tác giả</th>
-        <th class="text-left">Ngày xuất bản</th>
-        <th class="text-left">Tên loại</th>
-        <th class="text-left">Hành động</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in arrBooks" :key="item.id">
-        <td>{{ item.id }}</td>
-        <td>{{ item.nameBook }}</td>
-        <td>{{ item.nameAuthor }}</td>
-        <td>{{ item.publicationBook }}</td>
-        <td>{{ item.category.nameCategory }}</td>
-        <td>
-            
-        </td>
+  <v-container fluid>
+    <v-card class="full-width">
+      <!-- Toolbar hiển thị thông tin người dùng -->
+      <v-toolbar color="primary">
+        <div v-if="userInfo" class="d-flex align-center justify-space-between" style="width: 100%">
+          <div class="d-flex align-center" style="margin-left: 5px">
+            <span>{{ userInfo.name }}</span>
+            <span class="mx-2">|</span>
+            <span>Role: {{ userInfo.role }}</span>
+          </div>
+          <div class="d-flex align-center mr-5">
+            <!--   tìm kiếm -->
+            <div class="searchBook d-flex align-center mr-5">
+              <!-- Thanh tìm kiếm -->
+              <v-text-field
+                v-if="isSearchVisible"
+                v-model="searchQuery"
+                placeholder="Tìm kiếm sách, tác giả, thể loại..."
+                style="width: 300px"
+              ></v-text-field>
+              <!-- Icon tìm kiếm -->
+              <v-btn icon @click="toggleSearch">
+                <v-icon>mdi-magnify</v-icon>
+              </v-btn>
 
-      </tr>
-    </tbody>
-  </v-table>
+              <!-- icon logout -->
+              <v-btn icon @click="onLogoutClick">
+                <v-icon>mdi-logout</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </div>
+      </v-toolbar>
+    </v-card>
+
+    <div class="d-flex full-height">
+      <!-- Tabs bên trái -->
+      <v-tabs v-model="tab" color="primary" direction="vertical" class="tabs-full-height">
+        <v-tab value="option-1">Quản lý sách</v-tab>
+        <v-tab value="option-2">Quản lý mượn trả sách</v-tab>
+        <v-tab value="option-3">Thống kê sách yêu thích</v-tab>
+      </v-tabs>
+
+      <!-- Nội dung các tab bên phải -->
+      <v-tabs-window v-model="tab" class="tabs-window-full-width">
+        <v-tabs-window-item value="option-1">
+          <v-card flat>
+            <v-card-text>
+              <ManagerBookView />
+            </v-card-text>
+          </v-card>
+        </v-tabs-window-item>
+
+        <v-tabs-window-item value="option-2">
+          <v-card flat>
+            <v-card-text>
+              <BorrowBookView />
+            </v-card-text>
+          </v-card>
+        </v-tabs-window-item>
+
+        <v-tabs-window-item value="option-3">
+          <v-card flat>
+            <v-card-text>
+              <StatisticalBookView />
+            </v-card-text>
+          </v-card>
+        </v-tabs-window-item>
+      </v-tabs-window>
+    </div>
+
+    <!-- Kết quả tìm kiếm -->
+    <div class="search-results" v-if="isSearchVisible">
+      <v-card v-if="filteredBooks.length > 0">
+        <v-card-title>Danh sách tìm thấy</v-card-title>
+        <v-list>
+          <v-list-item-group v-for="book in filteredBooks" :key="book.id">
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title>{{ book.nameBook }}</v-list-item-title>
+                <v-list-item-subtitle
+                  >{{ book.nameAuthor }} - {{ book.category }}</v-list-item-subtitle
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-card>
+
+      <!-- Thông báo nếu không có kết quả -->
+      <v-card v-else>
+        <v-card-title>Không tìm thấy sách phù hợp</v-card-title>
+      </v-card>
+    </div>
+
+    <v-snackbar
+    v-model="showNotification"
+    :color="notificationColor"
+    timeout="3000"
+    class="custom-snackbar"
+  >
+    {{ notificationMessage }}
+  </v-snackbar>
+  </v-container>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue'
-import type { IProduct } from '../../interface/product/product'
+import { ref, onMounted, computed } from 'vue'
+import ManagerBookView from './ManagerBookView.vue'
+import BorrowBookView from './BorrowBookView.vue'
+import StatisticalBookView from './StatisticalBookView.vue'
+import type { IUserInfor } from '../../interface/user/user'
+import type { IBooks } from '../../interface/product/product'
+import router from '@/router'
 
-const arrBooks = reactive<IProduct[]>([
-  {
-    id: 1,
-    nameBook: 'Book1',
-    nameAuthor: 'Author1',
-    publicationBook: '2018',
-    category: {
-      id: 1,
-      nameCategory: 'Tiểu thuyết',
-    },
-  },
-  {
-    id: 2,
-    nameBook: 'Book2',
-    nameAuthor: 'Author2',
-    publicationBook: '2019',
-    category: {
-      id: 2,
-      nameCategory: 'Khoa học',
-    },
-  },
-  {
-    id: 3,
-    nameBook: 'Book3',
-    nameAuthor: 'Author3',
-    publicationBook: '2020',
-    category: {
-      id: 1,
-      nameCategory: 'Tiểu thuyết',
-    },
-  },
-  {
-    id: 4,
-    nameBook: 'Book4',
-    nameAuthor: 'Author4',
-    publicationBook: '2015',
-    category: {
-      id: 3,
-      nameCategory: 'Lịch sử',
-    },
-  },
-  {
-    id: 5,
-    nameBook: 'Book5',
-    nameAuthor: 'Author5',
-    publicationBook: '2021',
-    category: {
-      id: 4,
-      nameCategory: 'Tâm lý học',
-    },
-  },
-  {
-    id: 6,
-    nameBook: 'Book6',
-    nameAuthor: 'Author6',
-    publicationBook: '2017',
-    category: {
-      id: 5,
-      nameCategory: 'Tự nhiên',
-    },
-  },
-  {
-    id: 7,
-    nameBook: 'Book7',
-    nameAuthor: 'Author7',
-    publicationBook: '2016',
-    category: {
-      id: 2,
-      nameCategory: 'Khoa học',
-    },
-  },
-  {
-    id: 8,
-    nameBook: 'Book8',
-    nameAuthor: 'Author8',
-    publicationBook: '2014',
-    category: {
-      id: 1,
-      nameCategory: 'Tiểu thuyết',
-    },
-  },
-  {
-    id: 9,
-    nameBook: 'Book9',
-    nameAuthor: 'Author9',
-    publicationBook: '2013',
-    category: {
-      id: 3,
-      nameCategory: 'Lịch sử',
-    },
-  },
-  {
-    id: 10,
-    nameBook: 'Book10',
-    nameAuthor: 'Author10',
-    publicationBook: '2012',
-    category: {
-      id: 4,
-      nameCategory: 'Tâm lý học',
-    },
-  },
-  {
-    id: 11,
-    nameBook: 'Book11',
-    nameAuthor: 'Author11',
-    publicationBook: '2022',
-    category: {
-      id: 1,
-      nameCategory: 'Tiểu thuyết',
-    },
-  },
-  {
-    id: 12,
-    nameBook: 'Book12',
-    nameAuthor: 'Author12',
-    publicationBook: '2011',
-    category: {
-      id: 5,
-      nameCategory: 'Tự nhiên',
-    },
-  },
-  {
-    id: 13,
-    nameBook: 'Book13',
-    nameAuthor: 'Author13',
-    publicationBook: '2020',
-    category: {
-      id: 3,
-      nameCategory: 'Lịch sử',
-    },
-  },
-  {
-    id: 14,
-    nameBook: 'Book14',
-    nameAuthor: 'Author14',
-    publicationBook: '2018',
-    category: {
-      id: 2,
-      nameCategory: 'Khoa học',
-    },
-  },
-  {
-    id: 15,
-    nameBook: 'Book15',
-    nameAuthor: 'Author15',
-    publicationBook: '2016',
-    category: {
-      id: 1,
-      nameCategory: 'Tiểu thuyết',
-    },
-  },
-  {
-    id: 16,
-    nameBook: 'Book16',
-    nameAuthor: 'Author16',
-    publicationBook: '2015',
-    category: {
-      id: 4,
-      nameCategory: 'Tâm lý học',
-    },
-  },
-  {
-    id: 17,
-    nameBook: 'Book17',
-    nameAuthor: 'Author17',
-    publicationBook: '2019',
-    category: {
-      id: 2,
-      nameCategory: 'Khoa học',
-    },
-  },
-  {
-    id: 18,
-    nameBook: 'Book18',
-    nameAuthor: 'Author18',
-    publicationBook: '2021',
-    category: {
-      id: 5,
-      nameCategory: 'Tự nhiên',
-    },
-  },
-  {
-    id: 19,
-    nameBook: 'Book19',
-    nameAuthor: 'Author19',
-    publicationBook: '2022',
-    category: {
-      id: 3,
-      nameCategory: 'Lịch sử',
-    },
-  },
-  {
-    id: 20,
-    nameBook: 'Book20',
-    nameAuthor: 'Author20',
-    publicationBook: '2023',
-    category: {
-      id: 1,
-      nameCategory: 'Tiểu thuyết',
-    },
-  },
-])
+const tab = ref('option-1')
+const userInfo = ref<IUserInfor>({ name: '', role: '' })
+
+// chức năng search================
+const searchQuery = ref('')
+const isSearchVisible = ref(false) // Trạng thái hiển thị thanh tìm kiếm
+
+// Danh sách sách lấy từ localStorage
+const books = JSON.parse(localStorage.getItem('books') || '[]')
+
+// Lọc sách theo từ khóa tìm kiếm
+const filteredBooks = computed(() => {
+  const queryValue = searchQuery.value.trim().toLowerCase()
+
+  if (!queryValue) {
+    return [] // Không hiển thị sách nếu không có từ khóa tìm kiếm
+  }
+
+  return books.filter((book: IBooks) => {
+    return (
+      book.nameBook.toLowerCase().includes(queryValue) ||
+      book.nameAuthor.toLowerCase().includes(queryValue) ||
+      book.category.toLowerCase().includes(queryValue)
+    )
+  })
+})
+const toggleSearch = () => {
+  // Đổi trạng thái hiển thị thanh tìm kiếm
+  isSearchVisible.value = !isSearchVisible.value
+  // Xóa từ khóa tìm kiếm khi ấn nút xóa
+  searchQuery.value = '';
+}
+
+// =============================
+
+const onLogoutClick = () => {
+  localStorage.removeItem('user')
+  notificationMessage.value = 'Đã đăng xuất'
+    notificationColor.value = 'green'
+    showNotification.value = true;
+  setTimeout(() => {
+        router.push('/login')
+      }, 1000)
+  // Redirect to login page
+}
+
+
+// Quản lý thông báo
+const showNotification = ref(false)
+const notificationMessage = ref('')
+const notificationColor = ref('')
+
+onMounted(() => {
+  const storedUser = localStorage.getItem('user')
+  if (storedUser) {
+    userInfo.value = JSON.parse(storedUser)
+  }
+})
 </script>
+
+<style scoped>
+.mx-2 {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.full-width {
+  max-width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.tabs-full-height {
+  height: 100%;
+}
+
+.tabs-window-full-width {
+  flex: 1;
+  width: 100%;
+}
+
+.search-results {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 9999 !important;
+  margin-top: 60px;
+  margin-right: 150px;
+  max-height: 80%; /* Đặt chiều cao tối đa */
+  overflow-y: auto; /* Thêm thanh cuộn dọc */
+}
+.searchBook {
+  position: relative;
+}
+
+.custom-snackbar {
+  position: fixed !important;
+  top: 60px;
+  right: 200px;
+  bottom: auto !important;
+  left: auto !important;
+}
+</style>

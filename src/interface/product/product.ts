@@ -1,13 +1,19 @@
-export interface IProduct {
+export interface IBooks {
   id: number;
   nameBook: string
   nameAuthor: string;
   publicationBook:string;
-  category: ICate;
+  category: string;
+  status:string;
 }
 
-
-export interface ICate{
-    id:number;
-    nameCategory:string;
+export interface IBookCreate {
+  id?: number;
+  nameBook: string
+  nameAuthor: string;
+  publicationBook:string;
+  category: string;
+  status:string;
 }
+
+ 

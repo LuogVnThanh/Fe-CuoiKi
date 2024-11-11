@@ -3,6 +3,21 @@
     <v-container class="d-flex justify-center align-center" style="height: 100vh">
       <v-sheet class="register-container" width="350" height="auto">
         <v-form ref="form">
+
+                 <!-- input tài khoản -->
+                 <v-text-field
+            v-model="initialForm.name"
+            type="text"
+            label="Name"
+            required
+            prepend-inner-icon="mdi-account"
+            class="custom-input"
+            style="width: 300px"
+          >
+            <!-- Icon người dùng -->
+          </v-text-field>
+
+          
           <!-- input tài khoản -->
           <v-text-field
             v-model="initialForm.email"
@@ -101,6 +116,7 @@ const showConfirmPassword = ref(false)
  
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<IRegister>({
+  name:'',
   email: '',
   password: '',
   confirmPassword: '',
@@ -112,7 +128,7 @@ const handleDirect = () => {
 
 const handleRegister = () => {
   // Kiểm tra xem có ô input nào trống không
-  if (!initialForm.email || !initialForm.password || !initialForm.confirmPassword) {
+  if (!initialForm.email ||!initialForm.name ||  !initialForm.password || !initialForm.confirmPassword) {
     notificationMessage.value = 'Vui lòng điền đầy đủ tất cả các trường.'
     notificationColor.value = 'red'
     showNotification.value = true
@@ -149,6 +165,7 @@ const handleRegister = () => {
     const maxId = users.length>0? Math.max(...users.map(user=>user.id)) : 0
     const newUser = {
       id: maxId+1,
+      name: initialForm.name,
       email: initialForm.email,
       password: initialForm.password,
       role: 'user', // Hoặc có thể lấy role từ nơi khác

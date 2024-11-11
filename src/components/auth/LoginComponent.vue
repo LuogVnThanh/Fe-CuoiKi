@@ -3,7 +3,7 @@
   <div class="auth-background">
     <v-container class="d-flex justify-center align-center" style="height: 100vh">
       <v-sheet class="login-container" width="350" height="auto">
-        <v-form ref="form">
+        <v-form ref="form" @keyup.enter="handleLogin">
           <v-text-field
             v-model="initialForm.email"
             label="Email"
@@ -35,14 +35,27 @@
             <v-btn class="login-button mt-4" color="success" block @click.prevent="handleLogin">
               Đăng nhập
             </v-btn>
+            <div class="d-flex justify-space-between ">
+              <p
+              class="mt-4 d-flex justify-end cursor-pointer"
+              color="info"
+              block
+              style="font-size: 16px;"
+            >
+              Quên mật khẩu?
+            </p>
             <p
               class="mt-4 d-flex justify-end cursor-pointer"
               color="info"
               block
+              style="font-size: 16px;"
               @click.prevent="handleDirect"
             >
               Chưa có tài khoản?
             </p>
+
+            </div>
+         
           </div>
         </v-form>
 
@@ -78,15 +91,24 @@ const showPassword = ref(false)
 const arrAccount = reactive<IUser[]>([
   {
     id: 1,
+    name:'admin',
     email: 'admin@gmail.com',
     password: '1',
     role: 'admin',
   },
   {
     id: 2,
-    email: 'user@gmail.com',
+    name:'doc gia1',
+    email: 'docgia@gmail.com',
     password: '1',
-    role: 'user',
+    role: 'độc giả',
+  },
+  {
+    id: 3,
+    name:'thủ thư 1',
+    email: 'thuthu@gmail.com',
+    password: '1',
+    role: 'thủ thư',
   },
 ])
 
