@@ -35,15 +35,16 @@
             <v-btn class="login-button mt-4" color="success" block @click.prevent="handleLogin">
               Đăng nhập
             </v-btn>
-            <div class="d-flex justify-space-between ">
-              <p
+            <!-- <div class="d-flex justify-space-between "> -->
+              <div> 
+              <!-- <p
               class="mt-4 d-flex justify-end cursor-pointer"
               color="info"
               block
               style="font-size: 16px;"
             >
               Quên mật khẩu?
-            </p>
+            </p> -->
             <p
               class="mt-4 d-flex justify-end cursor-pointer"
               color="info"
@@ -71,6 +72,10 @@
     timeout="3000"
     class="custom-snackbar"
   >
+   <!-- <v-icon left v-if="notificationColor === 'green'" color="white">mdi-check-circle</v-icon>
+  <v-icon left v-else color="white ">mdi-close-circle</v-icon> 
+ -->
+
     {{ notificationMessage }}
   </v-snackbar>
 </template>
@@ -101,14 +106,14 @@ const arrAccount = reactive<IUser[]>([
     name:'doc gia1',
     email: 'docgia@gmail.com',
     password: '1',
-    role: 'độc giả',
+    role: 'readers',
   },
   {
     id: 3,
     name:'thủ thư 1',
     email: 'thuthu@gmail.com',
     password: '1',
-    role: 'thủ thư',
+    role: 'librarian',
   },
 ])
 
@@ -176,6 +181,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
 .login-container {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng */
   padding: 30px;

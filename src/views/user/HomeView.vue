@@ -10,5 +10,7 @@
 
 <style scoped>
  
-
+.home{
+  background-color: #F5F5F5;
+}
 </style>

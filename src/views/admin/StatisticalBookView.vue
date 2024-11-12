@@ -1,9 +1,15 @@
 <template>
-    <h1>thống kê danh sách yêu thích </h1>
+    <div class="bg">
+<h1>Thong ke</h1>
+    </div>
+   
 </template>
 <script setup lang="ts">
 
 </script>
 
 <style scoped>
+.bg{
+    background-color: #F5F5F5;
+}
 </style>

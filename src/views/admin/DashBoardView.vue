@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-card class="full-width">
       <!-- Toolbar hiển thị thông tin người dùng -->
-      <v-toolbar color="primary">
+      <v-toolbar color="primary"  elevation="0" >
         <div v-if="userInfo" class="d-flex align-center justify-space-between" style="width: 100%">
           <div class="d-flex align-center" style="margin-left: 5px">
             <span>{{ userInfo.name }}</span>
@@ -36,17 +36,17 @@
 
     <div class="d-flex full-height">
       <!-- Tabs bên trái -->
-      <v-tabs v-model="tab" color="primary" direction="vertical" class="tabs-full-height">
-        <v-tab value="option-1">Quản lý sách</v-tab>
-        <v-tab value="option-2">Quản lý mượn trả sách</v-tab>
-        <v-tab value="option-3">Thống kê sách yêu thích</v-tab>
+      <v-tabs v-model="tab" color="primary" direction="vertical" class="tabs-full-height tabs-narrow" >
+        <v-tab value="option-1" class="title-func">Quản lý sách</v-tab>
+        <v-tab value="option-2" class="title-func">Quản lý mượn trả sách</v-tab>
+        <v-tab value="option-3" class="title-func">Thống kê sách yêu thích</v-tab>
       </v-tabs>
 
       <!-- Nội dung các tab bên phải -->
-      <v-tabs-window v-model="tab" class="tabs-window-full-width">
+      <v-tabs-window v-model="tab" class="tabs-window-full-width mt-1 "   >
         <v-tabs-window-item value="option-1">
-          <v-card flat>
-            <v-card-text>
+          <v-card flat  >
+            <v-card-text rounded="sm">
               <ManagerBookView />
             </v-card-text>
           </v-card>
@@ -189,6 +189,7 @@ onMounted(() => {
 
 .tabs-full-height {
   height: 100%;
+  padding: 0; /* Loại bỏ padding */
 }
 
 .tabs-window-full-width {
@@ -196,6 +197,10 @@ onMounted(() => {
   width: 100%;
 }
 
+.tabs-narrow {
+  width: 300px; /* Điều chỉnh giá trị này theo nhu cầu */
+  max-width: 250px;
+}
 .search-results {
   position: fixed;
   top: 0;
@@ -213,6 +218,19 @@ onMounted(() => {
   position: relative;
 }
 
+.title-func{
+  font-weight: 600;         /* Chữ đậm */
+  letter-spacing: -0.5px;    /* Chữ sát gần lại */
+  padding: 4px 8px;          /* Điều chỉnh padding nếu cần */
+  margin: 0;                 /* Bỏ khoảng cách giữa các tab */
+  line-height: 1.2;          /* Chiều cao dòng thấp hơn */
+}
+
+
+
+
+
+
 .custom-snackbar {
   position: fixed !important;
   top: 60px;
@@ -220,4 +238,5 @@ onMounted(() => {
   bottom: auto !important;
   left: auto !important;
 }
+
 </style>

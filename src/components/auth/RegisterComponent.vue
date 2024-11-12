@@ -168,7 +168,7 @@ const handleRegister = () => {
       name: initialForm.name,
       email: initialForm.email,
       password: initialForm.password,
-      role: 'user', // Hoặc có thể lấy role từ nơi khác
+      role: 'readers', // Hoặc có thể lấy role từ nơi khác
     }
 
     // Lưu tài khoản mới  và cập nhập localStorage
