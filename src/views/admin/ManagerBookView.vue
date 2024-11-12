@@ -1,12 +1,12 @@
-<template >
-  <div class="full-width" style="background-color: #F5F5F5; padding: 15px;border-radius: 5px;">
+<template>
+  <div class="full-width" style="background-color: #f5f5f5; padding: 15px; border-radius: 5px">
     <div class="d-flex justify-space-between mb-10">
       <h2>Danh sách sản phẩm</h2>
       <v-btn prepend-icon="mdi-plus" color="green" class="add-icon" @click="dialog = true">
         Thêm Sách
       </v-btn>
     </div>
-    <v-table height="500px" style="background-color: #F5F5F5;">
+    <v-table height="500px" style="background-color: #f5f5f5">
       <thead>
         <tr>
           <th class="text-left">Id</th>
@@ -52,26 +52,64 @@
 
       <v-card-text>
         <v-form ref="form">
-          <v-text-field v-model="newBook.nameBook" label="Tên Sách" required></v-text-field>
-          <v-text-field v-model="newBook.nameAuthor" label="Tên Tác Giả" required></v-text-field>
+          <!-- Hàng Tên Sách và Tên Tác Giả -->
+          <v-row>
+            <v-col cols="6">
+              <v-text-field v-model="newBook.nameBook" label="Tên Sách" required></v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field
+                v-model="newBook.nameAuthor"
+                label="Tên Tác Giả"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <!-- Hàng Ngày Xuất Bản -->
           <v-text-field
             v-model="newBook.publicationBook"
             label="Ngày Xuất Bản"
             required
             type="date"
           ></v-text-field>
-          <v-combobox
-            v-model="newBook.category"
-            label="Loại Sách"
-            :items="categories"
-            required
-          ></v-combobox>
-          <v-combobox
-            v-model="newBook.status"
-            label="Tình Trạng"
-            :items="status"
-            required
-          ></v-combobox>
+          <!-- Hàng Loại Sách và Tình Trạng -->
+          <v-row>
+            <v-col cols="6">
+              <v-combobox
+                v-model="newBook.category"
+                label="Loại Sách"
+                :items="categories"
+                required
+              ></v-combobox>
+            </v-col>
+            <v-col cols="6">
+              <v-combobox
+                v-model="newBook.status"
+                label="Tình Trạng"
+                :items="status"
+                required
+              ></v-combobox>
+            </v-col>
+          </v-row>
+
+          <!-- Mục chọn hình ảnh -->
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-file-input
+                v-model="newBook.image"
+                label="Chọn Hình Ảnh"
+                accept="image/*"
+                prepend-icon="mdi-image"
+                required
+                show-size
+              ></v-file-input>
+            </v-col>
+            <v-col cols="12" md="6">
+              <!-- Hiển thị ảnh đã chọn -->
+              <v-img v-if="newBook.image" :src="newBook.image" max-width="150px"></v-img>
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
 
@@ -105,7 +143,7 @@ const notificationMessage = ref('')
 const notificationColor = ref('')
 // =============
 
-const arrBooks = reactive([ 
+const arrBooks = reactive([
   {
     id: 1,
     nameBook: 'Book1',
@@ -113,6 +151,7 @@ const arrBooks = reactive([
     publicationBook: '2018-01-15',
     category: 'Tiểu thuyết',
     status: 'Sách mới',
+    image: null as File | null, // Thêm trường image kiểu File hoặc null
   },
   {
     id: 2,
@@ -121,6 +160,7 @@ const arrBooks = reactive([
     publicationBook: '2019-05-21',
     category: 'Khoa học',
     status: 'Đã mượn',
+    image: null as File | null,
   },
   {
     id: 3,
@@ -129,6 +169,7 @@ const arrBooks = reactive([
     publicationBook: '2020-07-11',
     category: 'Tiểu thuyết',
     status: 'Hư hỏng',
+    image: null as File | null,
   },
   {
     id: 4,
@@ -137,6 +178,7 @@ const arrBooks = reactive([
     publicationBook: '2015-03-30',
     category: 'Lịch sử',
     status: 'Sách mới',
+    image: null as File | null,
   },
   {
     id: 5,
@@ -145,6 +187,7 @@ const arrBooks = reactive([
     publicationBook: '2021-10-18',
     category: 'Tâm lý học',
     status: 'Đã mượn',
+    image: null as File | null,
   },
   {
     id: 6,
@@ -153,6 +196,7 @@ const arrBooks = reactive([
     publicationBook: '2017-09-06',
     category: 'Tự nhiên',
     status: 'Hư hỏng',
+    image: null as File | null,
   },
   {
     id: 7,
@@ -161,6 +205,7 @@ const arrBooks = reactive([
     publicationBook: '2016-02-23',
     category: 'Khoa học',
     status: 'Sách mới',
+    image: null as File | null,
   },
   {
     id: 8,
@@ -169,6 +214,7 @@ const arrBooks = reactive([
     publicationBook: '2014-08-29',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
+    image: null as File | null,
   },
   {
     id: 9,
@@ -177,6 +223,7 @@ const arrBooks = reactive([
     publicationBook: '2013-04-19',
     category: 'Lịch sử',
     status: 'Hư hỏng',
+    image: null as File | null,
   },
   {
     id: 10,
@@ -185,6 +232,7 @@ const arrBooks = reactive([
     publicationBook: '2012-11-25',
     category: 'Tâm lý học',
     status: 'Sách mới',
+    image: null as File | null,
   },
   {
     id: 11,
@@ -193,6 +241,7 @@ const arrBooks = reactive([
     publicationBook: '2022-06-15',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
+    image: null as File | null,
   },
   {
     id: 12,
@@ -201,72 +250,12 @@ const arrBooks = reactive([
     publicationBook: '2011-12-08',
     category: 'Tự nhiên',
     status: 'Hư hỏng',
+    image: null as File | null,
   },
-  {
-    id: 13,
-    nameBook: 'Book13',
-    nameAuthor: 'Author13',
-    publicationBook: '2020-04-17',
-    category: 'Lịch sử',
-    status: 'Sách mới',
-  },
-  {
-    id: 14,
-    nameBook: 'Book14',
-    nameAuthor: 'Author14',
-    publicationBook: '2018-10-22',
-    category: 'Khoa học',
-    status: 'Đã mượn',
-  },
-  {
-    id: 15,
-    nameBook: 'Book15',
-    nameAuthor: 'Author15',
-    publicationBook: '2016-01-09',
-    category: 'Tiểu thuyết',
-    status: 'Hư hỏng',
-  },
-  {
-    id: 16,
-    nameBook: 'Book16',
-    nameAuthor: 'Author16',
-    publicationBook: '2015-05-12',
-    category: 'Tâm lý học',
-    status: 'Sách mới',
-  },
-  {
-    id: 17,
-    nameBook: 'Book17',
-    nameAuthor: 'Author17',
-    publicationBook: '2019-03-18',
-    category: 'Khoa học',
-    status: 'Đã mượn',
-  },
-  {
-    id: 18,
-    nameBook: 'Book18',
-    nameAuthor: 'Author18',
-    publicationBook: '2021-07-21',
-    category: 'Tự nhiên',
-    status: 'Hư hỏng',
-  },
-  {
-    id: 19,
-    nameBook: 'Book19',
-    nameAuthor: 'Author19',
-    publicationBook: '2022-02-28',
-    category: 'Lịch sử',
-    status: 'Sách mới',
-  },
-  {
-    id: 20,
-    nameBook: 'Book20',
-    nameAuthor: 'Author20',
-    publicationBook: '2023-09-10',
-    category: 'Tiểu thuyết',
-    status: 'Đã mượn',
-  },
-]);
+   
+])
+
+
 const dialog = ref(false) // Hiện form
 
 // Tạo đối tượng để lưu
@@ -278,16 +267,16 @@ const selectedStatus = ref('Tất cả') // Giá trị mặc định là "Tất 
 const status = ['Sách mới', 'Đã mượn', 'Hư hỏng']
 
 // Mảng lưu sách đã lọc theo trạng thái
-const filteredBooks = computed(()=>{
-    // Nếu trạng thái là 'Tất cả' thì trả về toàn bộ danh sách
-if(selectedStatus.value==='Tất cả'){
-  return arrBooks
-}
+const filteredBooks = computed(() => {
+  // Nếu trạng thái là 'Tất cả' thì trả về toàn bộ danh sách
+  if (selectedStatus.value === 'Tất cả') {
+    return arrBooks
+  }
   // Nếu không, lọc sách theo trạng thái đã chọn
-  return arrBooks.filter((book) => book.status === selectedStatus.value);
+  return arrBooks.filter((book) => book.status === selectedStatus.value)
 })
 // ===============hàm thêm sách và sửa sách==================
-const editBook = (id:number) => {
+const editBook = (id: number) => {
   const book = arrBooks.find((item) => item.id === id)
   if (book) {
     Object.assign(newBook, book) // Đặt dữ liệu vào form
@@ -296,62 +285,58 @@ const editBook = (id:number) => {
   }
 }
 const newBook = reactive<IBooks>({
-  id:0,
+  id: 0,
   nameBook: '',
   nameAuthor: '',
   publicationBook: '',
   category: '',
   status: '',
+  image: null,
 })
-const isEdit = ref(false); // Biến kiểm tra nếu đây là form sửa hay thêm
+const isEdit = ref(false) // Biến kiểm tra nếu đây là form sửa hay thêm
 
-
-const submitForm =()=>{
-    // Kiểm tra nhập dữ liệu
-    if (
+const submitForm = () => {
+  // Kiểm tra nhập dữ liệu
+  if (
     !newBook.nameBook.trim() ||
     !newBook.nameAuthor.trim() ||
     !newBook.publicationBook.trim() ||
     !newBook.category.trim() ||
-    !newBook.status.trim()
+    !newBook.status.trim() ||
+    !newBook.image
   ) {
-    notificationMessage.value = 'Vui lòng nhập đầy đủ thông tin';
-    notificationColor.value = 'red';
-    showNotification.value = true; // Hiển thị thông báo
-    return;
+    notificationMessage.value = 'Vui lòng nhập đầy đủ thông tin'
+    notificationColor.value = 'red'
+    showNotification.value = true // Hiển thị thông báo
+    return
   }
- 
+
   if (isEdit.value) {
     // Nếu là sửa sách, tìm và cập nhật sách
-    const index = arrBooks.findIndex((book: IBooks) => book.id === newBook.id);
-
+    const index = arrBooks.findIndex((book: IBooks) => book.id === newBook.id)
 
     if (index !== -1) {
-      arrBooks[index] = { ...newBook }; // Cập nhật sách
-      notificationMessage.value = 'Cập nhật sách thành công';
+      arrBooks[index] = { ...newBook } // Cập nhật sách
+      notificationMessage.value = 'Cập nhật sách thành công'
     }
-
-    
   } else {
     // Nếu là thêm sách, tạo id mới và thêm vào danh sách
-    const newId = arrBooks.length ? Math.max(...arrBooks.map((book) => book.id)) + 1 : 1;
-    arrBooks.push({ ...newBook, id: newId });
-    notificationMessage.value = 'Tạo mới sách thành công';
+    const newId = arrBooks.length ? Math.max(...arrBooks.map((book) => book.id)) + 1 : 1
+    arrBooks.push({ ...newBook, id: newId })
+    notificationMessage.value = 'Tạo mới sách thành công'
   }
 
   // Lưu lại vào localStorage
-  localStorage.setItem('books', JSON.stringify(arrBooks));
+  localStorage.setItem('books', JSON.stringify(arrBooks))
 
   // Thông báo thành công
-  notificationColor.value = 'green';
-  showNotification.value = true; // Hiển thị thông báo
+  notificationColor.value = 'green'
+  showNotification.value = true // Hiển thị thông báo
 
   // Reset form và đóng modal
-  resetForm();
-};
+  resetForm()
+}
 
-
- 
 // reset form
 const resetForm = () => {
   newBook.nameBook = ''
@@ -360,25 +345,24 @@ const resetForm = () => {
   newBook.category = ''
   newBook.status = ''
   dialog.value = false
-  isEdit.value=false
+  isEdit.value = false
+  newBook.image = null
 }
 
-// =============== =================
- 
+// =============================================
 
 // ===============hàm xóa sách==================
-const deleteBook = (id:number)=>{
-    // Lấy dữ liệu sách từ localStorage
-    const arrBooks = JSON.parse(localStorage.getItem('books') || '[]');
+const deleteBook = (id: number) => {
+  // Lấy dữ liệu sách từ localStorage
+  const arrBooks = JSON.parse(localStorage.getItem('books') || '[]')
 
-    //  tìm sách cần xóa dự vào id
-     const index =  arrBooks.findIndex((book: { id: number }) => book.id == id);
+  //  tìm sách cần xóa dự vào id
+  const index = arrBooks.findIndex((book: { id: number }) => book.id == id)
 
-       // Nếu tìm thấy sách (index >= 0)
+  // Nếu tìm thấy sách (index >= 0)
   if (index > -1) {
     arrBooks.splice(index, 1) // Xóa sách tại vị trí index
     localStorage.setItem('books', JSON.stringify(arrBooks)) // Lưu lại vào localStorage
-
 
     notificationMessage.value = 'Xóa thành công'
     notificationColor.value = 'green'
