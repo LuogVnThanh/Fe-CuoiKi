@@ -1,7 +1,7 @@
 <template>
   <div class="auth-background">
     <v-container class="d-flex justify-center align-center" style="height: 100vh">
-      <v-sheet class="register-container" width="350" height="auto">
+      <v-sheet class="register-container" width="350" height="auto" @keyup.enter="handleRegister">
         <v-form ref="form">
 
                  <!-- input tài khoản -->
