@@ -75,7 +75,7 @@
     font-family: Inter;
     font-size: 14px;
     font-weight: 400;
-    color: #898989;
+    color: #411313;
   }
   h2 {
     margin-bottom: 0px;

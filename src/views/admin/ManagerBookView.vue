@@ -36,14 +36,27 @@
           <td>{{ item.status }}</td>
           <td>
             <v-icon @click="editBook(item.id)" class="mr-2 edit-icon" icon="mdi-pencil"></v-icon>
-            <v-icon @click="deleteBook(item.id)" icon="mdi-delete delete-icon"></v-icon>
+            <!-- <v-icon @click="deleteBook(item.id)" icon="mdi-delete delete-icon"></v-icon> -->
+            <v-icon @click="confirmDelete(item.id)" icon="mdi-delete delete-icon"></v-icon>
           </td>
         </tr>
       </tbody>
     </v-table>
   </div>
 
-  <!-- Modal thêm sách -->
+  <!-- Modal xác nhận xóa -->
+  <v-dialog v-model="confirmDeleteDialog" max-width="400" persistent>
+    <v-card>
+      <v-card-title class="headline">Bạn có chắc muốn xóa sách?</v-card-title>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="grey" @click="confirmDeleteDialog = false">Hủy</v-btn>
+        <v-btn color="red" @click="deleteBook">Xóa</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <!-- Modal thêm và sửa sách -->
   <v-dialog v-model="dialog" max-width="600px">
     <v-card>
       <v-card-title>
@@ -89,27 +102,29 @@
                 label="Tình Trạng"
                 :items="status"
                 required
+                                                 
+                
               ></v-combobox>
             </v-col>
           </v-row>
 
           <!-- Mục chọn hình ảnh -->
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-file-input
-                v-model="newBook.image"
-                label="Chọn Hình Ảnh"
-                accept="image/*"
-                prepend-icon="mdi-image"
-                required
-                show-size
-              ></v-file-input>
-            </v-col>
-            <v-col cols="12" md="6">
-              <!-- Hiển thị ảnh đã chọn -->
-              <v-img v-if="newBook.image" :src="newBook.image" max-width="150px"></v-img>
-            </v-col>
-          </v-row>
+
+          <v-text-field
+            v-model="newBook.image"
+            label="Nhập URL Hình ảnh"
+            prepend-icon="mdi-image"
+            required
+          ></v-text-field>
+
+          <!-- Hiển Thị Ảnh Xem Trước -->
+          <v-img
+            v-if="newBook.image"
+            :src="newBook.image"
+            max-width="300"
+            max-height="300"
+            class="mt-3"
+          ></v-img>
         </v-form>
       </v-card-text>
 
@@ -133,16 +148,16 @@
   </v-snackbar>
 </template>
 
+
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
 import type { IBookCreate, IBooks } from '../../interface/product/product'
 
-// ========Thông báo
+// ========Thông báo================
 const showNotification = ref(false)
 const notificationMessage = ref('')
 const notificationColor = ref('')
-// =============
-
+ 
 const arrBooks = reactive([
   {
     id: 1,
@@ -151,7 +166,7 @@ const arrBooks = reactive([
     publicationBook: '2018-01-15',
     category: 'Tiểu thuyết',
     status: 'Sách mới',
-    image: null as File | null, // Thêm trường image kiểu File hoặc null
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 2,
@@ -160,7 +175,7 @@ const arrBooks = reactive([
     publicationBook: '2019-05-21',
     category: 'Khoa học',
     status: 'Đã mượn',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 3,
@@ -169,7 +184,7 @@ const arrBooks = reactive([
     publicationBook: '2020-07-11',
     category: 'Tiểu thuyết',
     status: 'Hư hỏng',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 4,
@@ -178,7 +193,7 @@ const arrBooks = reactive([
     publicationBook: '2015-03-30',
     category: 'Lịch sử',
     status: 'Sách mới',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 5,
@@ -187,7 +202,7 @@ const arrBooks = reactive([
     publicationBook: '2021-10-18',
     category: 'Tâm lý học',
     status: 'Đã mượn',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 6,
@@ -196,7 +211,7 @@ const arrBooks = reactive([
     publicationBook: '2017-09-06',
     category: 'Tự nhiên',
     status: 'Hư hỏng',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 7,
@@ -205,7 +220,7 @@ const arrBooks = reactive([
     publicationBook: '2016-02-23',
     category: 'Khoa học',
     status: 'Sách mới',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 8,
@@ -214,7 +229,7 @@ const arrBooks = reactive([
     publicationBook: '2014-08-29',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 9,
@@ -223,7 +238,7 @@ const arrBooks = reactive([
     publicationBook: '2013-04-19',
     category: 'Lịch sử',
     status: 'Hư hỏng',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 10,
@@ -232,7 +247,7 @@ const arrBooks = reactive([
     publicationBook: '2012-11-25',
     category: 'Tâm lý học',
     status: 'Sách mới',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 11,
@@ -241,7 +256,7 @@ const arrBooks = reactive([
     publicationBook: '2022-06-15',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 12,
@@ -250,11 +265,9 @@ const arrBooks = reactive([
     publicationBook: '2011-12-08',
     category: 'Tự nhiên',
     status: 'Hư hỏng',
-    image: null as File | null,
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
-   
 ])
-
 
 const dialog = ref(false) // Hiện form
 
@@ -290,8 +303,8 @@ const newBook = reactive<IBooks>({
   nameAuthor: '',
   publicationBook: '',
   category: '',
-  status: '',
-  image: null,
+  status: 'Sách mới',
+  image: '',
 })
 const isEdit = ref(false) // Biến kiểm tra nếu đây là form sửa hay thêm
 
@@ -346,32 +359,40 @@ const resetForm = () => {
   newBook.status = ''
   dialog.value = false
   isEdit.value = false
-  newBook.image = null
+  newBook.image = ''
+ 
 }
 
 // =============================================
 
 // ===============hàm xóa sách==================
-const deleteBook = (id: number) => {
-  // Lấy dữ liệu sách từ localStorage
-  const arrBooks = JSON.parse(localStorage.getItem('books') || '[]')
+const confirmDeleteDialog = ref(false)
+const bookToDeleteId = ref<number | null>(null)
 
-  //  tìm sách cần xóa dự vào id
-  const index = arrBooks.findIndex((book: { id: number }) => book.id == id)
+// Hàm mở modal xác nhận xóa
+const confirmDelete = (id: number) => {
+  bookToDeleteId.value = id // Lưu lại ID của sách cần xóa
+  confirmDeleteDialog.value = true // Hiện modal xác nhận xóa
+}
 
-  // Nếu tìm thấy sách (index >= 0)
-  if (index > -1) {
-    arrBooks.splice(index, 1) // Xóa sách tại vị trí index
+// Hàm thực hiện xóa sách
+const deleteBook = () => {
+  if (bookToDeleteId.value !== null) {
+    // Thực hiện xóa sách khỏi danh sách
+    arrBooks.splice(
+      arrBooks.findIndex((book) => book.id === bookToDeleteId.value),
+      1,
+    )
     localStorage.setItem('books', JSON.stringify(arrBooks)) // Lưu lại vào localStorage
-
     notificationMessage.value = 'Xóa thành công'
     notificationColor.value = 'green'
     showNotification.value = true // Hiển thị thông báo
     initializeBooks()
+    bookToDeleteId.value = null
+    confirmDeleteDialog.value = false
   }
 }
 
-// Xử lý lưu toàn bộ sách vào localStorage=================
 const initializeBooks = () => {
   const Books = JSON.parse(localStorage.getItem('books') || '[]')
   if (Books.length) {

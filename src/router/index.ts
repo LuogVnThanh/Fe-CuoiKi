@@ -26,11 +26,13 @@ const router = createRouter({
       name: 'Login',
       component: LoginView,
     },
+    
     {
       path: '/register',
       name: 'Regiser',
       component: RegisterView,
     },
+ 
     {
       path: '/dashboard',
       name: 'Dashboard',

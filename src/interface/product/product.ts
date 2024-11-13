@@ -5,7 +5,7 @@ export interface IBooks {
   publicationBook:string;
   category: string;
   status:string;
-  image: File|null ;  // Cập nhật để có thể chứa cả File hoặc URL string
+  image: string ;  // Cập nhật để có thể chứa cả File hoặc URL string
 }
 
 export interface IBookCreate {
@@ -15,7 +15,7 @@ export interface IBookCreate {
   publicationBook:string;
   category: string;
   status:string;
-  image: File|null;  // Cập nhật để có thể chứa cả File hoặc URL string
+  image: string;  // Cập nhật để có thể chứa cả File hoặc URL string
 
 }
 
