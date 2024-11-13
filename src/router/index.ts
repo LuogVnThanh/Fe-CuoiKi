@@ -1,13 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/user/HomeView.vue'
 import LoginView from '../components/auth/LoginComponent.vue'
-import  RegisterView from '../components/auth/RegisterComponent.vue'
+import RegisterView from '../components/auth/RegisterComponent.vue'
 import Dashboard from '../views/admin/DashBoardView.vue'
 import ManagerBook from '../views/admin/ManagerBookView.vue'
 import BorrowBook from '../views/admin/BorrowBookView.vue'
 import StatisticalBook from '../views/admin/StatisticalBookView.vue'
-
-
+import OrderView from '../views/layouts/OrderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,13 +25,18 @@ const router = createRouter({
       name: 'Login',
       component: LoginView,
     },
-    
+
     {
       path: '/register',
       name: 'Regiser',
       component: RegisterView,
     },
- 
+
+    {
+      path: '/order',
+      name: 'Order',
+      component: OrderView,
+    },
     {
       path: '/dashboard',
       name: 'Dashboard',
@@ -72,6 +76,5 @@ router.beforeEach((to, from, next) => {
     next() // Tiếp tục nếu không có vấn đề gì
   }
 })
-
 
 export default router

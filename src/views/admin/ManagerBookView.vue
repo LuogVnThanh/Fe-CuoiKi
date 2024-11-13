@@ -102,8 +102,8 @@
                 label="Tình Trạng"
                 :items="status"
                 required
-                                                 
-                
+
+
               ></v-combobox>
             </v-col>
           </v-row>
@@ -157,117 +157,117 @@ import type { IBookCreate, IBooks } from '../../interface/product/product'
 const showNotification = ref(false)
 const notificationMessage = ref('')
 const notificationColor = ref('')
- 
+
 const arrBooks = reactive([
   {
     id: 1,
-    nameBook: 'Book1',
-    nameAuthor: 'Author1',
-    publicationBook: '2018-01-15',
+    nameBook: 'Harry Potter và Hòn Đá Phù Thủy',
+    nameAuthor: 'J.K. Rowling',
+    publicationBook: '1997-06-26',
     category: 'Tiểu thuyết',
     status: 'Sách mới',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 2,
-    nameBook: 'Book2',
-    nameAuthor: 'Author2',
-    publicationBook: '2019-05-21',
+    nameBook: 'Sapiens: Lược Sử Loài Người',
+    nameAuthor: 'Yuval Noah Harari',
+    publicationBook: '2014-09-04',
     category: 'Khoa học',
     status: 'Đã mượn',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 3,
-    nameBook: 'Book3',
-    nameAuthor: 'Author3',
-    publicationBook: '2020-07-11',
-    category: 'Tiểu thuyết',
+    nameBook: 'Đắc Nhân Tâm',
+    nameAuthor: 'Dale Carnegie',
+    publicationBook: '1936-10-10',
+    category: 'Tâm lý học',
     status: 'Hư hỏng',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 4,
-    nameBook: 'Book4',
-    nameAuthor: 'Author4',
-    publicationBook: '2015-03-30',
-    category: 'Lịch sử',
-    status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
-  },
-  {
-    id: 5,
-    nameBook: 'Book5',
-    nameAuthor: 'Author5',
-    publicationBook: '2021-10-18',
-    category: 'Tâm lý học',
-    status: 'Đã mượn',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
-  },
-  {
-    id: 6,
-    nameBook: 'Book6',
-    nameAuthor: 'Author6',
-    publicationBook: '2017-09-06',
-    category: 'Tự nhiên',
-    status: 'Hư hỏng',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
-  },
-  {
-    id: 7,
-    nameBook: 'Book7',
-    nameAuthor: 'Author7',
-    publicationBook: '2016-02-23',
+    nameBook: 'Lược Sử Thời Gian',
+    nameAuthor: 'Stephen Hawking',
+    publicationBook: '1988-04-01',
     category: 'Khoa học',
     status: 'Sách mới',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
+    id: 5,
+    nameBook: 'Bố Già',
+    nameAuthor: 'Mario Puzo',
+    publicationBook: '1969-03-10',
+    category: 'Tiểu thuyết',
+    status: 'Đã mượn',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 6,
+    nameBook: 'Nhà Giả Kim',
+    nameAuthor: 'Paulo Coelho',
+    publicationBook: '1988-04-15',
+    category: 'Tiểu thuyết',
+    status: 'Hư hỏng',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 7,
+    nameBook: 'Cuốn Theo Chiều Gió',
+    nameAuthor: 'Margaret Mitchell',
+    publicationBook: '1936-06-30',
+    category: 'Tiểu thuyết',
+    status: 'Sách mới',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
     id: 8,
-    nameBook: 'Book8',
-    nameAuthor: 'Author8',
-    publicationBook: '2014-08-29',
+    nameBook: 'Tội Ác Và Trừng Phạt',
+    nameAuthor: 'Fyodor Dostoevsky',
+    publicationBook: '1866-01-01',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 9,
-    nameBook: 'Book9',
-    nameAuthor: 'Author9',
-    publicationBook: '2013-04-19',
+    nameBook: 'Chiến Tranh Và Hòa Bình',
+    nameAuthor: 'Leo Tolstoy',
+    publicationBook: '1869-01-01',
     category: 'Lịch sử',
     status: 'Hư hỏng',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 10,
-    nameBook: 'Book10',
-    nameAuthor: 'Author10',
-    publicationBook: '2012-11-25',
+    nameBook: 'Những Kẻ Xuất Chúng',
+    nameAuthor: 'Malcolm Gladwell',
+    publicationBook: '2008-11-18',
     category: 'Tâm lý học',
     status: 'Sách mới',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 11,
-    nameBook: 'Book11',
-    nameAuthor: 'Author11',
-    publicationBook: '2022-06-15',
+    nameBook: 'Suối Nguồn',
+    nameAuthor: 'Ayn Rand',
+    publicationBook: '1943-05-07',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
     id: 12,
-    nameBook: 'Book12',
-    nameAuthor: 'Author12',
-    publicationBook: '2011-12-08',
-    category: 'Tự nhiên',
+    nameBook: 'Lịch Sử Thế Giới',
+    nameAuthor: 'H.G. Wells',
+    publicationBook: '1920-01-01',
+    category: 'Lịch sử',
     status: 'Hư hỏng',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
-])
+]);
 
 const dialog = ref(false) // Hiện form
 
@@ -360,7 +360,7 @@ const resetForm = () => {
   dialog.value = false
   isEdit.value = false
   newBook.image = ''
- 
+
 }
 
 // =============================================

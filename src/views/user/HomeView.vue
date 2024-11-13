@@ -38,7 +38,7 @@
           class="tabs-full-height tabs-narrow"
         >
         <div class="d-flex align-center" style="margin-left: 5px">
-                <span v-if="!isLargeScreen">{{ userInfo.name }}</span>
+                <span v-if="!isLargeScreen" >{{ userInfo.name }}</span>
                 <span v-if="!isLargeScreen" class="mx-2">|</span>
                 <span v-if="!isLargeScreen">Role: {{ userInfo.role }}</span>
               </div>
@@ -88,29 +88,7 @@
         </v-tabs-window>
       </div>
 
-      <!-- Kết quả tìm kiếm -->
-      <div class="search-results" v-if="isSearchVisible">
-        <v-card v-if="filteredBooks.length > 0">
-          <v-card-title>Danh sách tìm thấy</v-card-title>
-          <v-list>
-            <v-list-item-group v-for="book in filteredBooks" :key="book.id">
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>{{ book.nameBook }}</v-list-item-title>
-                  <v-list-item-subtitle
-                    >{{ book.nameAuthor }} - {{ book.category }}</v-list-item-subtitle
-                  >
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-card>
 
-        <!-- Thông báo nếu không có kết quả -->
-        <v-card v-else>
-          <v-card-title>Không tìm thấy sách phù hợp</v-card-title>
-        </v-card>
-      </div>
 
       <v-snackbar
         v-model="showNotification"
