@@ -21,32 +21,9 @@
               </v-toolbar-title
             >
 
-            <!-- <v-spacer></v-spacer> -->
 
-            <v-btn icon>
-              <div class="d-flex align-center mr-5">
-                <!--   tìm kiếm -->
-                <div class="searchBook d-flex align-center mr-5">
-                  <!-- Thanh tìm kiếm -->
-                  <v-text-field
-                    v-if="isSearchVisible"
-                    v-model="searchQuery"
-                    placeholder="Tìm kiếm sách, tác giả, thể loại..."
-                    class="search-input"
 
-                  ></v-text-field>
-                  <!-- Icon tìm kiếm -->
-                  <v-btn icon @click="toggleSearch">
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-btn>
 
-                  <!-- icon logout -->
-                  <v-btn icon @click="onLogoutClick">
-                    <v-icon>mdi-logout</v-icon>
-                  </v-btn>
-                </div>
-              </div>
-            </v-btn>
           </v-toolbar>
         </div>
       </v-card>
@@ -70,9 +47,12 @@
             <!-- <v-tab value="option-2" class="title-func">Sản ph</v-tab> -->
             <v-tab value="option-2" class="title-func">Giỏ sách </v-tab>
             <v-tab value="option-3" class="title-func">Tài khoản</v-tab>
+            <v-tab class="title-func">Đăng Xuất </v-tab>
+
           </v-tabs>
         </v-navigation-drawer>
 
+        
 
 
         <!-- Nội dung các tab bên phải -->

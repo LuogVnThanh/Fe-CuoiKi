@@ -14,9 +14,9 @@
 
             <v-toolbar-title>
               <div class="d-flex align-center" style="margin-left: 5px">
-                <span>{{ userInfo.name }}</span>
-                <span class="mx-2">|</span>
-                <span>Role: {{ userInfo.role }}</span>
+                <span v-if="isLargeScreen">{{ userInfo.name }}</span>
+                <span v-if="isLargeScreen" class="mx-2">|</span>
+                <span v-if="isLargeScreen">Role: {{ userInfo.role }}</span>
               </div></v-toolbar-title
             >
 
@@ -59,6 +59,11 @@
           temporary
           class="tabs-full-height tabs-narrow"
         >
+        <div class="d-flex align-center" style="margin-left: 5px">
+                <span v-if="!isLargeScreen">{{ userInfo.name }}</span>
+                <span v-if="!isLargeScreen" class="mx-2">|</span>
+                <span v-if="!isLargeScreen">Role: {{ userInfo.role }}</span>
+              </div>
           <v-tabs v-model="tab" color="primary" direction="vertical">
             <v-tab value="option-1" class="title-func">Quản lý sách</v-tab>
             <v-tab value="option-2" class="title-func">Quản lý mượn trả sách</v-tab>
