@@ -47,12 +47,12 @@
             <!-- <v-tab value="option-2" class="title-func">Sản ph</v-tab> -->
             <v-tab value="option-2" class="title-func">Giỏ sách </v-tab>
             <v-tab value="option-3" class="title-func">Tài khoản</v-tab>
-            <v-tab class="title-func">Đăng Xuất </v-tab>
+            <v-tab class="title-func" @click="onLogoutClick">Đăng Xuất </v-tab>
 
           </v-tabs>
         </v-navigation-drawer>
 
-        
+
 
 
         <!-- Nội dung các tab bên phải -->
