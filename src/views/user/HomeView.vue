@@ -146,13 +146,7 @@ const filteredBooks = computed(() => {
     )
   })
 })
-const toggleSearch = () => {
-  // Đổi trạng thái hiển thị thanh tìm kiếm
-  isSearchVisible.value = !isSearchVisible.value
-  // Xóa từ khóa tìm kiếm khi ấn nút xóa
-  searchQuery.value = ''
-}
-
+ 
 // =============================
 
 const onLogoutClick = () => {

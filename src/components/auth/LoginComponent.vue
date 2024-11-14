@@ -99,6 +99,8 @@ const arrAccount = reactive<IUser[]>([
     email: 'admin@gmail.com',
     password: '1',
     role: 'admin',
+    currentPage:1,
+    order:[]
   },
   {
     id: 2,
@@ -106,6 +108,8 @@ const arrAccount = reactive<IUser[]>([
     email: 'docgia@gmail.com',
     password: '1',
     role: 'readers',
+    currentPage:1,
+    order:[]
   },
   {
     id: 3,
@@ -113,6 +117,8 @@ const arrAccount = reactive<IUser[]>([
     email: 'thuthu@gmail.com',
     password: '1',
     role: 'librarian',
+    currentPage:1,
+    order:[]
   },
 ])
 
@@ -227,8 +233,7 @@ const arrBooks = reactive([
   },
 ])
 
-const current = ref("1");
-localStorage.setItem('currentPage',  String(current.value))
+
 
 // Lưu `arrBooks` vào `localStorage`
 const updateBooksInLocalStorage = () => {

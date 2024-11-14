@@ -1,5 +1,5 @@
 export interface IOrder {
-  idOrder:number
+  idBook:number;
   nameBook:string
   BorrowedDate: string
   PaymentDate: string

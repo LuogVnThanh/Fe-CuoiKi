@@ -25,27 +25,93 @@
             </h3>
             <p style="height: 20px">Thể loại: {{ book.category }}</p>
             <p style="height: 50px">Tác giả: {{ book.nameAuthor }}</p>
-            <button @click="borrowBook(book.nameBook)">Mượn</button>
+            <button v-if="book.status === 'Sách mới'" @click="openBorrowModal(book)">Mượn</button>
+            <button v-if="book.status === 'Đã mượn'" style="background-color: #eeb935" disabled>
+              Đã mượn
+            </button>
+            <button v-if="book.status === 'Hư hỏng'" style="background-color: #f30502" disabled>
+              Hư hỏng
+            </button>
           </div>
         </div>
       </main>
     </div>
   </div>
 
-  <!-- Page -->
+  <!-- Modal mượn sách -->
+  <v-dialog v-model="isBorrowDialogOpen" max-width="500px">
+    <v-card>
+      <v-card-title class="text-h5">Thông Tin Mượn Sách</v-card-title>
+      <v-card-text>
+        <v-form ref="borrowForm" v-model="isFormValid">
+          <!-- Tham chiếu tên sách và ID -->
+          <v-text-field v-model="borrowInfo.nameBook" label="Tên Sách" readonly></v-text-field>
+          <v-text-field v-model="borrowInfo.idBook" label="ID Sách" readonly></v-text-field>
 
+          <!-- Ngày mượn -->
+          <v-text-field
+            v-model="borrowInfo.BorrowedDate"
+            label="Ngày Mượn"
+            required
+            type="date"
+            :min="today"
+          ></v-text-field>
+
+          <!-- Ngày trả -->
+          <v-text-field
+            v-model="borrowInfo.PaymentDate"
+            label="Ngày Trả"
+            required
+            type="date"
+            :min="today "
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
+
+      <!-- Các nút hành động -->
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn text="" @click="closeBorrowModal">Hủy</v-btn>
+        <v-btn color="primary" text="" @click="confirmBorrow" :disabled="!isFormValid"
+          >Xác Nhận</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+  <!-- Page -->
   <div class="text-center">
-    <v-pagination v-model="page"
-    :length="totalPages"
-    @update:modelValue="updatePage" 
+    <v-pagination
+      v-model="page"
+      :length="totalPages"
+      @update:modelValue="updatePage"
     ></v-pagination>
   </div>
+
+  <!-- thongbao--->
+
+  <v-snackbar
+    v-model="showNotification"
+    :color="notificationColor"
+    timeout="3000"
+    class="custom-snackbar"
+  >
+    {{ notificationMessage }}
+  </v-snackbar>
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { IOrder } from '../../interface/order/order'
 import type { IBooks } from '../../interface/product/product'
+import type { IUser } from '../../interface/user/user'
+// Quản lý thông báo
+const showNotification = ref(false)
+const notificationMessage = ref('')
+const notificationColor = ref('')
+
 // Phân trang===============================================
 const itemsPerPage = 5 // Số sách trên mỗi trang
 const page = ref(1)
@@ -55,23 +121,31 @@ const totalPages = computed(() => Math.ceil(ListBook.value.length / itemsPerPage
 
 // Lấy danh sách sách cho trang hiện tại
 const paginatedBooks = computed(() => {
-  const start = (page.value - 1) * itemsPerPage
-  const end = start + itemsPerPage
-  return ListBook.value.slice(start, end)
+  const start = (page.value - 1) * itemsPerPage // (1-1) *5=0
+  const end = start + itemsPerPage //0+5
+  return ListBook.value.slice(start, end) //0-5
 })
 
 // Cập nhật trang hiện tại khi người dùng thay đổi trang
 const updatePage = (newPage: number) => {
   page.value = newPage
-  localStorage.setItem('currentPage', String(newPage)) // Lưu trang hiện tại
+
+  // Lấy đối tượng người dùng từ localStorage và cập nhật currentPage
+  const User = JSON.parse(localStorage.getItem('user') || '{}')
+  if (User && typeof User === 'object') {
+    User.currentPage = newPage
+    localStorage.setItem('user', JSON.stringify(User))
+  }
 }
 // Khi người dùng đăng nhập thành công, thiết lập `currentPage` trong localStorage
+
+// Thiết lập trang ban đầu khi đăng nhập
 const setInitialPageOnLogin = () => {
-  const savedPage = localStorage.getItem('currentPage')
-  if (savedPage) {
-    page.value = parseInt(savedPage, 10) // Gán giá trị trang dưới dạng số
+  const User = JSON.parse(localStorage.getItem('user') || '{}')
+  if (User && User.currentPage) {
+    page.value = User.currentPage // Lấy currentPage từ đối tượng trong localStorage
   } else {
-    localStorage.setItem('currentPage', '1') // Mặc định là trang 1 nếu chưa có
+    page.value = 1
   }
 }
 // Phân trang===============================================
@@ -108,13 +182,95 @@ const searchBooks = () => {
   }
 }
 
-// // Hàm xử lý mượn sách và lưu vào localStorage
-// const borrowBook = (nameBook: string) => {
-//   let cart = JSON.parse(localStorage.getItem('cart') || '[]')
-//   cart.push({ nameBook })
-//   localStorage.setItem('cart', JSON.stringify(cart))
-//   router.push('/order')
-// }
+// Thông tin mượn sách=======================================
+const borrowInfo = ref<IOrder>({
+  idBook: 0,
+  nameBook: '',
+  BorrowedDate: '',
+  PaymentDate: '',
+})
+
+// Hàm mở modal và gán thông tin sách
+const openBorrowModal = (book: IBooks) => {
+  borrowInfo.value.idBook = book.id
+  borrowInfo.value.nameBook = book.nameBook
+  isBorrowDialogOpen.value = true
+}
+
+// Hàm đóng modal
+const closeBorrowModal = () => {
+  isBorrowDialogOpen.value = false
+  borrowInfo.value.BorrowedDate = ''
+  borrowInfo.value.PaymentDate = ''
+  isFormValid.value = false
+}
+
+// Modal mượn sách=============================================
+// Trạng thái mở của modal
+const isBorrowDialogOpen = ref(false)
+const isFormValid = ref(false)
+// Thiết lập ngày hiện tại (dùng cho min ngày mượn)
+const today = ref(new Date().toISOString().split('T')[0])
+
+// Hàm xác nhận mượn sách
+const confirmBorrow = () => {
+  if (borrowInfo.value.BorrowedDate === '' || borrowInfo.value.PaymentDate === '') {
+    // Thông báo lỗi nếu các trường ngày mượn hoặc ngày trả không được điền
+    showNotification.value = true
+    notificationMessage.value = 'Vui lòng điền đầy đủ thông tin ngày mượn và ngày trả.'
+    notificationColor.value = 'error'
+    return
+  }
+  if (isFormValid.value) {
+    // Lưu thông tin mượn vào localStorage hoặc gửi tới API
+    const user = JSON.parse(localStorage.getItem('user') || '{}')
+    if (user) {
+      user.order.push({ ...borrowInfo.value })
+
+      // Cập nhật localStorage với thông tin mới
+      localStorage.setItem('user', JSON.stringify(user))
+
+      // thognbao
+      showNotification.value = true
+      notificationMessage.value = 'Đã mượn sách thành công!'
+      notificationColor.value = 'success'
+    } else {
+      // Thông báo lỗi nếu user không tồn tại trong localStorage
+      showNotification.value = true
+      notificationMessage.value = 'Không tìm thấy người dùng!'
+      notificationColor.value = 'error'
+    }
+
+    // Đóng modal và reset form
+    closeBorrowModal()
+  }
+}
+
+// Thay đổi users theo user
+const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
+const users = ref<IUser[]>(JSON.parse(localStorage.getItem('users') || '[]'))
+
+const updateUserOrdersInUsers = () => {
+  // Tìm người dùng trong danh sách users dựa vào id
+  const userIndex = users.value.findIndex((u: IUser) => u.id === user.value.id)
+  if (userIndex !== -1) {
+    // Cập nhật thông tin order của user trong danh sách users
+    users.value[userIndex].order = user.value.order
+    // Lưu lại danh sách users vào localStorage
+    localStorage.setItem('users', JSON.stringify(users.value))
+  }
+}
+// Theo dõi sự thay đổi của user và đồng bộ với users
+watch(
+  () => user.value.order, // Theo dõi sự thay đổi trong user.order
+  (newOrder) => {
+    // Mỗi khi user.order thay đổi, cập nhật lại users trong localStorage
+    updateUserOrdersInUsers()
+  },
+  { deep: true }  // Theo dõi tất cả các thay đổi trong order
+)
+
+// Modal mượn sách=============================================
 
 // Lấy danh sách sách từ localStorage khi thành phần được tải
 onMounted(() => {
@@ -122,8 +278,10 @@ onMounted(() => {
 
   ListBook.value = Array.isArray(storedBooks) ? storedBooks : []
 
+
   // Gọi hàm này khi component được mounted để lấy số trang hiện tại từ localStorage
   setInitialPageOnLogin()
+  updateUserOrdersInUsers()
 })
 </script>
 
@@ -255,5 +413,13 @@ footer {
 
 footer p {
   margin: 5px 0;
+}
+
+.custom-snackbar {
+  position: fixed !important;
+  top: 60px;
+  right: 200px;
+  bottom: auto !important;
+  left: auto !important;
 }
 </style>

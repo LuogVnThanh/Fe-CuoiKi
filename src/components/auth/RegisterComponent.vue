@@ -17,7 +17,7 @@
             <!-- Icon người dùng -->
           </v-text-field>
 
-          
+
           <!-- input tài khoản -->
           <v-text-field
             v-model="initialForm.email"
@@ -113,13 +113,16 @@ const notificationMessage = ref('')
 const notificationColor = ref('')
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
- 
+
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<IRegister>({
   name:'',
   email: '',
   password: '',
   confirmPassword: '',
+  currentPage:1,
+  order:[]
+
 })
 
 const handleDirect = () => {
@@ -169,6 +172,9 @@ const handleRegister = () => {
       email: initialForm.email,
       password: initialForm.password,
       role: 'readers', // Hoặc có thể lấy role từ nơi khác
+      order: initialForm.order, // Hoặc có thể lấy order từ nơi khác
+      currentPage:initialForm.currentPage,
+
     }
 
     // Lưu tài khoản mới  và cập nhập localStorage

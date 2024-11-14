@@ -7,7 +7,7 @@ export interface IUser {
   password: string
   role: string
   currentPage:number
-  Order:IOrder []
+  order:IOrder []
 }
 
 export interface IUserInfor {
