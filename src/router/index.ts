@@ -7,10 +7,19 @@ import ManagerBook from '../views/admin/ManagerBookView.vue'
 import BorrowBook from '../views/admin/BorrowBookView.vue'
 import StatisticalBook from '../views/admin/StatisticalBookView.vue'
 import OrderView from '../views/layouts/OrderView.vue'
+import BookView from '../views/layouts/BookView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/:pathMatch(.*)*',
+      name: '404',
+      component: () => import('@/views/error/ErrorView.vue'),
+      meta: {
+        requiresAuth: false,
+      },
+    },
     {
       path: '/',
       redirect: '/login', // Đặt trang mặc định là /login
@@ -36,6 +45,11 @@ const router = createRouter({
       path: '/order',
       name: 'Order',
       component: OrderView,
+    },
+    {
+      path: '/bookView',
+      name: 'BookView',
+      component: BookView,
     },
     {
       path: '/dashboard',

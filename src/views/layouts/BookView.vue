@@ -3,7 +3,7 @@
     <!-- Main Content -->
     <div class="content">
       <main>
-        <h2>Danh sách sách</h2>
+        <h2>Thế Giới Sách</h2>
 
         <!-- Tìm kiếm -->
         <div class="search-bar">
@@ -18,7 +18,7 @@
 
         <!-- Danh sách sách -->
         <div class="book-grid">
-          <div v-for="(book, index) in ListBook" :key="index" class="book-item">
+          <div v-for="(book, index) in paginatedBooks" :key="index" class="book-item">
             <img :src="book.image" style="height: 100px" />
             <h3 style="height: 100px; align-items: center">
               {{ book.nameBook }}
@@ -33,33 +33,54 @@
   </div>
 
   <!-- Page -->
- 
+
   <div class="text-center">
-    <v-pagination
-      v-model="page"
-      :length="15"
-      :total-visible="7"
+    <v-pagination v-model="page"
+    :length="totalPages"
+    @update:modelValue="updatePage" 
     ></v-pagination>
   </div>
-
-
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import type { IBooks } from '../../interface/product/product'
+// Phân trang===============================================
+const itemsPerPage = 5 // Số sách trên mỗi trang
+const page = ref(1)
+
+// Tổng số trang dựa trên số lượng sách và số sách trên mỗi trang
+const totalPages = computed(() => Math.ceil(ListBook.value.length / itemsPerPage))
+
+// Lấy danh sách sách cho trang hiện tại
+const paginatedBooks = computed(() => {
+  const start = (page.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return ListBook.value.slice(start, end)
+})
+
+// Cập nhật trang hiện tại khi người dùng thay đổi trang
+const updatePage = (newPage: number) => {
+  page.value = newPage
+  localStorage.setItem('currentPage', String(newPage)) // Lưu trang hiện tại
+}
+// Khi người dùng đăng nhập thành công, thiết lập `currentPage` trong localStorage
+const setInitialPageOnLogin = () => {
+  const savedPage = localStorage.getItem('currentPage')
+  if (savedPage) {
+    page.value = parseInt(savedPage, 10) // Gán giá trị trang dưới dạng số
+  } else {
+    localStorage.setItem('currentPage', '1') // Mặc định là trang 1 nếu chưa có
+  }
+}
+// Phân trang===============================================
 
 // Khai báo các biến
 const searchQuery = ref('')
 const router = useRouter()
-const page= ref(1)
-
 const ListBook = ref<IBooks[]>([])
 const noResults = ref(false) // Trạng thái kiểm tra không có kết quả
-
-// Danh sách sách lấy từ localStorage
-const books = JSON.parse(localStorage.getItem('books') || '[]')
 
 // Hàm tìm kiếm sách
 const searchBooks = () => {
@@ -87,18 +108,22 @@ const searchBooks = () => {
   }
 }
 
-// Hàm xử lý mượn sách và lưu vào localStorage
-const borrowBook = (nameBook: string) => {
-  let cart = JSON.parse(localStorage.getItem('cart') || '[]')
-  cart.push({ nameBook })
-  localStorage.setItem('cart', JSON.stringify(cart))
-  router.push('/order')
-}
+// // Hàm xử lý mượn sách và lưu vào localStorage
+// const borrowBook = (nameBook: string) => {
+//   let cart = JSON.parse(localStorage.getItem('cart') || '[]')
+//   cart.push({ nameBook })
+//   localStorage.setItem('cart', JSON.stringify(cart))
+//   router.push('/order')
+// }
 
 // Lấy danh sách sách từ localStorage khi thành phần được tải
 onMounted(() => {
   const storedBooks = JSON.parse(localStorage.getItem('books') || '[]')
+
   ListBook.value = Array.isArray(storedBooks) ? storedBooks : []
+
+  // Gọi hàm này khi component được mounted để lấy số trang hiện tại từ localStorage
+  setInitialPageOnLogin()
 })
 </script>
 
@@ -149,6 +174,12 @@ h2 {
   background-color: #45a049;
 }
 
+/* Lưới sách */
+/* .book-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 sản phẩm trên mỗi hàng */
+/* gap: 20px; */
+/* } */
 /* Lưới sách */
 .book-grid {
   display: grid;

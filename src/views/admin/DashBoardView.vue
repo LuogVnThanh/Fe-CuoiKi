@@ -32,7 +32,6 @@
                     v-model="searchQuery"
                     placeholder="Tìm kiếm sách, tác giả, thể loại..."
                     class="search-input"
-
                   ></v-text-field>
                   <!-- Icon tìm kiếm -->
                   <v-btn icon @click="toggleSearch">
@@ -59,15 +58,16 @@
           temporary
           class="tabs-full-height tabs-narrow"
         >
-        <div class="d-flex align-center" style="margin-left: 5px">
-                <span v-if="!isLargeScreen">{{ userInfo.name }}</span>
-                <span v-if="!isLargeScreen" class="mx-2">|</span>
-                <span v-if="!isLargeScreen">Role: {{ userInfo.role }}</span>
-              </div>
+          <div class="d-flex align-center" style="margin-left: 5px">
+            <span v-if="!isLargeScreen">{{ userInfo.name }}</span>
+            <span v-if="!isLargeScreen" class="mx-2">|</span>
+            <span v-if="!isLargeScreen">Role: {{ userInfo.role }}</span>
+          </div>
           <v-tabs v-model="tab" color="primary" direction="vertical">
             <v-tab value="option-1" class="title-func">Quản lý sách</v-tab>
             <v-tab value="option-2" class="title-func">Quản lý mượn trả sách</v-tab>
             <v-tab value="option-3" class="title-func">Thống kê sách yêu thích</v-tab>
+            <v-tab value="option-4" class="title-func">Trang chủ</v-tab>
           </v-tabs>
         </v-navigation-drawer>
 
@@ -78,13 +78,14 @@
           direction="vertical"
           class="tabs-full-height tabs-narrow"
           :class="{
-            'd-none': !isLargeScreen,  // Ẩn tab khi màn hình nhỏ
-            'd-block': isLargeScreen   // Hiển thị tab khi màn hình lớn
+            'd-none': !isLargeScreen, // Ẩn tab khi màn hình nhỏ
+            'd-block': isLargeScreen, // Hiển thị tab khi màn hình lớn
           }"
         >
           <v-tab value="option-1" class="title-func">Quản lý sách</v-tab>
           <v-tab value="option-2" class="title-func">Quản lý mượn trả sách</v-tab>
           <v-tab value="option-3" class="title-func">Thống kê sách yêu thích</v-tab>
+          <v-tab value="option-4" class="title-func" @click="goHome" >Trang chủ</v-tab>
         </v-tabs>
 
         <!-- Nội dung các tab bên phải -->
@@ -204,6 +205,7 @@ const toggleSearch = () => {
 
 const onLogoutClick = () => {
   localStorage.removeItem('user')
+  localStorage.getItem
   notificationMessage.value = 'Đã đăng xuất'
   notificationColor.value = 'green'
   showNotification.value = true
@@ -218,17 +220,17 @@ const showNotification = ref(false)
 const notificationMessage = ref('')
 const notificationColor = ref('')
 
-const isLargeScreen = ref(true)  // Biến kiểm tra kích thước màn hình
+const isLargeScreen = ref(true) // Biến kiểm tra kích thước màn hình
 
 // Hàm kiểm tra kích thước màn hình
 const checkScreenSize = () => {
-  isLargeScreen.value = window.innerWidth >= 1264  // Kiểm tra màn hình lớn
+  isLargeScreen.value = window.innerWidth >= 1264 // Kiểm tra màn hình lớn
 }
 
 // Kiểm tra kích thước khi mounted
 onMounted(() => {
-  checkScreenSize()  // Gọi hàm kiểm tra ngay khi component mounted
-  window.addEventListener('resize', checkScreenSize)  // Lắng nghe sự kiện resize
+  checkScreenSize() // Gọi hàm kiểm tra ngay khi component mounted
+  window.addEventListener('resize', checkScreenSize) // Lắng nghe sự kiện resize
 })
 
 // Dọn dẹp sự kiện khi component bị hủy
@@ -236,8 +238,14 @@ onUnmounted(() => {
   window.removeEventListener('resize', checkScreenSize)
 })
 
+
+const goHome = () => {
+  router.push('/home')
+}
 onMounted(() => {
   const storedUser = localStorage.getItem('user')
+  const books = JSON.parse(localStorage.getItem('books') || '[]')
+
   if (storedUser) {
     userInfo.value = JSON.parse(storedUser)
   }
@@ -283,7 +291,6 @@ onMounted(() => {
   margin-right: 65px;
   max-height: 80%; /* Đặt chiều cao tối đa */
   overflow-y: auto; /* Thêm thanh cuộn dọc */
-
 }
 .searchBook {
   position: relative;

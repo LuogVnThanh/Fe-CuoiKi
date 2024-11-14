@@ -36,7 +36,7 @@
               Đăng nhập
             </v-btn>
             <!-- <div class="d-flex justify-space-between "> -->
-              <div> 
+            <div>
               <!-- <p
               class="mt-4 d-flex justify-end cursor-pointer"
               color="info"
@@ -45,18 +45,16 @@
             >
               Quên mật khẩu?
             </p> -->
-            <p
-              class="mt-4 d-flex justify-end cursor-pointer"
-              color="info"
-              block
-              style="font-size: 16px;"
-              @click.prevent="handleDirect"
-            >
-              Chưa có tài khoản?
-            </p>
-
+              <p
+                class="mt-4 d-flex justify-end cursor-pointer"
+                color="info"
+                block
+                style="font-size: 16px"
+                @click.prevent="handleDirect"
+              >
+                Chưa có tài khoản?
+              </p>
             </div>
-         
           </div>
         </v-form>
 
@@ -72,8 +70,8 @@
     timeout="3000"
     class="custom-snackbar"
   >
-   <!-- <v-icon left v-if="notificationColor === 'green'" color="white">mdi-check-circle</v-icon>
-  <v-icon left v-else color="white ">mdi-close-circle</v-icon> 
+    <!-- <v-icon left v-if="notificationColor === 'green'" color="white">mdi-check-circle</v-icon>
+  <v-icon left v-else color="white ">mdi-close-circle</v-icon>
  -->
 
     {{ notificationMessage }}
@@ -81,6 +79,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { ILogin } from '../../interface/auth/auth'
@@ -96,34 +95,165 @@ const showPassword = ref(false)
 const arrAccount = reactive<IUser[]>([
   {
     id: 1,
-    name:'admin',
+    name: 'admin',
     email: 'admin@gmail.com',
     password: '1',
     role: 'admin',
   },
   {
     id: 2,
-    name:'doc gia1',
+    name: 'doc gia1',
     email: 'docgia@gmail.com',
     password: '1',
     role: 'readers',
   },
   {
     id: 3,
-    name:'thủ thư 1',
+    name: 'thủ thư 1',
     email: 'thuthu@gmail.com',
     password: '1',
     role: 'librarian',
   },
 ])
 
+const arrBooks = reactive([
+  {
+    id: 1,
+    nameBook: 'Harry Potter và Hòn Đá Phù Thủy',
+    nameAuthor: 'J.K. Rowling',
+    publicationBook: '1997-06-26',
+    category: 'Tiểu thuyết',
+    status: 'Sách mới',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 2,
+    nameBook: 'Sapiens: Lược Sử Loài Người',
+    nameAuthor: 'Yuval Noah Harari',
+    publicationBook: '2014-09-04',
+    category: 'Khoa học',
+    status: 'Đã mượn',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 3,
+    nameBook: 'Đắc Nhân Tâm',
+    nameAuthor: 'Dale Carnegie',
+    publicationBook: '1936-10-10',
+    category: 'Tâm lý học',
+    status: 'Hư hỏng',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 4,
+    nameBook: 'Lược Sử Thời Gian',
+    nameAuthor: 'Stephen Hawking',
+    publicationBook: '1988-04-01',
+    category: 'Khoa học',
+    status: 'Sách mới',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 5,
+    nameBook: 'Bố Già',
+    nameAuthor: 'Mario Puzo',
+    publicationBook: '1969-03-10',
+    category: 'Tiểu thuyết',
+    status: 'Đã mượn',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 6,
+    nameBook: 'Nhà Giả Kim',
+    nameAuthor: 'Paulo Coelho',
+    publicationBook: '1988-04-15',
+    category: 'Tiểu thuyết',
+    status: 'Hư hỏng',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 7,
+    nameBook: 'Cuốn Theo Chiều Gió',
+    nameAuthor: 'Margaret Mitchell',
+    publicationBook: '1936-06-30',
+    category: 'Tiểu thuyết',
+    status: 'Sách mới',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 8,
+    nameBook: 'Tội Ác Và Trừng Phạt',
+    nameAuthor: 'Fyodor Dostoevsky',
+    publicationBook: '1866-01-01',
+    category: 'Tiểu thuyết',
+    status: 'Đã mượn',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 9,
+    nameBook: 'Chiến Tranh Và Hòa Bình',
+    nameAuthor: 'Leo Tolstoy',
+    publicationBook: '1869-01-01',
+    category: 'Lịch sử',
+    status: 'Hư hỏng',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 10,
+    nameBook: 'Những Kẻ Xuất Chúng',
+    nameAuthor: 'Malcolm Gladwell',
+    publicationBook: '2008-11-18',
+    category: 'Tâm lý học',
+    status: 'Sách mới',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 11,
+    nameBook: 'Suối Nguồn',
+    nameAuthor: 'Ayn Rand',
+    publicationBook: '1943-05-07',
+    category: 'Tiểu thuyết',
+    status: 'Đã mượn',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+  {
+    id: 12,
+    nameBook: 'Lịch Sử Thế Giới',
+    nameAuthor: 'H.G. Wells',
+    publicationBook: '1920-01-01',
+    category: 'Lịch sử',
+    status: 'Hư hỏng',
+    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+  },
+])
+
+const current = ref("1");
+localStorage.setItem('currentPage',  String(current.value))
+
+// Lưu `arrBooks` vào `localStorage`
+const updateBooksInLocalStorage = () => {
+  localStorage.setItem('books', JSON.stringify(arrBooks))
+}
 // Khi trang khởi động, nếu localStorage có thông tin user thì đưa user đó vào initialForm
 const initializeUsers = () => {
   const Users = JSON.parse(localStorage.getItem('users') || '[]')
+  const Books = JSON.parse(localStorage.getItem('books') || '[]')
+
+
+
   if (!Users.length) {
     localStorage.setItem('users', JSON.stringify(arrAccount))
   }
+  if (Books.length) {
+    arrBooks.splice(0, arrBooks.length, ...Books) // Cập nhật `arrBooks`
+  } else {
+    updateBooksInLocalStorage()
+  }
 }
+
+
+// Mỗi khi `arrBooks` thay đổi, cập nhật vào `localStorage`
+watch(arrBooks, updateBooksInLocalStorage, { deep: true })
 
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<ILogin>({
@@ -181,7 +311,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 .login-container {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng */
   padding: 30px;
