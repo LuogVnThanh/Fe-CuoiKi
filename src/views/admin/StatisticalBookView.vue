@@ -32,7 +32,7 @@
       <!-- giữa... Khách vip -->
       <div class="KhachVip">
         <div class="khachvip-pd">
-          <h3 class="khachvip-year">TOP KHÁCH VIP </h3>
+          <h3 class="khachvip-year">TOP KHÁCH VIP</h3>
         </div>
       </div>
       <!-- phải....Top sách yêu thích -->
@@ -137,6 +137,32 @@ h2 {
 }
 .sach-sl {
   width: 37%;
+}
+/* ----------------------responsive----------------------- */
+@media (max-width: 991.98px) {
+  .thong-ke {
+    flex-direction: column;
+  }
+
+  .thong-ke__pr {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+  .KhachVip {
+    margin-top: 20px;
+    width: 100%;
+    height: 470px;
+  }
+  .khachvip-year {
+    text-align: center;
+  }
+  .sachyeuthich {
+    width: 100%;
+    height: 550px;
+    margin-top: 20px;
+  }
 }
 </style>
 <!-- Báo cáo và thống kê: Cung cấp các báo cáo về số lượng sách, lượt mượn, tỷ lệ trả sách đúng hạn, và
