@@ -1,7 +1,15 @@
 <template>
-  <h1>Order hello</h1>
+  <h1>Orderhelkelo</h1>
+
 </template>
 
-<script lang="ts" setup>
+<script  setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
 
 </script>
+
+<style   scoped>
+
+</style>
+
+

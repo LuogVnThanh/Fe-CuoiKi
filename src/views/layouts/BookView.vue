@@ -343,14 +343,7 @@ h2 {
 .search-bar button:hover {
   background-color: #45a049;
 }
-
-/* Lưới sách */
-/* .book-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 sản phẩm trên mỗi hàng */
-/* gap: 20px; */
-/* } */
-/* Lưới sách */
+ 
 .book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
