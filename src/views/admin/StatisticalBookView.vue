@@ -95,14 +95,14 @@ export default {
 h2 {
   margin-bottom: 0px;
 }
-/* -----------------thống kê top thượng đế-------------------- */
+/* -----------------thống kê top khách vip-------------------- */
 .thong-ke {
   display: flex;
   margin-top: 25px;
   column-gap: 25px;
 }
 .KhachVip {
-  width: 50%;
+  width: 35%;
   background: #f5f5f5;
   border-radius: 15px;
 }
@@ -113,7 +113,7 @@ h2 {
 /* -----------------Sách yêu thích------------------- */
 .sachyeuthich {
   background-color: #f5f5f5;
-  width: 33%;
+  width: 52%;
   border-radius: 15px;
 }
 .sachyeuthich-pd {
@@ -122,7 +122,7 @@ h2 {
 .sachyeuthichtheo {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
 }
 .sachyeuthich-sl {
   text-align: center;
@@ -136,7 +136,7 @@ h2 {
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 .sach-sl {
-  width: 37%;
+  width: 27%;
 }
 /* ----------------------responsive----------------------- */
 @media (max-width: 991.98px) {
@@ -160,8 +160,16 @@ h2 {
   }
   .sachyeuthich {
     width: 100%;
-    height: 550px;
+    height: 700px;
     margin-top: 20px;
+  }
+  .sachyeuthichtheo {
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+  }
+  .sach-sl {
+    width: 50%;
   }
 }
 </style>
