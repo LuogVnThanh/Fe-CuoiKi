@@ -48,6 +48,8 @@
           <v-text-field v-model="borrowInfo.nameBook" label="Tên Sách" readonly></v-text-field>
           <v-text-field v-model="borrowInfo.idBook" label="ID Sách" readonly></v-text-field>
 
+          <v-text-field v-model="borrowInfo.nameUser" label="Tên Người Mượn"></v-text-field>
+          <!-- readonly -->
           <!-- Ngày mượn -->
           <v-text-field
             v-model="borrowInfo.BorrowedDate"
@@ -63,7 +65,7 @@
             label="Ngày Trả"
             required
             type="date"
-            :min="today "
+            :min="borrowInfo.BorrowedDate"
           ></v-text-field>
         </v-form>
       </v-card-text>
@@ -72,7 +74,16 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text="" @click="closeBorrowModal">Hủy</v-btn>
-        <v-btn color="primary" text="" @click="confirmBorrow" :disabled="!isFormValid"
+        <v-btn
+          color="primary"
+          text=""
+          @click="confirmBorrow"
+          :disabled="
+            borrowInfo.BorrowedDate === '' ||
+            borrowInfo.PaymentDate === ''
+            // ||
+            // new Date(borrowInfo.PaymentDate) < new Date(borrowInfo.BorrowedDate)
+          "
           >Xác Nhận</v-btn
         >
       </v-card-actions>
@@ -101,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch, watchEffect } from 'vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { IOrder } from '../../interface/order/order'
@@ -139,15 +150,7 @@ const updatePage = (newPage: number) => {
 }
 // Khi người dùng đăng nhập thành công, thiết lập `currentPage` trong localStorage
 
-// Thiết lập trang ban đầu khi đăng nhập
-const setInitialPageOnLogin = () => {
-  const User = JSON.parse(localStorage.getItem('user') || '{}')
-  if (User && User.currentPage) {
-    page.value = User.currentPage // Lấy currentPage từ đối tượng trong localStorage
-  } else {
-    page.value = 1
-  }
-}
+
 // Phân trang===============================================
 
 // Khai báo các biến
@@ -186,15 +189,25 @@ const searchBooks = () => {
 const borrowInfo = ref<IOrder>({
   idBook: 0,
   nameBook: '',
+  nameUser: '',
   BorrowedDate: '',
   PaymentDate: '',
 })
+
+// State người dùng và danh sách người dùng
+const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
+const users = ref<IUser[]>(JSON.parse(localStorage.getItem('users') || '[]'))
 
 // Hàm mở modal và gán thông tin sách
 const openBorrowModal = (book: IBooks) => {
   borrowInfo.value.idBook = book.id
   borrowInfo.value.nameBook = book.nameBook
   isBorrowDialogOpen.value = true
+  // Lấy thông tin người dùng từ localStorage
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+
+  // Gán name từ user vào borrowInfo nếu name tồn tại
+  borrowInfo.value.nameUser = user.name || ''
 }
 
 // Hàm đóng modal
@@ -221,68 +234,67 @@ const confirmBorrow = () => {
     notificationColor.value = 'error'
     return
   }
-  if (isFormValid.value) {
-    // Lưu thông tin mượn vào localStorage hoặc gửi tới API
-    const user = JSON.parse(localStorage.getItem('user') || '{}')
-    if (user) {
-      user.order.push({ ...borrowInfo.value })
 
-      // Cập nhật localStorage với thông tin mới
-      localStorage.setItem('user', JSON.stringify(user))
+  // Lưu thông tin mượn vào user
+  const updatedOrder = [...(user.value.order || []), { ...borrowInfo.value }]
+  updateOrder(updatedOrder)
+  // thognbao
+  showNotification.value = true
+  notificationMessage.value = 'Đã mượn sách thành công!'
+  notificationColor.value = 'success'
 
-      // thognbao
-      showNotification.value = true
-      notificationMessage.value = 'Đã mượn sách thành công!'
-      notificationColor.value = 'success'
-    } else {
-      // Thông báo lỗi nếu user không tồn tại trong localStorage
-      showNotification.value = true
-      notificationMessage.value = 'Không tìm thấy người dùng!'
-      notificationColor.value = 'error'
-    }
-
-    // Đóng modal và reset form
-    closeBorrowModal()
-  }
+  // Đóng modal và reset form
+  closeBorrowModal()
 }
 
-// Thay đổi users theo user
-const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
-const users = ref<IUser[]>(JSON.parse(localStorage.getItem('users') || '[]'))
+const updateOrder = (newOrder: IOrder[]) => {
+  // Cập nhật `user`
+  // Sử dụng cú pháp ... (spread operator) để sao chép và thêm thuộc tính order mới (là newOrder) vào user.
+  user.value = {
+    ...user.value,
+    order: newOrder,
+  }
 
-const updateUserOrdersInUsers = () => {
-  // Tìm người dùng trong danh sách users dựa vào id
-  const userIndex = users.value.findIndex((u: IUser) => u.id === user.value.id)
+  // Cập nhật `users`
+  const userIndex = users.value.findIndex((u) => u.id === user.value.id)
   if (userIndex !== -1) {
-    // Cập nhật thông tin order của user trong danh sách users
-    users.value[userIndex].order = user.value.order
-    // Lưu lại danh sách users vào localStorage
-    localStorage.setItem('users', JSON.stringify(users.value))
+    users.value[userIndex] = { ...user.value }
+  } else {
+    users.value.push(user.value)
+  }
+
+  // Ghi lại vào localStorage
+  localStorage.setItem('user', JSON.stringify(user.value))
+  localStorage.setItem('users', JSON.stringify(users.value))
+}
+
+
+// Thiết lập trang ban đầu khi đăng nhập
+const setInitialPageOnLogin = () => {
+  const User = JSON.parse(localStorage.getItem('user') || '{}')
+  if (User && User.currentPage) {
+    page.value = User.currentPage // Lấy currentPage từ đối tượng trong localStorage
+  } else {
+    page.value = 1
   }
 }
-// Theo dõi sự thay đổi của user và đồng bộ với users
-watch(
-  () => user.value.order, // Theo dõi sự thay đổi trong user.order
-  (newOrder) => {
-    // Mỗi khi user.order thay đổi, cập nhật lại users trong localStorage
-    updateUserOrdersInUsers()
-  },
-  { deep: true }  // Theo dõi tất cả các thay đổi trong order
-)
-
-// Modal mượn sách=============================================
-
-// Lấy danh sách sách từ localStorage khi thành phần được tải
 onMounted(() => {
+  // Lấy danh sách sách từ localStorage khi thành phần được tải
   const storedBooks = JSON.parse(localStorage.getItem('books') || '[]')
-
   ListBook.value = Array.isArray(storedBooks) ? storedBooks : []
 
+  // Lấy lại danh sách người dùng từ localStorage
+  const storedUsers = JSON.parse(localStorage.getItem('users') || '[]')
+  users.value = Array.isArray(storedUsers) ? storedUsers : []
+
+  // Lấy thông tin người dùng từ localStorage
+  const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
+  user.value = storedUser || {}
 
   // Gọi hàm này khi component được mounted để lấy số trang hiện tại từ localStorage
   setInitialPageOnLogin()
-  updateUserOrdersInUsers()
 })
+
 </script>
 
 <style scoped>

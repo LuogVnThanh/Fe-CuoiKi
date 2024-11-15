@@ -67,7 +67,7 @@
             <v-tab value="option-1" class="title-func">Quản lý sách</v-tab>
             <v-tab value="option-2" class="title-func">Quản lý mượn trả sách</v-tab>
             <v-tab value="option-3" class="title-func">Thống kê sách yêu thích</v-tab>
-            <v-tab value="option-4" class="title-func">Trang chủ</v-tab>
+            <v-tab value="option-4" class="title-func" @click="goHome">Trang chủ</v-tab>
           </v-tabs>
         </v-navigation-drawer>
 
@@ -240,7 +240,7 @@ onUnmounted(() => {
 
 
 const goHome = () => {
-  router.push('/home')
+window.location.href='/home'
 }
 onMounted(() => {
   const storedUser = localStorage.getItem('user')

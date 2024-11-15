@@ -53,14 +53,10 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      dfSelect: 'Tháng',
-    }
-  },
-}
+<script setup lang="ts">
+import { ref } from 'vue'
+const dfSelect= ref('Tháng')
+ 
 </script>
 
 <style scoped>
