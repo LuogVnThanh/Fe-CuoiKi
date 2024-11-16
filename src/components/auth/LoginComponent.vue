@@ -165,7 +165,7 @@ const arrBooks = reactive([
     nameAuthor: 'Mario Puzo',
     publicationBook: '1969-03-10',
     category: 'Tiểu thuyết',
-    status: 'Đã mượn',
+    status: 'Sách mới',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
@@ -192,7 +192,7 @@ const arrBooks = reactive([
     nameAuthor: 'Fyodor Dostoevsky',
     publicationBook: '1866-01-01',
     category: 'Tiểu thuyết',
-    status: 'Đã mượn',
+    status: 'Sách mới',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {
@@ -201,7 +201,7 @@ const arrBooks = reactive([
     nameAuthor: 'Leo Tolstoy',
     publicationBook: '1869-01-01',
     category: 'Lịch sử',
-    status: 'Hư hỏng',
+    status: 'Sách mới',
     image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
   },
   {

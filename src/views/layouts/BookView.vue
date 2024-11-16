@@ -60,13 +60,13 @@
           ></v-text-field>
 
           <!-- Ngày trả -->
-          <v-text-field
+          <!-- <v-text-field
             v-model="borrowInfo.PaymentDate"
             label="Ngày Trả"
             required
             type="date"
             :min="borrowInfo.BorrowedDate"
-          ></v-text-field>
+          ></v-text-field> -->
         </v-form>
       </v-card-text>
 
@@ -79,8 +79,7 @@
           text=""
           @click="confirmBorrow"
           :disabled="
-            borrowInfo.BorrowedDate === '' ||
-            borrowInfo.PaymentDate === ''
+            borrowInfo.BorrowedDate === ''
             // ||
             // new Date(borrowInfo.PaymentDate) < new Date(borrowInfo.BorrowedDate)
           "
@@ -150,7 +149,6 @@ const updatePage = (newPage: number) => {
 }
 // Khi người dùng đăng nhập thành công, thiết lập `currentPage` trong localStorage
 
-
 // Phân trang===============================================
 
 // Khai báo các biến
@@ -197,7 +195,7 @@ const borrowInfo = ref<IOrder>({
 // State người dùng và danh sách người dùng
 const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
 const users = ref<IUser[]>(JSON.parse(localStorage.getItem('users') || '[]'))
-
+  const books = ref<IUser[]>(JSON.parse(localStorage.getItem('books') || '[]'))
 // Hàm mở modal và gán thông tin sách
 const openBorrowModal = (book: IBooks) => {
   borrowInfo.value.idBook = book.id
@@ -227,17 +225,32 @@ const today = ref(new Date().toISOString().split('T')[0])
 
 // Hàm xác nhận mượn sách
 const confirmBorrow = () => {
-  if (borrowInfo.value.BorrowedDate === '' || borrowInfo.value.PaymentDate === '') {
+  if (borrowInfo.value.BorrowedDate === ''  ) {
     // Thông báo lỗi nếu các trường ngày mượn hoặc ngày trả không được điền
     showNotification.value = true
-    notificationMessage.value = 'Vui lòng điền đầy đủ thông tin ngày mượn và ngày trả.'
+    notificationMessage.value = 'Vui lòng điền đầy đủ thông tin ngày mượn.'
     notificationColor.value = 'error'
     return
   }
+  // Nếu ngày trả chưa được điền, tự động đặt là ngày mượn + 7 ngày
+  if (borrowInfo.value.BorrowedDate) {
+    const borrowedDate = new Date(borrowInfo.value.BorrowedDate)
+    borrowedDate.setDate(borrowedDate.getDate() + 7) // Thêm 7 ngày
+    borrowInfo.value.PaymentDate = borrowedDate.toISOString().split('T')[0] // Định dạng yyyy-mm-dd
+  }
+  // Cập nhật trạng thái cuốn sách thành "Đã mượn"
+  const bookIndex = ListBook.value.findIndex((book) => book.id === borrowInfo.value.idBook);
+  if (bookIndex !== -1) {
+    ListBook.value[bookIndex].status = 'Đã mượn';
+  }
+    // Lưu danh sách sách đã cập nhật vào localStorage
+    localStorage.setItem('books', JSON.stringify(ListBook.value))
+
 
   // Lưu thông tin mượn vào user
   const updatedOrder = [...(user.value.order || []), { ...borrowInfo.value }]
   updateOrder(updatedOrder)
+  
   // thognbao
   showNotification.value = true
   notificationMessage.value = 'Đã mượn sách thành công!'
@@ -268,7 +281,6 @@ const updateOrder = (newOrder: IOrder[]) => {
   localStorage.setItem('users', JSON.stringify(users.value))
 }
 
-
 // Thiết lập trang ban đầu khi đăng nhập
 const setInitialPageOnLogin = () => {
   const User = JSON.parse(localStorage.getItem('user') || '{}')
@@ -283,6 +295,7 @@ onMounted(() => {
   const storedBooks = JSON.parse(localStorage.getItem('books') || '[]')
   ListBook.value = Array.isArray(storedBooks) ? storedBooks : []
 
+
   // Lấy lại danh sách người dùng từ localStorage
   const storedUsers = JSON.parse(localStorage.getItem('users') || '[]')
   users.value = Array.isArray(storedUsers) ? storedUsers : []
@@ -294,7 +307,6 @@ onMounted(() => {
   // Gọi hàm này khi component được mounted để lấy số trang hiện tại từ localStorage
   setInitialPageOnLogin()
 })
-
 </script>
 
 <style scoped>
@@ -343,7 +355,7 @@ h2 {
 .search-bar button:hover {
   background-color: #45a049;
 }
- 
+
 .book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
