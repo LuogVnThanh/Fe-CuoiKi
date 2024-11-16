@@ -68,12 +68,12 @@
           <!-- Hàng Tên Sách và Tên Tác Giả -->
           <v-row>
             <v-col cols="6">
-              <v-text-field v-model="newBook.nameBook" label="Tên Sách" required></v-text-field>
+              <v-text-field v-model="newBook.nameBook" label="Tên Sách*" required></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field
                 v-model="newBook.nameAuthor"
-                label="Tên Tác Giả"
+                label="Tên Tác Giả*"
                 required
               ></v-text-field>
             </v-col>
@@ -82,7 +82,7 @@
           <!-- Hàng Ngày Xuất Bản -->
           <v-text-field
             v-model="newBook.publicationBook"
-            label="Ngày Xuất Bản"
+            label="Ngày Xuất Bản*"
             required
             type="date"
           ></v-text-field>
@@ -91,7 +91,7 @@
             <v-col cols="6">
               <v-combobox
                 v-model="newBook.category"
-                label="Loại Sách"
+                label="Loại Sách*"
                 :items="categories"
                 required
               ></v-combobox>
@@ -112,7 +112,7 @@
 
           <v-text-field
             v-model="newBook.image"
-            label="Nhập URL Hình ảnh"
+            label="Nhập URL Hình ảnh*"
             prepend-icon="mdi-image"
             required
           ></v-text-field>

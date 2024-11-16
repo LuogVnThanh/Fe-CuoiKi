@@ -6,7 +6,7 @@
         <!-- Toolbar hiển thị thông tin người dùng -->
         <div>
           <v-toolbar
-            image="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+            image=" "
             dark
             prominent
           >

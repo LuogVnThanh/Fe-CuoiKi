@@ -19,8 +19,25 @@
         <!-- Danh sách sách -->
         <div class="book-grid">
           <div v-for="(book, index) in paginatedBooks" :key="index" class="book-item">
-            <img :src="book.image" style="height: 100px" />
-            <h3 style="height: 100px; align-items: center">
+            <img
+              :src="book.image"
+              alt="Book Cover"
+              style="
+              height: 200px;
+               width: auto;
+               object-fit: cover;
+               display: block;
+                border-radius: 10%; /* Tạo hình tròn */"
+            />
+            <h3
+              style="
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+            >
               {{ book.nameBook }}
             </h3>
             <p style="height: 20px">Thể loại: {{ book.category }}</p>
@@ -195,7 +212,7 @@ const borrowInfo = ref<IOrder>({
 // State người dùng và danh sách người dùng
 const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
 const users = ref<IUser[]>(JSON.parse(localStorage.getItem('users') || '[]'))
-  const books = ref<IUser[]>(JSON.parse(localStorage.getItem('books') || '[]'))
+const books = ref<IUser[]>(JSON.parse(localStorage.getItem('books') || '[]'))
 // Hàm mở modal và gán thông tin sách
 const openBorrowModal = (book: IBooks) => {
   borrowInfo.value.idBook = book.id
@@ -225,7 +242,7 @@ const today = ref(new Date().toISOString().split('T')[0])
 
 // Hàm xác nhận mượn sách
 const confirmBorrow = () => {
-  if (borrowInfo.value.BorrowedDate === ''  ) {
+  if (borrowInfo.value.BorrowedDate === '') {
     // Thông báo lỗi nếu các trường ngày mượn hoặc ngày trả không được điền
     showNotification.value = true
     notificationMessage.value = 'Vui lòng điền đầy đủ thông tin ngày mượn.'
@@ -239,18 +256,17 @@ const confirmBorrow = () => {
     borrowInfo.value.PaymentDate = borrowedDate.toISOString().split('T')[0] // Định dạng yyyy-mm-dd
   }
   // Cập nhật trạng thái cuốn sách thành "Đã mượn"
-  const bookIndex = ListBook.value.findIndex((book) => book.id === borrowInfo.value.idBook);
+  const bookIndex = ListBook.value.findIndex((book) => book.id === borrowInfo.value.idBook)
   if (bookIndex !== -1) {
-    ListBook.value[bookIndex].status = 'Đã mượn';
+    ListBook.value[bookIndex].status = 'Đã mượn'
   }
-    // Lưu danh sách sách đã cập nhật vào localStorage
-    localStorage.setItem('books', JSON.stringify(ListBook.value))
-
+  // Lưu danh sách sách đã cập nhật vào localStorage
+  localStorage.setItem('books', JSON.stringify(ListBook.value))
 
   // Lưu thông tin mượn vào user
   const updatedOrder = [...(user.value.order || []), { ...borrowInfo.value }]
   updateOrder(updatedOrder)
-  
+
   // thognbao
   showNotification.value = true
   notificationMessage.value = 'Đã mượn sách thành công!'
@@ -294,7 +310,6 @@ onMounted(() => {
   // Lấy danh sách sách từ localStorage khi thành phần được tải
   const storedBooks = JSON.parse(localStorage.getItem('books') || '[]')
   ListBook.value = Array.isArray(storedBooks) ? storedBooks : []
-
 
   // Lấy lại danh sách người dùng từ localStorage
   const storedUsers = JSON.parse(localStorage.getItem('users') || '[]')
@@ -364,6 +379,7 @@ h2 {
 
 /* Phần tử sách */
 .book-item {
+  background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
   align-items: center;

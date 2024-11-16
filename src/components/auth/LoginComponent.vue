@@ -97,28 +97,28 @@ const arrAccount = reactive<IUser[]>([
     id: 1,
     name: 'admin',
     email: 'admin@gmail.com',
-    password: '1',
+    password: '123456789',
     role: 'admin',
-    currentPage:1,
-    order:[]
+    currentPage: 1,
+    order: [],
   },
   {
     id: 2,
     name: 'doc gia1',
     email: 'docgia@gmail.com',
-    password: '1',
+    password: '123456789',
     role: 'readers',
-    currentPage:1,
-    order:[]
+    currentPage: 1,
+    order: [],
   },
   {
     id: 3,
     name: 'thủ thư 1',
     email: 'thuthu@gmail.com',
-    password: '1',
+    password: '123456789',
     role: 'librarian',
-    currentPage:1,
-    order:[]
+    currentPage: 1,
+    order: [],
   },
 ])
 
@@ -130,7 +130,8 @@ const arrBooks = reactive([
     publicationBook: '1997-06-26',
     category: 'Tiểu thuyết',
     status: 'Sách mới',
-    image: 'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
+    image:
+      'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
   },
   {
     id: 2,
@@ -157,7 +158,8 @@ const arrBooks = reactive([
     publicationBook: '1988-04-01',
     category: 'Khoa học',
     status: 'Sách mới',
-    image: 'https://upload.wikimedia.org/wikipedia/vi/6/6f/L%C6%B0%E1%BB%A3c_s%E1%BB%AD_th%E1%BB%9Di_gian.jpg',
+    image:
+      'https://upload.wikimedia.org/wikipedia/vi/6/6f/L%C6%B0%E1%BB%A3c_s%E1%BB%AD_th%E1%BB%9Di_gian.jpg',
   },
   {
     id: 5,
@@ -202,7 +204,8 @@ const arrBooks = reactive([
     publicationBook: '1869-01-01',
     category: 'Lịch sử',
     status: 'Hư hỏng',
-    image: 'https://www.truyenngan.com.vn/images/linhbp/2014-tieu-thuyet/chien-tranh-va-hoa-binh.gif',
+    image:
+      'https://www.truyenngan.com.vn/images/linhbp/2014-tieu-thuyet/chien-tranh-va-hoa-binh.gif',
   },
   {
     id: 10,
@@ -220,7 +223,8 @@ const arrBooks = reactive([
     publicationBook: '1943-05-07',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fountain_Head_%281943_1st_ed%29_-_Ayn_Rand.jpg',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fountain_Head_%281943_1st_ed%29_-_Ayn_Rand.jpg',
   },
   {
     id: 12,
@@ -229,11 +233,84 @@ const arrBooks = reactive([
     publicationBook: '1920-01-01',
     category: 'Lịch sử',
     status: 'Hư hỏng',
-    image: 'https://thuviensach.vn/img/news/2022/11/larger/8757-chien-tranh-giua-cac-the-gioi-1.jpg',
+    image:
+      'https://thuviensach.vn/img/news/2022/11/larger/8757-chien-tranh-giua-cac-the-gioi-1.jpg',
   },
+  {
+    id: 13,
+    nameBook: 'Cách Phá Hoại Một Bộ Rom-Com',
+    nameAuthor: ' 송아송아',
+    publicationBook: '2023-11-14',
+    category: 'Romance ',
+    status: 'Sách mới',
+    image: 'https://i.hako.vn/ln/series/covers/s19382-9fe0a4ac-6fc6-4a65-9a46-141fedbce458.jpg',
+  },
+  {
+    id: 14,
+    nameBook: '300 Bài Code Thiếu Nhi',
+    nameAuthor: 'Tủ sách 4.0',
+    publicationBook: '2023-6-20',
+    category: 'Thiếu nhi ',
+    status: 'Sách mới',
+    image: 'https://st.quantrimang.com/photos/image/2020/11/06/cuon-sach-300-bai-code-thieu-nhi-va-nhung-mau-chuyen-vui-cua-anh-em-coder.jpg',
+  },
+
+  {
+    id: 15,
+    nameBook: 'Vật Lý Đại Cương Tập Một',
+    nameAuthor: 'Lương Duyên Bình',
+    publicationBook: '2020-11-30',
+    category: 'Vật lý ',
+    status: 'Sách mới',
+    image: 'https://tailieuvnu.com/wp-content/uploads/2020/11/30/Giao-trinh-Vat-ly-dai-cuong-tap-1-Luong-Duyen-Binh.png',
+  },
+
+  {
+    id: 16,
+    nameBook: 'Ngày mai Vô tận',
+    nameAuthor: ' Nub.đi.viết.truyện',
+    publicationBook: '2021-1-20',
+    category: 'Truyện chữ ',
+    status: 'Sách mới',
+    image: 'https://i.hako.vn/ln/series/covers/s19851-35c1ceab-058a-4827-891f-e223b7a9a9f0.jpg',
+  },
+  {
+    id: 17,
+    nameBook: 'Summer',
+    nameAuthor: 'foxxytail',
+    publicationBook: '2021-1-20',
+    category: 'Truyện chữ ',
+    status: 'Sách mới',
+    image: 'https://i.hako.vn/ln/series/covers/s19843-ce2ec96f-dabb-4695-96ff-bc2dd528a7c3.jpg',
+  },
+  {
+    id: 18,
+    nameBook: 'Ai mà biết chúng nó nghiện Game Online!',
+    nameAuthor: 'Ngân Hà',
+    publicationBook: '2019-1-20',
+    category: 'Truyện chữ ',
+    status: 'Sách mới',
+    image: 'https://i.hako.vn/ln/series/covers/s19760-7b402696-8a5f-4b57-bfbb-0e127fa87257.jpg',
+  },
+  {
+    id: 19,
+    nameBook: 'Cuộc Chơi Của Sự Thật và Dối Trá',
+    nameAuthor: 'Hoa Dấu Tên',
+    publicationBook: '2019-1-20',
+    category: 'Truyện chữ ',
+    status: 'Sách mới',
+    image: 'https://i.hako.vn/ln/series/covers/s19773-68380ae1-0486-4a8c-9a7b-634c74b314c4.jpg',
+  },
+  {
+    id: 20,
+    nameBook: 'Another life, same friend',
+    nameAuthor: 'Alice',
+    publicationBook: '2019-1-20',
+    category: 'Truyện chữ ',
+    status: 'Sách mới',
+    image: 'https://i.hako.vn/ln/series/covers/s19805-479efe36-c44c-43ba-973a-aeccd0089b81.jpg',
+  }
 ])
-
-
 
 // Lưu `arrBooks` vào `localStorage`
 const updateBooksInLocalStorage = () => {
@@ -244,8 +321,6 @@ const initializeUsers = () => {
   const Users = JSON.parse(localStorage.getItem('users') || '[]')
   const Books = JSON.parse(localStorage.getItem('books') || '[]')
 
-
-
   if (!Users.length) {
     localStorage.setItem('users', JSON.stringify(arrAccount))
   }
@@ -255,7 +330,6 @@ const initializeUsers = () => {
     updateBooksInLocalStorage()
   }
 }
-
 
 // Mỗi khi `arrBooks` thay đổi, cập nhật vào `localStorage`
 watch(arrBooks, updateBooksInLocalStorage, { deep: true })
@@ -271,13 +345,30 @@ const handleDirect = () => {
 }
 
 const handleLogin = () => {
-  const users = JSON.parse(localStorage.getItem('users') || '[]') as IUser[]
+  // Kiểm tra định dạng email hợp lệ
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  if (!emailPattern.test(initialForm.email)) {
+    notificationMessage.value = 'Email không hợp lệ.'
+    notificationColor.value = 'red'
+    showNotification.value = true
+    return
+  }
+  // Kiểm tra độ dài mật khẩu
+  if (initialForm.password.length < 8) {
+    notificationMessage.value = 'Mật khẩu phải có ít nhất 8 ký tự.'
+    notificationColor.value = 'red'
+    showNotification.value = true
+    return
+  }
 
+  // lấy danh sách ngươi dùng
+
+  const users = JSON.parse(localStorage.getItem('users') || '[]') as IUser[]
   const user = users.find(
     (account) => account.email === initialForm.email && account.password === initialForm.password,
   )
-  // Nếu có
 
+  // Nếu người dùng tồn tại
   if (user) {
     localStorage.setItem('user', JSON.stringify(user))
 

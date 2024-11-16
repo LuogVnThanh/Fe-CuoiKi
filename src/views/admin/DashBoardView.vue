@@ -6,7 +6,7 @@
         <!-- Toolbar hiển thị thông tin người dùng -->
         <div>
           <v-toolbar
-            image="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+            image=" "
             dark
             prominent
           >
@@ -64,10 +64,11 @@
             <span v-if="!isLargeScreen">Role: {{ userInfo.role }}</span>
           </div>
           <v-tabs v-model="tab" color="primary" direction="vertical">
+            <v-tab value="option-4" class="title-func" @click="goHome">Trang chủ</v-tab>
             <v-tab value="option-1" class="title-func">Quản lý sách</v-tab>
             <v-tab value="option-2" class="title-func">Quản lý mượn trả sách</v-tab>
             <v-tab value="option-3" class="title-func">Thống kê sách yêu thích</v-tab>
-            <v-tab value="option-4" class="title-func" @click="goHome">Trang chủ</v-tab>
+
           </v-tabs>
         </v-navigation-drawer>
 
@@ -82,10 +83,11 @@
             'd-block': isLargeScreen, // Hiển thị tab khi màn hình lớn
           }"
         >
+        <v-tab value="option-4" class="title-func" @click="goHome" >Trang chủ</v-tab>
           <v-tab value="option-1" class="title-func">Quản lý sách</v-tab>
           <v-tab value="option-2" class="title-func">Quản lý mượn trả sách</v-tab>
           <v-tab value="option-3" class="title-func">Thống kê sách yêu thích</v-tab>
-          <v-tab value="option-4" class="title-func" @click="goHome" >Trang chủ</v-tab>
+
         </v-tabs>
 
         <!-- Nội dung các tab bên phải -->
