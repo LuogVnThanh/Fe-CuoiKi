@@ -67,7 +67,9 @@ const router = createRouter({
       path: '/borrowbook',
       name: 'BorrowBook',
       component: BorrowBook,
-      meta: { requiresAdmin: true }, // Thêm meta cho admin
+      meta: {
+        allowedRoles: ['admin', 'librarian'], // Chỉ admin và librarian được phép
+      },
     },
     {
       path: '/statisticalbook',
@@ -80,15 +82,20 @@ const router = createRouter({
 
 // Kiểm tra xem người dùng có đăng nhập không
 router.beforeEach((to, from, next) => {
-  const user = JSON.parse(localStorage.getItem('user') || '[]')
+  const user = JSON.parse(localStorage.getItem('user') || 'null'); // Lấy thông tin người dùng từ localStorage
 
-  // Nếu người dùng chưa đăng nhập và trang yêu cầu đăng nhập (như dashboard)
+  // Nếu route yêu cầu quyền truy cập đặc biệt
   if (to.meta.requiresAdmin && (!user || user.role !== 'admin')) {
-    // Chuyển hướng về trang login
-    next('/login')
+    next('/login'); // Chuyển về login nếu không phải admin
+  } else if (to.meta.allowedRoles) {
+    // Nếu route yêu cầu danh sách các roles được phép truy cập
+    if (!user || !to.meta.allowedRoles.includes(user.role)) {
+      next('/login'); // Chuyển về login nếu role không hợp lệ
+    } else {
+      next(); // Cho phép tiếp tục nếu role hợp lệ
+    }
   } else {
-    next() // Tiếp tục nếu không có vấn đề gì
+    next(); // Cho phép tiếp tục cho các route không yêu cầu quyền
   }
-})
-
+});
 export default router
