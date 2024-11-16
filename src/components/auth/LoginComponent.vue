@@ -130,7 +130,7 @@ const arrBooks = reactive([
     publicationBook: '1997-06-26',
     category: 'Tiểu thuyết',
     status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
   },
   {
     id: 2,
@@ -139,7 +139,7 @@ const arrBooks = reactive([
     publicationBook: '2014-09-04',
     category: 'Khoa học',
     status: 'Đã mượn',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
   },
   {
     id: 3,
@@ -148,7 +148,7 @@ const arrBooks = reactive([
     publicationBook: '1936-10-10',
     category: 'Tâm lý học',
     status: 'Hư hỏng',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://nhasachmienphi.com/wp-content/uploads/dac-nhan-tam.jpg',
   },
   {
     id: 4,
@@ -157,7 +157,7 @@ const arrBooks = reactive([
     publicationBook: '1988-04-01',
     category: 'Khoa học',
     status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://upload.wikimedia.org/wikipedia/vi/6/6f/L%C6%B0%E1%BB%A3c_s%E1%BB%AD_th%E1%BB%9Di_gian.jpg',
   },
   {
     id: 5,
@@ -165,8 +165,8 @@ const arrBooks = reactive([
     nameAuthor: 'Mario Puzo',
     publicationBook: '1969-03-10',
     category: 'Tiểu thuyết',
-    status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    status: 'Đã mượn',
+    image: 'https://upload.wikimedia.org/wikipedia/vi/f/f4/Godfather-Novel-Cover.png',
   },
   {
     id: 6,
@@ -175,7 +175,7 @@ const arrBooks = reactive([
     publicationBook: '1988-04-15',
     category: 'Tiểu thuyết',
     status: 'Hư hỏng',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://nhasachmienphi.com/images/thumbnail/nhasachmienphi-nha-gia-kim.jpg',
   },
   {
     id: 7,
@@ -184,7 +184,7 @@ const arrBooks = reactive([
     publicationBook: '1936-06-30',
     category: 'Tiểu thuyết',
     status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://upload.wikimedia.org/wikipedia/vi/6/6b/Gone_with_the_Wind_cover.jpg',
   },
   {
     id: 8,
@@ -192,8 +192,8 @@ const arrBooks = reactive([
     nameAuthor: 'Fyodor Dostoevsky',
     publicationBook: '1866-01-01',
     category: 'Tiểu thuyết',
-    status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    status: 'Đã mượn',
+    image: 'https://upload.wikimedia.org/wikipedia/vi/5/57/Krimo-k-puno_rusa_eldono_2004.jpg',
   },
   {
     id: 9,
@@ -201,8 +201,8 @@ const arrBooks = reactive([
     nameAuthor: 'Leo Tolstoy',
     publicationBook: '1869-01-01',
     category: 'Lịch sử',
-    status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    status: 'Hư hỏng',
+    image: 'https://www.truyenngan.com.vn/images/linhbp/2014-tieu-thuyet/chien-tranh-va-hoa-binh.gif',
   },
   {
     id: 10,
@@ -211,7 +211,7 @@ const arrBooks = reactive([
     publicationBook: '2008-11-18',
     category: 'Tâm lý học',
     status: 'Sách mới',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://thuviensach.vn/img/news/2022/09/larger/779-nhung-ke-xuat-chung-1.jpg?v=8032',
   },
   {
     id: 11,
@@ -220,7 +220,7 @@ const arrBooks = reactive([
     publicationBook: '1943-05-07',
     category: 'Tiểu thuyết',
     status: 'Đã mượn',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fountain_Head_%281943_1st_ed%29_-_Ayn_Rand.jpg',
   },
   {
     id: 12,
@@ -229,7 +229,7 @@ const arrBooks = reactive([
     publicationBook: '1920-01-01',
     category: 'Lịch sử',
     status: 'Hư hỏng',
-    image: 'https://bulma.io/assets/images/placeholders/1280x960.png',
+    image: 'https://thuviensach.vn/img/news/2022/11/larger/8757-chien-tranh-giua-cac-the-gioi-1.jpg',
   },
 ])
 

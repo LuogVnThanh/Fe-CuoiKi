@@ -48,7 +48,7 @@
             <v-tab value="option-2" class="title-func">Giỏ sách </v-tab>
             <v-tab value="option-3" class="title-func">Tài khoản</v-tab>
             <v-tab value="option-4" class="title-func" v-if="userInfo.role==='admin'" @click="goDashBorard">Dashboard</v-tab>
-            <v-tab value="option-4" class="title-func" v-if="userInfo.role==='librarian'" @click="goDashBorrowBook">Quản lý mượn trả sách</v-tab>
+            <v-tab value="option-4" class="title-func" v-if="userInfo.role==='librarian'"  >Quản lý mượn trả sách</v-tab>
 
             <v-tab class="title-func" @click="onLogoutClick">Đăng Xuất </v-tab>
 
@@ -88,6 +88,17 @@
               </v-card-text>
             </v-card>
           </v-tabs-window-item>
+
+
+          <v-tabs-window-item value="option-4">
+            <v-card flat>
+              <v-card-text>
+                <BorrowView />
+                <!-- Option Borrow -->
+
+              </v-card-text>
+            </v-card>
+          </v-tabs-window-item>
         </v-tabs-window>
       </div>
 
@@ -113,6 +124,7 @@ import type { IBooks } from '../../interface/product/product'
 import router from '../../router'
 import BookView from '../layouts/BookView.vue'
 import OrderView from'../layouts/OrderView.vue'
+import BorrowView from '../admin/BorrowBookView.vue'
 import Profile from'../user/ProfileView.vue'
 
 
@@ -190,11 +202,7 @@ const goDashBorard =()=>{
     router.push('/dashboard')
   }
 }
-const goDashBorrowBook =()=>{
-  if(userInfo.value.role==='librarian'){
-    router.push('/borrowbook')
-  }
-}
+
 
 onMounted(() => {
   const storedUser = localStorage.getItem('user')
