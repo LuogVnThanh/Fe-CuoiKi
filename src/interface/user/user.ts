@@ -1,4 +1,4 @@
-import  IOrder from'../../interface/order/order'
+ 
 
 export interface IUser {
   id: number
@@ -7,7 +7,7 @@ export interface IUser {
   password: string
   role: string
   currentPage:number
-  order:IOrder []
+
 }
 
 export interface IUserInfor {

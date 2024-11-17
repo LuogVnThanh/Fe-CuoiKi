@@ -207,6 +207,8 @@ const toggleSearch = () => {
 
 const onLogoutClick = () => {
   localStorage.removeItem('user')
+  localStorage.removeItem('order')
+
   localStorage.getItem
   notificationMessage.value = 'Đã đăng xuất'
   notificationColor.value = 'green'

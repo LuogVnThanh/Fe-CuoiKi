@@ -1,4 +1,4 @@
-import  IOrder from'../../interface/order/order'
+ 
 
 export interface ILogin {
     email:string;
@@ -11,7 +11,7 @@ export interface IRegister {
     password:string;
     confirmPassword:string;
     currentPage:number;
-    order:IOrder[];
+
 }
 
 

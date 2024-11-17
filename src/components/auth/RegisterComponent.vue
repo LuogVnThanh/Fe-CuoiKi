@@ -3,9 +3,8 @@
     <v-container class="d-flex justify-center align-center" style="height: 100vh">
       <v-sheet class="register-container" width="350" height="auto" @keyup.enter="handleRegister">
         <v-form ref="form">
-
-                 <!-- input tài khoản -->
-                 <v-text-field
+          <!-- input tài khoản -->
+          <v-text-field
             v-model="initialForm.name"
             type="text"
             label="Name"
@@ -16,7 +15,6 @@
           >
             <!-- Icon người dùng -->
           </v-text-field>
-
 
           <!-- input tài khoản -->
           <v-text-field
@@ -105,7 +103,6 @@ import { useRouter } from 'vue-router'
 import type { ILogin, IRegister } from '../../interface/auth/auth'
 import type { IUser } from '../../interface/user/user'
 
-
 const router = useRouter()
 
 const showNotification = ref(false)
@@ -116,13 +113,11 @@ const showConfirmPassword = ref(false)
 
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<IRegister>({
-  name:'',
+  name: '',
   email: '',
   password: '',
   confirmPassword: '',
-  currentPage:1,
-  order:[]
-
+  currentPage: 1,
 })
 
 const handleDirect = () => {
@@ -131,7 +126,12 @@ const handleDirect = () => {
 
 const handleRegister = () => {
   // Kiểm tra xem có ô input nào trống không
-  if (!initialForm.email ||!initialForm.name ||  !initialForm.password || !initialForm.confirmPassword) {
+  if (
+    !initialForm.email ||
+    !initialForm.name ||
+    !initialForm.password ||
+    !initialForm.confirmPassword
+  ) {
     notificationMessage.value = 'Vui lòng điền đầy đủ tất cả các trường.'
     notificationColor.value = 'red'
     showNotification.value = true
@@ -146,7 +146,7 @@ const handleRegister = () => {
     return
   }
 
-  const users = JSON.parse(localStorage.getItem('users')||'[]') as IUser[]
+  const users = JSON.parse(localStorage.getItem('users') || '[]') as IUser[]
   // Kiểm tra xem email đã tồn tại trong arrAccount chưa
   const userExists = users.find((account) => account.email === initialForm.email)
 
@@ -165,22 +165,20 @@ const handleRegister = () => {
   } else {
     // Nếu tất cả điều kiện hợp lệ
     // Thiết lập id tự tăng
-    const maxId = users.length>0? Math.max(...users.map(user=>user.id)) : 0
+    const maxId = users.length > 0 ? Math.max(...users.map((user) => user.id)) : 0
     const newUser = {
-      id: maxId+1,
+      id: maxId + 1,
       name: initialForm.name,
       email: initialForm.email,
       password: initialForm.password,
       role: 'readers', // Hoặc có thể lấy role từ nơi khác
-      order: initialForm.order, // Hoặc có thể lấy order từ nơi khác
-      currentPage:initialForm.currentPage,
-
+      currentPage: initialForm.currentPage,
     }
 
     // Lưu tài khoản mới  và cập nhập localStorage
     users.push(newUser)
     localStorage.setItem('users', JSON.stringify(users))
-    console.log("Danh sách người dùng sau khi thêm:", users)
+    console.log('Danh sách người dùng sau khi thêm:', users)
 
     notificationMessage.value = 'Tạo tài khoản thành công.'
     notificationColor.value = 'green'

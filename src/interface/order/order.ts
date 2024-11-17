@@ -1,7 +1,9 @@
 export interface IOrder {
   idBook:number;
   nameBook:string
+  idUser:number;
   nameUser:string;
-  BorrowedDate: string
-  PaymentDate: string
+  action:string;
+  borrowedDate: string
+  paymentDate: string
 }

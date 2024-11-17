@@ -164,6 +164,8 @@ const filteredBooks = computed(() => {
 
 const onLogoutClick = () => {
   localStorage.removeItem('user')
+  localStorage.removeItem('order')
+
   notificationMessage.value = 'Đã đăng xuất'
   notificationColor.value = 'green'
   showNotification.value = true

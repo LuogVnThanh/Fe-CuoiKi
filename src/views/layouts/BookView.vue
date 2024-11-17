@@ -61,29 +61,24 @@
       <v-card-title class="text-h5">Thông Tin Mượn Sách</v-card-title>
       <v-card-text>
         <v-form ref="borrowForm" v-model="isFormValid">
-          <!-- Tham chiếu tên sách và ID -->
-          <v-text-field v-model="borrowInfo.nameBook" label="Tên Sách" readonly></v-text-field>
           <v-text-field v-model="borrowInfo.idBook" label="ID Sách" readonly></v-text-field>
+          <v-text-field v-model="borrowInfo.nameBook" label="Tên Sách" readonly></v-text-field>
+          <!-- Tham chiếu tên người mượn và id -->
 
+          <v-text-field v-model="borrowInfo.idUser" label="ID Người Mượn" readonly></v-text-field>
           <v-text-field v-model="borrowInfo.nameUser" label="Tên Người Mượn"></v-text-field>
+
           <!-- readonly -->
           <!-- Ngày mượn -->
           <v-text-field
-            v-model="borrowInfo.BorrowedDate"
+            v-model="borrowInfo.borrowedDate"
             label="Ngày Mượn"
             required
             type="date"
             :min="today"
           ></v-text-field>
 
-          <!-- Ngày trả -->
-          <!-- <v-text-field
-            v-model="borrowInfo.PaymentDate"
-            label="Ngày Trả"
-            required
-            type="date"
-            :min="borrowInfo.BorrowedDate"
-          ></v-text-field> -->
+
         </v-form>
       </v-card-text>
 
@@ -96,7 +91,7 @@
           text=""
           @click="confirmBorrow"
           :disabled="
-            borrowInfo.BorrowedDate === ''
+            borrowInfo.borrowedDate === ''
             // ||
             // new Date(borrowInfo.PaymentDate) < new Date(borrowInfo.BorrowedDate)
           "
@@ -204,32 +199,39 @@ const searchBooks = () => {
 const borrowInfo = ref<IOrder>({
   idBook: 0,
   nameBook: '',
+  idUser:0,
   nameUser: '',
-  BorrowedDate: '',
-  PaymentDate: '',
+  borrowedDate: '',
+  paymentDate: '',
+  action: '',
 })
 
 // State người dùng và danh sách người dùng
 const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
-const users = ref<IUser[]>(JSON.parse(localStorage.getItem('users') || '[]'))
-const books = ref<IUser[]>(JSON.parse(localStorage.getItem('books') || '[]'))
+
+const books = ref<IBooks[]>(JSON.parse(localStorage.getItem('books') || '[]'))
+
+const order = ref<IOrder[]>(JSON.parse(localStorage.getItem('order') || '[]'))
+  const orders = ref<IOrder[]>(JSON.parse(localStorage.getItem('orders') || '[]'))
+
 // Hàm mở modal và gán thông tin sách
 const openBorrowModal = (book: IBooks) => {
   borrowInfo.value.idBook = book.id
   borrowInfo.value.nameBook = book.nameBook
+  borrowInfo.value.action = 'Đã mượn'
   isBorrowDialogOpen.value = true
   // Lấy thông tin người dùng từ localStorage
   const user = JSON.parse(localStorage.getItem('user') || '{}')
-
   // Gán name từ user vào borrowInfo nếu name tồn tại
+  borrowInfo.value.idUser = user.id ||''
   borrowInfo.value.nameUser = user.name || ''
 }
 
 // Hàm đóng modal
 const closeBorrowModal = () => {
   isBorrowDialogOpen.value = false
-  borrowInfo.value.BorrowedDate = ''
-  borrowInfo.value.PaymentDate = ''
+  borrowInfo.value.borrowedDate = ''
+  borrowInfo.value.paymentDate = ''
   isFormValid.value = false
 }
 
@@ -242,7 +244,7 @@ const today = ref(new Date().toISOString().split('T')[0])
 
 // Hàm xác nhận mượn sách
 const confirmBorrow = () => {
-  if (borrowInfo.value.BorrowedDate === '') {
+  if (borrowInfo.value.borrowedDate === '') {
     // Thông báo lỗi nếu các trường ngày mượn hoặc ngày trả không được điền
     showNotification.value = true
     notificationMessage.value = 'Vui lòng điền đầy đủ thông tin ngày mượn.'
@@ -250,10 +252,10 @@ const confirmBorrow = () => {
     return
   }
   // Nếu ngày trả chưa được điền, tự động đặt là ngày mượn + 7 ngày
-  if (borrowInfo.value.BorrowedDate) {
-    const borrowedDate = new Date(borrowInfo.value.BorrowedDate)
+  if (borrowInfo.value.borrowedDate) {
+    const borrowedDate = new Date(borrowInfo.value.borrowedDate)
     borrowedDate.setDate(borrowedDate.getDate() + 7) // Thêm 7 ngày
-    borrowInfo.value.PaymentDate = borrowedDate.toISOString().split('T')[0] // Định dạng yyyy-mm-dd
+    borrowInfo.value.paymentDate = borrowedDate.toISOString().split('T')[0] // Định dạng yyyy-mm-dd
   }
   // Cập nhật trạng thái cuốn sách thành "Đã mượn"
   const bookIndex = ListBook.value.findIndex((book) => book.id === borrowInfo.value.idBook)
@@ -263,11 +265,20 @@ const confirmBorrow = () => {
   // Lưu danh sách sách đã cập nhật vào localStorage
   localStorage.setItem('books', JSON.stringify(ListBook.value))
 
-  // Lưu thông tin mượn vào user
-  const updatedOrder = [...(user.value.order || []), { ...borrowInfo.value }]
-  updateOrder(updatedOrder)
 
-  // thognbao
+    // Sử dụng cú pháp ... (spread operator) để sao chép và thêm thuộc tính order mới (là newOrder) .
+  // Lấy mảng orders hiện tại từ localStorage (hoặc tạo mảng rỗng nếu chưa có)
+  const existingOrders = JSON.parse(localStorage.getItem('order') || '[]') as IOrder[];
+
+
+    existingOrders.push({ ...borrowInfo.value })
+  localStorage.setItem('order', JSON.stringify(existingOrders));
+
+  const ListOrdersInLocal = JSON.parse(localStorage.getItem('orders') || '[]') as IOrder[];
+  ListOrdersInLocal.push({...borrowInfo.value})
+  localStorage.setItem('orders', JSON.stringify(ListOrdersInLocal));
+
+  // thongbao
   showNotification.value = true
   notificationMessage.value = 'Đã mượn sách thành công!'
   notificationColor.value = 'success'
@@ -276,26 +287,6 @@ const confirmBorrow = () => {
   closeBorrowModal()
 }
 
-const updateOrder = (newOrder: IOrder[]) => {
-  // Cập nhật `user`
-  // Sử dụng cú pháp ... (spread operator) để sao chép và thêm thuộc tính order mới (là newOrder) vào user.
-  user.value = {
-    ...user.value,
-    order: newOrder,
-  }
-
-  // Cập nhật `users`
-  const userIndex = users.value.findIndex((u) => u.id === user.value.id)
-  if (userIndex !== -1) {
-    users.value[userIndex] = { ...user.value }
-  } else {
-    users.value.push(user.value)
-  }
-
-  // Ghi lại vào localStorage
-  localStorage.setItem('user', JSON.stringify(user.value))
-  localStorage.setItem('users', JSON.stringify(users.value))
-}
 
 // Thiết lập trang ban đầu khi đăng nhập
 const setInitialPageOnLogin = () => {
@@ -311,13 +302,16 @@ onMounted(() => {
   const storedBooks = JSON.parse(localStorage.getItem('books') || '[]')
   ListBook.value = Array.isArray(storedBooks) ? storedBooks : []
 
-  // Lấy lại danh sách người dùng từ localStorage
-  const storedUsers = JSON.parse(localStorage.getItem('users') || '[]')
-  users.value = Array.isArray(storedUsers) ? storedUsers : []
-
   // Lấy thông tin người dùng từ localStorage
   const storedUser = JSON.parse(localStorage.getItem('user') || '{}')
   user.value = storedUser || {}
+
+  // Lấy thông tin order từ localStorage
+  const storedOrder = JSON.parse(localStorage.getItem('order') || '[]')
+
+
+    // Lấy danh sách sách từ localStorage khi thành phần được tải
+    const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]')
 
   // Gọi hàm này khi component được mounted để lấy số trang hiện tại từ localStorage
   setInitialPageOnLogin()

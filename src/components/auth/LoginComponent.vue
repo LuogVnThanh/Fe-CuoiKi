@@ -84,6 +84,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { ILogin } from '../../interface/auth/auth'
 import type { IUser } from '../../interface/user/user'
+import type { IOrder } from '@/interface/order/order'
 
 const router = useRouter()
 
@@ -100,7 +101,7 @@ const arrAccount = reactive<IUser[]>([
     password: '123456789',
     role: 'admin',
     currentPage: 1,
-    order: [],
+
   },
   {
     id: 2,
@@ -109,7 +110,7 @@ const arrAccount = reactive<IUser[]>([
     password: '123456789',
     role: 'readers',
     currentPage: 1,
-    order: [],
+
   },
   {
     id: 3,
@@ -118,7 +119,7 @@ const arrAccount = reactive<IUser[]>([
     password: '123456789',
     role: 'librarian',
     currentPage: 1,
-    order: [],
+
   },
 ])
 
@@ -312,6 +313,30 @@ const arrBooks = reactive([
   }
 ])
 
+const arrOrders  = reactive<IOrder[]>([
+  {
+    idBook :5,
+    nameBook:'Bố già',
+    idUser:3,
+    nameUser: 'Thử thư 1',
+    action:'Đã mượn',
+    borrowedDate:'2024-1-1',
+    paymentDate:'2024-1-8'
+  },
+  {
+
+    idBook :2,
+    nameBook:'Sapiens: Lược Sử Loài Người',
+    idUser:3,
+    nameUser: 'Thử thư 1',
+    action:'Đã mượn',
+    borrowedDate:'2024-1-4',
+    paymentDate:'2024-1-11'
+  }
+
+])
+
+
 // Lưu `arrBooks` vào `localStorage`
 const updateBooksInLocalStorage = () => {
   localStorage.setItem('books', JSON.stringify(arrBooks))
@@ -320,9 +345,12 @@ const updateBooksInLocalStorage = () => {
 const initializeUsers = () => {
   const Users = JSON.parse(localStorage.getItem('users') || '[]')
   const Books = JSON.parse(localStorage.getItem('books') || '[]')
-
+const Orders =  JSON.parse(localStorage.getItem('orders') || '[]')
   if (!Users.length) {
     localStorage.setItem('users', JSON.stringify(arrAccount))
+  }
+  if (!Orders.length) {
+    localStorage.setItem('orders', JSON.stringify(arrOrders))
   }
   if (Books.length) {
     arrBooks.splice(0, arrBooks.length, ...Books) // Cập nhật `arrBooks`
@@ -375,6 +403,9 @@ const handleLogin = () => {
     notificationMessage.value = `Đăng nhập thành công tài khoản: ${user.email}`
     notificationColor.value = 'green'
 
+       checkOrCreateOrder(user.id)
+
+
     // Dùng setTimeout để trì hoãn việc chuyển hướng sang trang home
     // Kiểm tra vai trò người dùng và chuyển hướng
     if (user.role === 'admin') {
@@ -393,7 +424,21 @@ const handleLogin = () => {
     notificationColor.value = 'red'
   }
   showNotification.value = true
+},
+
+checkOrCreateOrder =(id:number)=>{
+//Tìm order của user hiện tại
+const userOrders = arrOrders.filter((order)=> order.idUser === id)
+if(userOrders.length > 0){
+  //Lưu order vào local nếu tồn tại
+  localStorage.setItem("order",JSON.stringify(userOrders))
+  // console.log("Order tồn tại:", userOrders);
+}else{
+   // Lưu order mới vào localStorage
+   localStorage.setItem('order', JSON.stringify([]));
 }
+}
+
 
 // Chuyển đổi trạng thái hiện thị mật khẩu
 const togglePasswordVisibility = () => {

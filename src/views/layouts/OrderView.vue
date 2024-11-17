@@ -19,6 +19,17 @@
                 border-radius: 10%; /* Tạo hình tròn */
               "
             />
+            <h3
+              style="
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              "
+            >
+              {{ order.nameBook }}
+            </h3>
 
             <p style="height: 20px">Thể loại: {{ order.category }}</p>
             <p style="height: 50px">Tác giả: {{ order.nameAuthor }}</p>
@@ -54,7 +65,7 @@ const showNotification = ref(false)
 const notificationMessage = ref('')
 const notificationColor = ref('')
 
-const listBorrow: Ref<IOrder[]> = ref([])
+const listOrder: Ref<IOrder[]> = ref([])
 
 const listBook: Ref<IBooks[]> = ref([])
 
@@ -62,14 +73,15 @@ const listBook: Ref<IBooks[]> = ref([])
 const matchedBooks: Ref<IBooks[]> = ref([])
 
 onMounted(() => {
-  const storedUser = JSON.parse(localStorage.getItem('user') || 'null') as IUser | null
+
   const storeBook = JSON.parse(localStorage.getItem('books') || '[]') as IBooks[]
+  const storeOrder = JSON.parse(localStorage.getItem('order')||'[]') as IOrder[]
+
 
   // Nếu user tồn tại và có orders
-  if (storedUser && storedUser.order && Array.isArray(storedUser.order)) {
-    listBorrow.value = storedUser.order
+  if (storeOrder  && Array.isArray(storeOrder )) {
+    listOrder.value = storeOrder
   }
-
   // Nếu có dữ liệu books
   if (Array.isArray(storeBook)) {
     listBook.value = storeBook
@@ -77,7 +89,7 @@ onMounted(() => {
 
   // Tìm các sản phẩm có id trùng nhau
   matchedBooks.value = listBook.value.filter((book) =>
-    listBorrow.value.some((borrow) => borrow.idBook === book.id),
+  listOrder.value.some((order) => order.idBook === book.id),
   )
 
   console.log('Matched Books:', matchedBooks.value)
