@@ -65,12 +65,10 @@ const showNotification = ref(false)
 const notificationMessage = ref('')
 const notificationColor = ref('')
 
-const listOrder: Ref<IOrder[]> = ref([])
+const listOrder: Ref<IOrder[]> = ref([])  // Danh sách đơn hàng
+const listBook: Ref<IBooks[]> = ref([])   // Danh sách sách
+const matchedBooks: Ref<IBooks[]> = ref([])  // Danh sách sách trùng với đơn hàng
 
-const listBook: Ref<IBooks[]> = ref([])
-
-// Danh sách sản phẩm trùng lặp ID
-const matchedBooks: Ref<IBooks[]> = ref([])
 
 onMounted(() => {
 
@@ -78,10 +76,12 @@ onMounted(() => {
   const storeOrder = JSON.parse(localStorage.getItem('order')||'[]') as IOrder[]
 
 
-  // Nếu user tồn tại và có orders
-  if (storeOrder  && Array.isArray(storeOrder )) {
+  // Nếu user tồn tại và
+ // Nếu có dữ liệu đơn hàng
+ if (Array.isArray(storeOrder)) {
     listOrder.value = storeOrder
   }
+
   // Nếu có dữ liệu books
   if (Array.isArray(storeBook)) {
     listBook.value = storeBook
@@ -93,8 +93,13 @@ onMounted(() => {
   )
 
   console.log('Matched Books:', matchedBooks.value)
+
 })
+
+ 
 </script>
+
+
 
 <style scoped>
 /* Bố cục tổng quan */

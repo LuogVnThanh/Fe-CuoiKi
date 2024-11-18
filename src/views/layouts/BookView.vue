@@ -23,11 +23,12 @@
               :src="book.image"
               alt="Book Cover"
               style="
-              height: 200px;
-               width: auto;
-               object-fit: cover;
-               display: block;
-                border-radius: 10%; /* Tạo hình tròn */"
+                height: 200px;
+                width: auto;
+                object-fit: cover;
+                display: block;
+                border-radius: 10%; /* Tạo hình tròn */
+              "
             />
             <h3
               style="
@@ -65,7 +66,7 @@
           <v-text-field v-model="borrowInfo.nameBook" label="Tên Sách" readonly></v-text-field>
           <!-- Tham chiếu tên người mượn và id -->
 
-          <v-text-field v-model="borrowInfo.idUser" label="ID Người Mượn" readonly></v-text-field>
+          <!-- <v-text-field v-model="borrowInfo.idUser" label="ID Người Mượn" readonly></v-text-field> -->
           <v-text-field v-model="borrowInfo.nameUser" label="Tên Người Mượn"></v-text-field>
 
           <!-- readonly -->
@@ -77,8 +78,6 @@
             type="date"
             :min="today"
           ></v-text-field>
-
-
         </v-form>
       </v-card-text>
 
@@ -199,7 +198,7 @@ const searchBooks = () => {
 const borrowInfo = ref<IOrder>({
   idBook: 0,
   nameBook: '',
-  idUser:0,
+  idUser: 0,
   nameUser: '',
   borrowedDate: '',
   paymentDate: '',
@@ -212,7 +211,7 @@ const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
 const books = ref<IBooks[]>(JSON.parse(localStorage.getItem('books') || '[]'))
 
 const order = ref<IOrder[]>(JSON.parse(localStorage.getItem('order') || '[]'))
-  const orders = ref<IOrder[]>(JSON.parse(localStorage.getItem('orders') || '[]'))
+const orders = ref<IOrder[]>(JSON.parse(localStorage.getItem('orders') || '[]'))
 
 // Hàm mở modal và gán thông tin sách
 const openBorrowModal = (book: IBooks) => {
@@ -223,7 +222,7 @@ const openBorrowModal = (book: IBooks) => {
   // Lấy thông tin người dùng từ localStorage
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   // Gán name từ user vào borrowInfo nếu name tồn tại
-  borrowInfo.value.idUser = user.id ||''
+  borrowInfo.value.idUser = user.id || ''
   borrowInfo.value.nameUser = user.name || ''
 }
 
@@ -258,35 +257,32 @@ const confirmBorrow = () => {
     borrowInfo.value.paymentDate = borrowedDate.toISOString().split('T')[0] // Định dạng yyyy-mm-dd
   }
   // Cập nhật trạng thái cuốn sách thành "Đã mượn"
-  const bookIndex = ListBook.value.findIndex((book) => book.id === borrowInfo.value.idBook)
-  if (bookIndex !== -1) {
-    ListBook.value[bookIndex].status = 'Đã mượn'
-  }
-  // Lưu danh sách sách đã cập nhật vào localStorage
-  localStorage.setItem('books', JSON.stringify(ListBook.value))
+  // const bookIndex = ListBook.value.findIndex((book) => book.id === borrowInfo.value.idBook)
+  // if (bookIndex !== -1) {
+  //   ListBook.value[bookIndex].status = 'Đã mượn'
+  // }
+  // // Lưu danh sách sách đã cập nhật vào localStorage
+  // localStorage.setItem('books', JSON.stringify(ListBook.value))
 
-
-    // Sử dụng cú pháp ... (spread operator) để sao chép và thêm thuộc tính order mới (là newOrder) .
+  // Sử dụng cú pháp ... (spread operator) để sao chép và thêm thuộc tính order mới (là newOrder) .
   // Lấy mảng orders hiện tại từ localStorage (hoặc tạo mảng rỗng nếu chưa có)
-  const existingOrders = JSON.parse(localStorage.getItem('order') || '[]') as IOrder[];
+  const existingOrders = JSON.parse(localStorage.getItem('order') || '[]') as IOrder[]
 
-
-    existingOrders.push({ ...borrowInfo.value })
-  localStorage.setItem('order', JSON.stringify(existingOrders));
-
-  const ListOrdersInLocal = JSON.parse(localStorage.getItem('orders') || '[]') as IOrder[];
-  ListOrdersInLocal.push({...borrowInfo.value})
-  localStorage.setItem('orders', JSON.stringify(ListOrdersInLocal));
+  existingOrders.push({ ...borrowInfo.value })
+  localStorage.setItem('order', JSON.stringify(existingOrders))
+  // localStorage.getItem('order')
+  const ListOrdersInLocal = JSON.parse(localStorage.getItem('orders') || '[]') as IOrder[]
+  ListOrdersInLocal.push({ ...borrowInfo.value })
+  localStorage.setItem('orders', JSON.stringify(ListOrdersInLocal))
 
   // thongbao
   showNotification.value = true
-  notificationMessage.value = 'Đã mượn sách thành công!'
+  notificationMessage.value = 'Đã  gửi yêu cầu mượn sách thành công!'
   notificationColor.value = 'success'
 
   // Đóng modal và reset form
   closeBorrowModal()
 }
-
 
 // Thiết lập trang ban đầu khi đăng nhập
 const setInitialPageOnLogin = () => {
@@ -309,9 +305,8 @@ onMounted(() => {
   // Lấy thông tin order từ localStorage
   const storedOrder = JSON.parse(localStorage.getItem('order') || '[]')
 
-
-    // Lấy danh sách sách từ localStorage khi thành phần được tải
-    const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]')
+  // Lấy danh sách sách từ localStorage khi thành phần được tải
+  const storedOrders = JSON.parse(localStorage.getItem('orders') || '[]')
 
   // Gọi hàm này khi component được mounted để lấy số trang hiện tại từ localStorage
   setInitialPageOnLogin()

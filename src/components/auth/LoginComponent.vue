@@ -96,30 +96,27 @@ const showPassword = ref(false)
 const arrAccount = reactive<IUser[]>([
   {
     id: 1,
-    name: 'admin',
+    name: 'Admin',
     email: 'admin@gmail.com',
     password: '123456789',
     role: 'admin',
     currentPage: 1,
-
   },
   {
     id: 2,
-    name: 'doc gia1',
+    name: 'Độc Giả',
     email: 'docgia@gmail.com',
     password: '123456789',
     role: 'readers',
     currentPage: 1,
-
   },
   {
     id: 3,
-    name: 'thủ thư 1',
+    name: 'Thủ Thư ',
     email: 'thuthu@gmail.com',
     password: '123456789',
     role: 'librarian',
     currentPage: 1,
-
   },
 ])
 
@@ -253,7 +250,8 @@ const arrBooks = reactive([
     publicationBook: '2023-6-20',
     category: 'Thiếu nhi ',
     status: 'Sách mới',
-    image: 'https://st.quantrimang.com/photos/image/2020/11/06/cuon-sach-300-bai-code-thieu-nhi-va-nhung-mau-chuyen-vui-cua-anh-em-coder.jpg',
+    image:
+      'https://st.quantrimang.com/photos/image/2020/11/06/cuon-sach-300-bai-code-thieu-nhi-va-nhung-mau-chuyen-vui-cua-anh-em-coder.jpg',
   },
 
   {
@@ -263,7 +261,8 @@ const arrBooks = reactive([
     publicationBook: '2020-11-30',
     category: 'Vật lý ',
     status: 'Sách mới',
-    image: 'https://tailieuvnu.com/wp-content/uploads/2020/11/30/Giao-trinh-Vat-ly-dai-cuong-tap-1-Luong-Duyen-Binh.png',
+    image:
+      'https://tailieuvnu.com/wp-content/uploads/2020/11/30/Giao-trinh-Vat-ly-dai-cuong-tap-1-Luong-Duyen-Binh.png',
   },
 
   {
@@ -310,32 +309,48 @@ const arrBooks = reactive([
     category: 'Truyện chữ ',
     status: 'Sách mới',
     image: 'https://i.hako.vn/ln/series/covers/s19805-479efe36-c44c-43ba-973a-aeccd0089b81.jpg',
-  }
+  },
 ])
 
-const arrOrders  = reactive<IOrder[]>([
+const arrOrders = reactive<IOrder[]>([
   {
-    idBook :5,
-    nameBook:'Bố già',
-    idUser:3,
-    nameUser: 'Thử thư 1',
-    action:'Đã mượn',
-    borrowedDate:'2024-1-1',
-    paymentDate:'2024-1-8'
+    idBook: 5,
+    nameBook: 'Bố già',
+    idUser: 3,
+    nameUser: 'Thủ thư 1',
+    action: 'Đã mượn',
+    borrowedDate: '2024-1-1',
+    paymentDate: '2024-1-8',
   },
   {
-
-    idBook :2,
-    nameBook:'Sapiens: Lược Sử Loài Người',
-    idUser:3,
-    nameUser: 'Thử thư 1',
-    action:'Đã mượn',
-    borrowedDate:'2024-1-4',
-    paymentDate:'2024-1-11'
-  }
+    idBook: 2,
+    nameBook: 'Sapiens: Lược Sử Loài Người',
+    idUser: 3,
+    nameUser: 'Thủ thư 1',
+    action: 'Đã mượn',
+    borrowedDate: '2024-1-4',
+    paymentDate: '2024-1-11',
+  },
+  {
+    idBook: 8,
+    nameBook: 'Tội Ác Và Trừng Phạt',
+    idUser: 3,
+    nameUser: 'Thủ thư 1',
+    action: 'Đã mượn',
+    borrowedDate: '2024-1-8',
+    paymentDate: '2024-1-15',
+  },
+  {
+    idBook: 11,
+    nameBook: 'Suối Nguồn',
+    idUser: 3,
+    nameUser: 'Thủ thư 1',
+    action: 'Đã mượn',
+    borrowedDate: '2024-1-8',
+    paymentDate: '2024-1-15',
+  },
 
 ])
-
 
 // Lưu `arrBooks` vào `localStorage`
 const updateBooksInLocalStorage = () => {
@@ -345,7 +360,7 @@ const updateBooksInLocalStorage = () => {
 const initializeUsers = () => {
   const Users = JSON.parse(localStorage.getItem('users') || '[]')
   const Books = JSON.parse(localStorage.getItem('books') || '[]')
-const Orders =  JSON.parse(localStorage.getItem('orders') || '[]')
+  const Orders = JSON.parse(localStorage.getItem('orders') || '[]')
   if (!Users.length) {
     localStorage.setItem('users', JSON.stringify(arrAccount))
   }
@@ -364,8 +379,8 @@ watch(arrBooks, updateBooksInLocalStorage, { deep: true })
 
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<ILogin>({
-  email: '',
-  password: '',
+  email: 'docgia@gmail.com',
+  password: '123456789',
 })
 
 const handleDirect = () => {
@@ -373,72 +388,69 @@ const handleDirect = () => {
 }
 
 const handleLogin = () => {
-  // Kiểm tra định dạng email hợp lệ
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-  if (!emailPattern.test(initialForm.email)) {
-    notificationMessage.value = 'Email không hợp lệ.'
-    notificationColor.value = 'red'
-    showNotification.value = true
-    return
-  }
-  // Kiểm tra độ dài mật khẩu
-  if (initialForm.password.length < 8) {
-    notificationMessage.value = 'Mật khẩu phải có ít nhất 8 ký tự.'
-    notificationColor.value = 'red'
-    showNotification.value = true
-    return
-  }
-
-  // lấy danh sách ngươi dùng
-
-  const users = JSON.parse(localStorage.getItem('users') || '[]') as IUser[]
-  const user = users.find(
-    (account) => account.email === initialForm.email && account.password === initialForm.password,
-  )
-
-  // Nếu người dùng tồn tại
-  if (user) {
-    localStorage.setItem('user', JSON.stringify(user))
-
-    notificationMessage.value = `Đăng nhập thành công tài khoản: ${user.email}`
-    notificationColor.value = 'green'
-
-       checkOrCreateOrder(user.id)
-
-
-    // Dùng setTimeout để trì hoãn việc chuyển hướng sang trang home
-    // Kiểm tra vai trò người dùng và chuyển hướng
-    if (user.role === 'admin') {
-      // Chuyển hướng tới trang Dashboard nếu là admin
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 1000)
-    } else {
-      // Chuyển hướng tới trang Home nếu là user
-      setTimeout(() => {
-        router.push('/home')
-      }, 1000)
+    // Kiểm tra định dạng email hợp lệ
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    if (!emailPattern.test(initialForm.email)) {
+      notificationMessage.value = 'Email không hợp lệ.'
+      notificationColor.value = 'red'
+      showNotification.value = true
+      return
     }
-  } else {
-    notificationMessage.value = 'Tài khoản hoặc mật khẩu không đúng.'
-    notificationColor.value = 'red'
+    // Kiểm tra độ dài mật khẩu
+    if (initialForm.password.length < 8) {
+      notificationMessage.value = 'Mật khẩu phải có ít nhất 8 ký tự.'
+      notificationColor.value = 'red'
+      showNotification.value = true
+      return
+    }
+
+    // lấy danh sách ngươi dùng
+
+    const users = JSON.parse(localStorage.getItem('users') || '[]') as IUser[]
+    const user = users.find(
+      (account) => account.email === initialForm.email && account.password === initialForm.password,
+    )
+
+    // Nếu người dùng tồn tại
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user))
+
+      notificationMessage.value = `Đăng nhập thành công tài khoản: ${user.email}`
+      notificationColor.value = 'green'
+
+      checkOrCreateOrder(user.id)
+
+      // Dùng setTimeout để trì hoãn việc chuyển hướng sang trang home
+      // Kiểm tra vai trò người dùng và chuyển hướng
+      if (user.role === 'admin') {
+        // Chuyển hướng tới trang Dashboard nếu là admin
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 1000)
+      } else {
+        // Chuyển hướng tới trang Home nếu là user
+        setTimeout(() => {
+          router.push('/home')
+        }, 1000)
+      }
+    } else {
+      notificationMessage.value = 'Tài khoản hoặc mật khẩu không đúng.'
+      notificationColor.value = 'red'
+    }
+    showNotification.value = true
+  },
+  checkOrCreateOrder = (id: number) => {
+    //Tìm order của user hiện tại
+    const userOrders = arrOrders.filter((order) => order.idUser === id)
+    if (userOrders.length > 0) {
+      //Lưu order vào local nếu tồn tại
+      localStorage.setItem('order', JSON.stringify(userOrders))
+      // console.log("Order tồn tại:", userOrders);
+    } else {
+      // Lưu order mới vào localStorage
+      localStorage.setItem('order', JSON.stringify([]))
+    }
   }
-  showNotification.value = true
-},
-
-checkOrCreateOrder =(id:number)=>{
-//Tìm order của user hiện tại
-const userOrders = arrOrders.filter((order)=> order.idUser === id)
-if(userOrders.length > 0){
-  //Lưu order vào local nếu tồn tại
-  localStorage.setItem("order",JSON.stringify(userOrders))
-  // console.log("Order tồn tại:", userOrders);
-}else{
-   // Lưu order mới vào localStorage
-   localStorage.setItem('order', JSON.stringify([]));
-}
-}
-
 
 // Chuyển đổi trạng thái hiện thị mật khẩu
 const togglePasswordVisibility = () => {
