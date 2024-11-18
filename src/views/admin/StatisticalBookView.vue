@@ -142,7 +142,13 @@ onMounted(() => {
 .bg__section {
   background-color: #f5f5f5;
 }
+h2 {
 
+  font-size: 24px;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
 /* -----------------thống kê trái-------------------- */
 .thong-ke__pr {
   width: 17%;
@@ -151,20 +157,28 @@ onMounted(() => {
   row-gap: 25px;
 }
 .thong-ke__list {
-  padding: 12%;
+  padding: 20px;
+  background-color: #ffffff;
   border-radius: 15px;
-  transition: 0.3s;
-  user-select: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 .thong-ke__list:hover {
-  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.thong-ke__soluong h2 {
+  font-size: 32px;
+  color: #1868c1;
+  margin-bottom: 10px;
 }
 .thong-ke__content {
-  font-family: Inter;
-  font-size: 14px;
-  font-weight: 400;
-  color: #411313;
+  font-size: 16px;
+  color: #666666;
+  margin: 0;
 }
 h2 {
   margin-bottom: 0px;
@@ -176,26 +190,26 @@ h2 {
   column-gap: 25px;
 }
 .KhachVip {
-  width: 30%; /* Điều chỉnh tỷ lệ */
-  background: #ffffff; /* Màu nền sáng hơn */
+  width: 30%;
+  background: #ffffff;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng để tạo chiều sâu */
-  padding: 20px; /* Thêm khoảng cách */
-  text-align: center; /* Căn giữa nội dung */
+  padding: 20px;
+  text-align: center;
 }
 
 .khachvip-year {
-  font-size: 20px; /* Cỡ chữ tiêu đề */
+  font-size: 20px;
   font-weight: bold;
-  color: #333333; /* Màu sắc nổi bật */
-  margin-bottom: 15px; /* Tạo khoảng cách dưới tiêu đề */
+  color: #333333;
+  margin-bottom: 15px;
 }
 
 .khachvip-pd {
   padding: 15px;
-  margin-bottom: 10px; /* Tạo khoảng cách giữa các khách VIP */
+  margin-bottom: 10px;
   background: linear-gradient(135deg, #e0f7fa, #f1f8e9); /* Hiệu ứng gradient nhẹ */
-  border-radius: 10px; /* Bo góc cho từng mục */
+  border-radius: 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
 }
 
@@ -227,8 +241,10 @@ h2 {
 .sachyeuthichtheo {
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
+  align-items: center;
+  margin-bottom: 20px;
 }
+
 .sachyeuthich-sl {
   text-align: center;
   padding: 5px 9px;
@@ -241,7 +257,33 @@ h2 {
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 .sach-sl {
-  width: 27%;
+  width: 30%;
+}
+.table-mobile{
+  height: 500px;
+}
+.table-mobile th,
+.table-mobile td {
+
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-mobile th {
+  background-color: #1868c1;
+  color: white;
+  font-size: 16px;
+}
+
+.table-mobile tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.nameBookMobile {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 /* ----------------------responsive----------------------- */
 @media (max-width: 991.98px) {
@@ -284,7 +326,7 @@ h2 {
     width: 50%;
   }
   .table-mobile {
-    height: 550px;
+    font-size: 14px;
   }
 }
 </style>
