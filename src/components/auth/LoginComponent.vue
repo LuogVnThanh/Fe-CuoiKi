@@ -137,7 +137,7 @@ const arrBooks = reactive([
     nameAuthor: 'Yuval Noah Harari',
     publicationBook: '2014-09-04',
     category: 'Khoa học',
-    status: 'Đã mượn',
+    status: 'Sách mới',
     image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
   },
   {
@@ -192,7 +192,7 @@ const arrBooks = reactive([
     nameAuthor: 'Fyodor Dostoevsky',
     publicationBook: '1866-01-01',
     category: 'Tiểu thuyết',
-    status: 'Đã mượn',
+    status: 'Sách mới',
     image: 'https://upload.wikimedia.org/wikipedia/vi/5/57/Krimo-k-puno_rusa_eldono_2004.jpg',
   },
   {
@@ -220,7 +220,7 @@ const arrBooks = reactive([
     nameAuthor: 'Ayn Rand',
     publicationBook: '1943-05-07',
     category: 'Tiểu thuyết',
-    status: 'Đã mượn',
+    status: 'Sách mới',
     image:
       'https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fountain_Head_%281943_1st_ed%29_-_Ayn_Rand.jpg',
   },
@@ -314,22 +314,58 @@ const arrBooks = reactive([
 
 const arrOrders = reactive<IOrder[]>([
   {
-    idBook: 5,
-    nameBook: 'Bố già',
+    idBook: 2,
+    nameBook: 'Sapiens: Lược Sử Loài Người',
     idUser: 3,
     nameUser: 'Thủ thư 1',
-    action: 'Đã mượn',
-    borrowedDate: '2024-1-1',
-    paymentDate: '2024-1-8',
+    action: 'Quá hạn',
+    borrowedDate: '2023-12-4',
+    paymentDate: '2023-12-12',
+        image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
+  },
+  {
+    idBook: 1,
+    nameBook: 'Harry Potter và Hòn Đá Phù Thủy',
+    idUser: 3,
+    nameUser: 'Thủ thư 1',
+    image:
+      'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
+    action: 'Đã trả',
+    borrowedDate: '2023-12-10',
+    paymentDate: '2023-12-17',
+
+  },
+  {
+    idBook: 11,
+    nameBook: 'Suối Nguồn',
+    idUser: 3,
+    nameUser: 'Thủ thư 1',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fountain_Head_%281943_1st_ed%29_-_Ayn_Rand.jpg',
+    action: 'Đã trả',
+    borrowedDate: '2023-12-8',
+    paymentDate: '2023-12-15',
   },
   {
     idBook: 2,
     nameBook: 'Sapiens: Lược Sử Loài Người',
     idUser: 3,
     nameUser: 'Thủ thư 1',
-    action: 'Đã mượn',
+    action: 'Quá hạn',
     borrowedDate: '2024-1-4',
-    paymentDate: '2024-1-11',
+    paymentDate: '2024-1-12',
+        image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
+  },
+  {
+    idBook: 5,
+    nameBook: 'Bố già',
+    idUser: 3,
+    nameUser: 'Thủ thư 1',
+    action: 'Đã mượn',
+    image: 'https://upload.wikimedia.org/wikipedia/vi/f/f4/Godfather-Novel-Cover.png',
+    borrowedDate: '2024-1-1',
+    paymentDate: '2024-1-8',
+
   },
   {
     idBook: 8,
@@ -339,17 +375,42 @@ const arrOrders = reactive<IOrder[]>([
     action: 'Đã mượn',
     borrowedDate: '2024-1-8',
     paymentDate: '2024-1-15',
+    image: 'https://upload.wikimedia.org/wikipedia/vi/5/57/Krimo-k-puno_rusa_eldono_2004.jpg',
   },
   {
     idBook: 11,
     nameBook: 'Suối Nguồn',
     idUser: 3,
     nameUser: 'Thủ thư 1',
-    action: 'Đã mượn',
+    image:
+      'https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fountain_Head_%281943_1st_ed%29_-_Ayn_Rand.jpg',
+    action: 'Đã trả',
     borrowedDate: '2024-1-8',
     paymentDate: '2024-1-15',
   },
+  {
+    idBook: 1,
+    nameBook: 'Harry Potter và Hòn Đá Phù Thủy',
+    idUser: 1,
+    nameUser: 'Admin',
+    image:
+      'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
+    action: 'Đã trả',
+    borrowedDate: '2024-1-10',
+    paymentDate: '2024-1-17',
 
+  },
+  {
+    idBook: 1,
+    nameBook: 'Harry Potter và Hòn Đá Phù Thủy',
+    idUser: 1,
+    nameUser: 'Admin',
+    image:
+      'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
+    action: 'Quá hạn',
+    borrowedDate: '2024-1-10',
+    paymentDate: '2024-1-19',
+  },
 ])
 
 // Lưu `arrBooks` vào `localStorage`
@@ -379,7 +440,7 @@ watch(arrBooks, updateBooksInLocalStorage, { deep: true })
 
 // Tạo đối tượng để lưu dữ liệu khi người dùng nhập vào
 const initialForm = reactive<ILogin>({
-  email: 'docgia@gmail.com',
+  email: 'admin@gmail.com',
   password: '123456789',
 })
 

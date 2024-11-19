@@ -7,7 +7,7 @@
 
         <!-- Danh sách sách -->
         <div class="order-grid">
-          <div v-for="(order, index) in matchedBooks" :key="index" class="order-item">
+          <div v-for="(order, index) in listOrder" :key="index" class="order-item">
             <img
               :src="order.image"
               alt="order Cover"
@@ -31,9 +31,50 @@
               {{ order.nameBook }}
             </h3>
 
-            <p style="height: 20px">Thể loại: {{ order.category }}</p>
-            <p style="height: 50px">Tác giả: {{ order.nameAuthor }}</p>
-            <button style="background-color: #eeb935; " disabled>{{ order.status }}</button>
+            
+            <p style="height: 50px">Ngày mượn:  <br>
+              {{ order.borrowedDate }}</p>
+            <p style="height: 50px">Ngày trả: <br>{{ order.paymentDate }}</p>
+            <button
+              v-if="order.action == 'Đã mượn'"
+              style="
+                background-color: #4caf50;
+                color: white;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+              "
+            >
+              Đã mượn
+            </button>
+            <button
+              v-if="order.action == 'Đã trả'"
+              style="
+                background-color: #d8d401;
+                color: white;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+              "
+            >
+              Đã trả
+            </button>
+            <button
+              v-if="order.action == 'Quá hạn'"
+              style="
+                background-color: #ff1e00;
+
+                color: white;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+              "
+            >
+              Trả quá hạn
+            </button>
           </div>
         </div>
       </main>
@@ -65,47 +106,17 @@ const showNotification = ref(false)
 const notificationMessage = ref('')
 const notificationColor = ref('')
 
-const listOrder: Ref<IOrder[]> = ref([])  // Danh sách đơn hàng
-const listBook: Ref<IBooks[]> = ref([])   // Danh sách sách
-const matchedBooks: Ref<IBooks[]> = ref([])  // Danh sách sách trùng với đơn hàng
-
-const updateMatchBooks =()=>{
-  matchedBooks.value= listBook.value.filter((book)=>
-  listOrder.value.some((order)=>order.idBook===book.id))
-  console.log('Matched Books:', matchedBooks.value)
-}
+const listOrder: Ref<IOrder[]> = ref([]) // Danh sách đơn hàng
 
 onMounted(() => {
+  const storeOrder = JSON.parse(localStorage.getItem('order') || '[]') as IOrder[]
 
-  const storeBook = JSON.parse(localStorage.getItem('books') || '[]') as IBooks[]
-  const storeOrder = JSON.parse(localStorage.getItem('order')||'[]') as IOrder[]
-
-
- // Nếu có dữ liệu đơn hàng
- if (Array.isArray(storeOrder)) {
+  // Nếu có dữ liệu đơn hàng
+  if (Array.isArray(storeOrder)) {
     listOrder.value = storeOrder
   }
-
-  // Nếu có dữ liệu books
-  if (Array.isArray(storeBook)) {
-    listBook.value = storeBook
-  }
-
-  updateMatchBooks()
-   // Lắng nghe sự thay đổi của localStorage
-   
 })
-
-
-
-watch(listBook,(newListOrder)=>{
-  updateMatchBooks()
-})
-
-
 </script>
-
-
 
 <style scoped>
 /* Bố cục tổng quan */

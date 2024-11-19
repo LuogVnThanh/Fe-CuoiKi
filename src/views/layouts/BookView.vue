@@ -200,6 +200,7 @@ const borrowInfo = ref<IOrder>({
   nameBook: '',
   idUser: 0,
   nameUser: '',
+  image: '',
   borrowedDate: '',
   paymentDate: '',
   action: '',
@@ -217,6 +218,7 @@ const orders = ref<IOrder[]>(JSON.parse(localStorage.getItem('orders') || '[]'))
 const openBorrowModal = (book: IBooks) => {
   borrowInfo.value.idBook = book.id
   borrowInfo.value.nameBook = book.nameBook
+  borrowInfo.value.image = book.image
   borrowInfo.value.action = 'Đã mượn'
   isBorrowDialogOpen.value = true
   // Lấy thông tin người dùng từ localStorage
@@ -269,9 +271,9 @@ const confirmBorrow = () => {
 
   // thongbao
   showNotification.value = true
-  notificationMessage.value = 'Đã  gửi yêu cầu mượn sách thành công!'
+  notificationMessage.value = 'Mượn sách thành công!'
   notificationColor.value = 'success'
-   
+
 
   // Đóng modal và reset form
   closeBorrowModal()
