@@ -69,6 +69,11 @@ const listOrder: Ref<IOrder[]> = ref([])  // Danh sách đơn hàng
 const listBook: Ref<IBooks[]> = ref([])   // Danh sách sách
 const matchedBooks: Ref<IBooks[]> = ref([])  // Danh sách sách trùng với đơn hàng
 
+const updateMatchBooks =()=>{
+  matchedBooks.value= listBook.value.filter((book)=>
+  listOrder.value.some((order)=>order.idBook===book.id))
+  console.log('Matched Books:', matchedBooks.value)
+}
 
 onMounted(() => {
 
@@ -76,7 +81,6 @@ onMounted(() => {
   const storeOrder = JSON.parse(localStorage.getItem('order')||'[]') as IOrder[]
 
 
-  // Nếu user tồn tại và
  // Nếu có dữ liệu đơn hàng
  if (Array.isArray(storeOrder)) {
     listOrder.value = storeOrder
@@ -87,16 +91,18 @@ onMounted(() => {
     listBook.value = storeBook
   }
 
-  // Tìm các sản phẩm có id trùng nhau
-  matchedBooks.value = listBook.value.filter((book) =>
-  listOrder.value.some((order) => order.idBook === book.id),
-  )
-
-  console.log('Matched Books:', matchedBooks.value)
-
+  updateMatchBooks()
+   // Lắng nghe sự thay đổi của localStorage
+   
 })
 
- 
+
+
+watch(listBook,(newListOrder)=>{
+  updateMatchBooks()
+})
+
+
 </script>
 
 

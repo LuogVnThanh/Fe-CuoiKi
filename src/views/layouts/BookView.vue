@@ -256,15 +256,7 @@ const confirmBorrow = () => {
     borrowedDate.setDate(borrowedDate.getDate() + 7) // Thêm 7 ngày
     borrowInfo.value.paymentDate = borrowedDate.toISOString().split('T')[0] // Định dạng yyyy-mm-dd
   }
-  // Cập nhật trạng thái cuốn sách thành "Đã mượn"
-  // const bookIndex = ListBook.value.findIndex((book) => book.id === borrowInfo.value.idBook)
-  // if (bookIndex !== -1) {
-  //   ListBook.value[bookIndex].status = 'Đã mượn'
-  // }
-  // // Lưu danh sách sách đã cập nhật vào localStorage
-  // localStorage.setItem('books', JSON.stringify(ListBook.value))
 
-  // Sử dụng cú pháp ... (spread operator) để sao chép và thêm thuộc tính order mới (là newOrder) .
   // Lấy mảng orders hiện tại từ localStorage (hoặc tạo mảng rỗng nếu chưa có)
   const existingOrders = JSON.parse(localStorage.getItem('order') || '[]') as IOrder[]
 
@@ -279,6 +271,7 @@ const confirmBorrow = () => {
   showNotification.value = true
   notificationMessage.value = 'Đã  gửi yêu cầu mượn sách thành công!'
   notificationColor.value = 'success'
+   
 
   // Đóng modal và reset form
   closeBorrowModal()
@@ -293,6 +286,8 @@ const setInitialPageOnLogin = () => {
     page.value = 1
   }
 }
+
+
 onMounted(() => {
   // Lấy danh sách sách từ localStorage khi thành phần được tải
   const storedBooks = JSON.parse(localStorage.getItem('books') || '[]')
