@@ -102,6 +102,43 @@ const bookStatistics = computed(() => {
     .sort((a, b) => b.count - a.count)
 })
 
+//   const now = new Date()
+//   const filteredOrders = arrOrders.value.filter((order) => {
+//     const borrowDate = new Date(order.borrowDate)
+
+//     if (dfSelect.value === 'Tuần') {
+//       const lastWeek = new Date()
+//       lastWeek.setDate(now.getDate() - 7)
+//       return borrowDate >= lastWeek && borrowDate <= now
+//     } else if (dfSelect.value === 'Tháng') {
+//       return (
+//         borrowDate.getMonth() === now.getMonth() && borrowDate.getFullYear() === now.getFullYear()
+//       )
+//     } else if (dfSelect.value === 'Quý') {
+//       const currentQuarter = Math.floor(now.getMonth() / 3)
+//       const borrowQuarter = Math.floor(borrowDate.getMonth() / 3)
+//       return borrowQuarter === currentQuarter && borrowDate.getFullYear() === now.getFullYear()
+//     } else if (dfSelect.value === 'Năm') {
+//       return borrowDate.getFullYear() === now.getFullYear()
+//     }
+//     return true // Mặc định không lọc
+//   })
+
+//   // Logic đếm và sắp xếp như cũ nhưng áp dụng với `filteredOrders`
+//   const countBook: Record<number, { count: number; nameBook: string }> = {}
+//   filteredOrders.forEach((order) => {
+//     const { idBook, nameBook } = order
+//     if (!countBook[idBook]) {
+//       countBook[idBook] = { count: 0, nameBook }
+//     }
+//     countBook[idBook].count++
+//   })
+
+//   return Object.entries(countBook)
+//     .map(([idBook, data]) => ({ idBook: +idBook, ...data }))
+//     .sort((a, b) => b.count - a.count)
+// })
+
 //Thống kê số người mượn
 const totalUserBorrow = computed(() => {
   const userIds = new Set(arrOrders.value.map((order) => order.idUser))
@@ -130,6 +167,7 @@ const totalTopUserBorrow = computed(() => {
 onMounted(() => {
   const storeOrders = JSON.parse(localStorage.getItem('orders') || '[]')
   arrOrders.value = Array.isArray(storeOrders) ? storeOrders : []
+  console.log('Loaded orders:', arrOrders.value)
 })
 </script>
 
@@ -286,7 +324,6 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 
 /* ----------------------responsive----------------------- */
 @media (max-width: 991.98px) {
