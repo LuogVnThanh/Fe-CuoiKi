@@ -4,6 +4,7 @@ export interface IOrder {
   idUser:number;
   nameUser:string;
   action:string;
+  image:string;
   borrowedDate: string
   paymentDate: string
 }

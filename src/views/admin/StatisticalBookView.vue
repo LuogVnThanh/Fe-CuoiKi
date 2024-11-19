@@ -23,7 +23,7 @@
         <!-- 3 -->
         <div class="thong-ke__list bg__section">
           <div class="thong-ke__soluong">
-            <h2 class="thong-ke__dem">324{{}}</h2>
+            <h2 class="thong-ke__dem"> {{totalDelayBorrowBook}}</h2>
             <img src="" alt="" />
           </div>
           <p class="thong-ke__content">Sách Quá Hạn</p>
@@ -143,6 +143,11 @@ const bookStatistics = computed(() => {
 const totalUserBorrow = computed(() => {
   const userIds = new Set(arrOrders.value.map((order) => order.idUser))
   return userIds.size
+})
+//Thống kê số sách quá hạn
+const totalDelayBorrowBook = computed(()=>{
+  const delayBooks =  arrOrders.value.filter((order)=>order.action==='Quá hạn')
+  return delayBooks.length
 })
 
 // Lọc số người mượn nhiều
