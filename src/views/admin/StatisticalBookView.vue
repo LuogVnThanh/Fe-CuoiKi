@@ -140,6 +140,12 @@ onMounted(() => {
 
 <style scoped>
 /* thuộc tính chung */
+/* Căn chỉnh toàn bộ container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 .bg__section {
   background-color: #f5f5f5;
 }
@@ -149,35 +155,30 @@ h2 {
   font-weight: bold;
   margin-bottom: 20px;
 }
+/* -----------------thống kê trái-------------------- */
+/* Phần thống kê */
 .thong-ke {
   display: flex;
-  margin-top: 25px;
-  column-gap: 25px;
-  height: 470px;
+  justify-content: space-between;
+  gap: 20px;
 }
-/* -----------------thống kê trái-------------------- */
+
 .thong-ke__pr {
-  width: 17%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 20px;
 }
 .thong-ke__list {
   padding: 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
 }
 .thong-ke__list:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
-
 .thong-ke__soluong h2 {
   font-size: 32px;
   color: #1868c1;
@@ -267,23 +268,25 @@ h2 {
   width: 30%;
 }
 .table-mobile {
-  height: 500px;
+  width: 100%;
+  height: 100vh;
+
 }
+
 .table-mobile th,
 .table-mobile td {
   text-align: left;
-  padding: 12px 10px;
-  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  border: 1px solid #ddd;
 }
 
 .table-mobile th {
-  background-color: #1868c1;
-  color: white;
-  font-size: 16px;
+  background-color: #f2f2f2;
+  color: #333;
 }
 
-.table-mobile tbody tr:hover {
-  background-color: #f5f5f5;
+.table-mobile tr:hover {
+  background-color: #f9f9f9;
 }
 
 .nameBookMobile {
@@ -297,6 +300,7 @@ h2 {
 @media (max-width: 991.98px) {
   .thong-ke {
     flex-direction: column;
+    height: 100vh;
   }
   .nameBookMobile {
     display: -webkit-box;
@@ -334,7 +338,7 @@ h2 {
     width: 50%;
   }
   .table-mobile {
-    font-size: 14px;
+    height: 200px;
   }
 }
 </style>
