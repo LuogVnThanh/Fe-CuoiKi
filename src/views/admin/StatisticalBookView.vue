@@ -7,7 +7,7 @@
         <!-- 1 -->
         <div class="thong-ke__list bg__section">
           <div class="thong-ke__soluong">
-            <h2 class="thong-ke__dem"> {{ totalUserBorrow}}</h2>
+            <h2 class="thong-ke__dem">{{ totalUserBorrow }}</h2>
             <img src="" alt="" />
           </div>
           <p class="thong-ke__content">Số Người Mượn</p>
@@ -15,7 +15,7 @@
         <!-- 2 -->
         <div class="thong-ke__list bg__section">
           <div class="thong-ke__soluong">
-            <h2 class="thong-ke__dem"> {{totalBookBorrow}}</h2>
+            <h2 class="thong-ke__dem">{{ totalBookBorrow }}</h2>
             <img src="" alt="" />
           </div>
           <p class="thong-ke__content">Số Sách Mượn</p>
@@ -32,8 +32,8 @@
       <!-- giữa... Khách vip -->
       <div class="KhachVip">
         <h3 class="khachvip-year">TOP KHÁCH VIP</h3>
-        <div class="khachvip-pd"  v-for="(user) in totalTopUserBorrow" :key="user.idUser">
-          <p >  {{ user.nameUser }} - {{ user.count }} lần mượn</p>
+        <div class="khachvip-pd" v-for="user in totalTopUserBorrow" :key="user.idUser">
+          <p>{{ user.nameUser }} - {{ user.count }} lần mượn</p>
         </div>
       </div>
       <!-- phải....Top sách yêu thích -->
@@ -57,7 +57,7 @@
                 <th class="text-left">Hạng</th>
                 <th class="text-left">Id Sách</th>
 
-                <th class="text-left ">Tên Sách</th>
+                <th class="text-left">Tên Sách</th>
                 <th class="text-left">Số lượng</th>
               </tr>
             </thead>
@@ -83,9 +83,7 @@ const arrOrders = ref<any[]>([])
 const arrUsers = ref<any[]>([])
 
 // Thốn kê số sách mượn
-const totalBookBorrow = computed(()=>
-  arrOrders.value.length
-);
+const totalBookBorrow = computed(() => arrOrders.value.length)
 
 // Thống kê số sách đc mượn nhiều
 const bookStatistics = computed(() => {
@@ -105,17 +103,17 @@ const bookStatistics = computed(() => {
 })
 
 //Thống kê số người mượn
-const totalUserBorrow = computed(()=>{
-  const userIds = new Set(arrOrders.value.map(order => order.idUser))
+const totalUserBorrow = computed(() => {
+  const userIds = new Set(arrOrders.value.map((order) => order.idUser))
   return userIds.size
 })
 
 // Lọc số người mượn nhiều
-const totalTopUserBorrow = computed(()=>{
-  const countUser: Record<number, { count: number; nameUser: string}> = {}
+const totalTopUserBorrow = computed(() => {
+  const countUser: Record<number, { count: number; nameUser: string }> = {}
   arrOrders.value.forEach((user) => {
-    const {idUser,nameUser}= user;
-     if (!countUser[idUser]) {
+    const { idUser, nameUser } = user
+    if (!countUser[idUser]) {
       countUser[idUser] = { count: 0, nameUser }
     }
     countUser[idUser].count++
@@ -123,13 +121,11 @@ const totalTopUserBorrow = computed(()=>{
 
   // Lọc ra số người mượn nhiều hơn 5 lần
   return Object.entries(countUser)
-    .map(([idUser, data]) => ({ idUser: +idUser,...data }))
-    .filter(user => user.count > 1)
+    .map(([idUser, data]) => ({ idUser: +idUser, ...data }))
+    .filter((user) => user.count > 1)
     .sort((a, b) => b.count - a.count)
     .slice(0, 5)
-
 })
-
 
 onMounted(() => {
   const storeOrders = JSON.parse(localStorage.getItem('orders') || '[]')
@@ -143,24 +139,31 @@ onMounted(() => {
   background-color: #f5f5f5;
 }
 h2 {
-
   font-size: 24px;
   color: #333;
   font-weight: bold;
   margin-bottom: 20px;
+}
+.thong-ke {
+  display: flex;
+  margin-top: 25px;
+  column-gap: 25px;
+  height: 470px;
 }
 /* -----------------thống kê trái-------------------- */
 .thong-ke__pr {
   width: 17%;
   display: flex;
   flex-direction: column;
-  row-gap: 25px;
+  justify-content: space-between;
 }
 .thong-ke__list {
   padding: 20px;
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 15px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   text-align: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -184,16 +187,12 @@ h2 {
   margin-bottom: 0px;
 }
 /* -----------------thống kê top khách vip-------------------- */
-.thong-ke {
-  display: flex;
-  margin-top: 25px;
-  column-gap: 25px;
-}
+
 .KhachVip {
   width: 30%;
-  background: #ffffff;
+  background: #fff;
   border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng để tạo chiều sâu */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   text-align: center;
 }
@@ -210,7 +209,10 @@ h2 {
   margin-bottom: 10px;
   background: linear-gradient(135deg, #e0f7fa, #f1f8e9); /* Hiệu ứng gradient nhẹ */
   border-radius: 10px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng hover */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease; /* Hiệu ứng hover */
+  overflow-y: auto;
 }
 
 .khachvip-pd:hover {
@@ -259,12 +261,11 @@ h2 {
 .sach-sl {
   width: 30%;
 }
-.table-mobile{
+.table-mobile {
   height: 500px;
 }
 .table-mobile th,
 .table-mobile td {
-
   text-align: left;
   padding: 12px 10px;
   border-bottom: 1px solid #ddd;
@@ -285,6 +286,8 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+
 /* ----------------------responsive----------------------- */
 @media (max-width: 991.98px) {
   .thong-ke {
