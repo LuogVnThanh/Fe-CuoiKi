@@ -23,7 +23,7 @@
         <!-- 3 -->
         <div class="thong-ke__list bg__section">
           <div class="thong-ke__soluong">
-            <h2 class="thong-ke__dem"> {{totalDelayBorrowBook}}</h2>
+            <h2 class="thong-ke__dem">{{ totalDelayBorrowBook }}</h2>
             <img src="" alt="" />
           </div>
           <p class="thong-ke__content">Sách Quá Hạn</p>
@@ -102,51 +102,14 @@ const bookStatistics = computed(() => {
     .sort((a, b) => b.count - a.count)
 })
 
-//   const now = new Date()
-//   const filteredOrders = arrOrders.value.filter((order) => {
-//     const borrowDate = new Date(order.borrowDate)
-
-//     if (dfSelect.value === 'Tuần') {
-//       const lastWeek = new Date()
-//       lastWeek.setDate(now.getDate() - 7)
-//       return borrowDate >= lastWeek && borrowDate <= now
-//     } else if (dfSelect.value === 'Tháng') {
-//       return (
-//         borrowDate.getMonth() === now.getMonth() && borrowDate.getFullYear() === now.getFullYear()
-//       )
-//     } else if (dfSelect.value === 'Quý') {
-//       const currentQuarter = Math.floor(now.getMonth() / 3)
-//       const borrowQuarter = Math.floor(borrowDate.getMonth() / 3)
-//       return borrowQuarter === currentQuarter && borrowDate.getFullYear() === now.getFullYear()
-//     } else if (dfSelect.value === 'Năm') {
-//       return borrowDate.getFullYear() === now.getFullYear()
-//     }
-//     return true // Mặc định không lọc
-//   })
-
-//   // Logic đếm và sắp xếp như cũ nhưng áp dụng với `filteredOrders`
-//   const countBook: Record<number, { count: number; nameBook: string }> = {}
-//   filteredOrders.forEach((order) => {
-//     const { idBook, nameBook } = order
-//     if (!countBook[idBook]) {
-//       countBook[idBook] = { count: 0, nameBook }
-//     }
-//     countBook[idBook].count++
-//   })
-
-//   return Object.entries(countBook)
-//     .map(([idBook, data]) => ({ idBook: +idBook, ...data }))
-//     .sort((a, b) => b.count - a.count)
-// })
-
 //Thống kê số người mượn
 const totalUserBorrow = computed(() => {
   const userIds = new Set(arrOrders.value.map((order) => order.idUser))
   return userIds.size
 })
 //Thống kê số sách quá hạn
-const totalDelayBorrowBook = computed(()=>{
-  const delayBooks =  arrOrders.value.filter((order)=>order.action==='Quá hạn')
+const totalDelayBorrowBook = computed(() => {
+  const delayBooks = arrOrders.value.filter((order) => order.action === 'Quá hạn')
   return delayBooks.length
 })
 
@@ -180,9 +143,9 @@ onMounted(() => {
 /* thuộc tính chung */
 /* Căn chỉnh toàn bộ container */
 .container {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  user-select: none;
 }
 .bg__section {
   background-color: #f5f5f5;
@@ -199,6 +162,8 @@ h2 {
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  margin-top: 20px;
+  height: 470px;
 }
 
 .thong-ke__pr {
@@ -224,7 +189,7 @@ h2 {
 }
 .thong-ke__content {
   font-size: 16px;
-  color: #666666;
+  color: #666;
   margin: 0;
 }
 h2 {
@@ -243,15 +208,14 @@ h2 {
 
 .khachvip-year {
   font-size: 20px;
-  font-weight: bold;
-  color: #333333;
+  color: #333;
   margin-bottom: 15px;
 }
 
 .khachvip-pd {
   padding: 15px;
   margin-bottom: 10px;
-  background: linear-gradient(135deg, #e0f7fa, #f1f8e9); /* Hiệu ứng gradient nhẹ */
+  background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
   border-radius: 10px;
   transition:
     transform 0.3s ease,
@@ -260,13 +224,13 @@ h2 {
 }
 
 .khachvip-pd:hover {
-  transform: translateY(-5px); /* Di chuyển nhẹ khi hover */
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); /* Tăng bóng */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
 .khachvip-pd p {
   font-size: 16px;
-  color: #555555; /* Màu chữ nhẹ nhàng */
+  color: #555555;
   margin: 0;
 }
 
@@ -308,7 +272,6 @@ h2 {
 .table-mobile {
   width: 100%;
   height: 100vh;
-
 }
 
 .table-mobile th,
@@ -319,7 +282,8 @@ h2 {
 }
 
 .table-mobile th {
-  background-color: #f2f2f2;
+  /* background-color: #f2f2f2; */
+  background-color: #1d6bbf;
   color: #333;
 }
 
@@ -335,6 +299,9 @@ h2 {
 
 /* ----------------------responsive----------------------- */
 @media (max-width: 991.98px) {
+  .container {
+    padding: 0;
+  }
   .thong-ke {
     flex-direction: column;
     height: 100vh;
@@ -351,19 +318,21 @@ h2 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    width: 100%;
+  }
+  .thong-ke__list {
+    padding: 10px;
   }
   .KhachVip {
     margin-top: 20px;
     width: 100%;
-    height: 470px;
+    height: 900px;
   }
   .khachvip-year {
     text-align: center;
   }
   .sachyeuthich {
     width: 100%;
-    height: 700px;
+    height: 900px;
     margin-top: 20px;
   }
   .sachyeuthichtheo {

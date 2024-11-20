@@ -7,28 +7,30 @@
     </div>
     <table class="Borrow__table-list">
       <tr class="Borrow__table-header">
-        <th class="text-left" >Số thứ tự</th >
-        <th class="text-left" >Tên sách</th >
-        <th class="text-left" >Người mượn</th >
-        <th class="text-left" > <v-combobox
-              v-model="selectedStatus"
-              width="150px"
-              label="Tình trạng"
-              :items="['Tất cả', ...action]"
-            ></v-combobox></th >
-        <th class="text-left" >Ngày mượn</th >
-        <th class="text-left" >Ngày trả</th >
-        <th class="text-left" >thuộc tính</th >
+        <th class="text-left">Số thứ tự</th>
+        <th class="text-left">Tên sách</th>
+        <th class="text-left">Người mượn</th>
+        <th class="text-left">
+          <v-combobox
+            v-model="selectedStatus"
+            width="150px"
+            label="Tình trạng"
+            :items="['Tất cả', ...action]"
+          ></v-combobox>
+        </th>
+        <th class="text-left">Ngày mượn</th>
+        <th class="text-left">Ngày trả</th>
+        <th class="text-left">thuộc tính</th>
       </tr>
-      <tr  class="Borrow__table-header" v-for="(order,index) in fillterOrder" :key="order.idbook">
-        <td height="50px">{{index+1}}</td>
+      <tr class="Borrow__table-header" v-for="(order, index) in fillterOrder" :key="order.idbook">
+        <td height="50px">{{ index + 1 }}</td>
         <td>{{ order.nameBook }}</td>
         <td>{{ order.nameUser }}</td>
         <td>{{ order.action }}</td>
         <td>{{ order.borrowedDate }}</td>
         <td>{{ order.paymentDate }}</td>
-        <td >
-          <v-btn v-if="order.action == 'Đã mượn'"  @click="ConfirmationOfBookReturn(order.idBook)">
+        <td>
+          <v-btn v-if="order.action == 'Đã mượn'" @click="ConfirmationOfBookReturn(order.idBook)">
             xác nhận
           </v-btn>
         </td>
@@ -41,6 +43,7 @@
   background-color: #f5f5f5;
   padding: 30px;
   border-radius: 10px;
+  user-select: none;
 }
 .header-br {
   display: flex;
@@ -55,6 +58,7 @@
 }
 .btn-new:hover {
   box-shadow: 2px 2px 10px 5px rgba(128, 193, 31, 0.299);
+  transform: translateY(-2px);
 }
 .Borrow__table-list {
   width: 100%;
@@ -76,13 +80,13 @@
 </style>
 
 <script setup lang="ts">
-import { stringify } from 'querystring';
-import { json } from 'stream/consumers';
-import { computed, onMounted, reactive, ref,   } from 'vue'
-import { IOrder } from "../../interface/order/order";
+import { stringify } from 'querystring'
+import { json } from 'stream/consumers'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { IOrder } from '../../interface/order/order'
 
 const action = ['Quá hạn', 'Đã mượn', 'Đã trả']
-const arrOrders = ref<IOrder[]>([]);
+const arrOrders = ref<IOrder[]>([])
 const selectedStatus = ref('Tất cả') // Giá trị mặc định là "Tất cả"
 
 const inittialOrder = () => {
@@ -92,38 +96,31 @@ const inittialOrder = () => {
 }
 
 const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0') // Tháng bắt đầu từ 0
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
 
-const ConfirmationOfBookReturn = (id) =>
-{
-
-  var orders = JSON.parse(localStorage.getItem('orders'));
-  if(orders)
-  {
-    const currentDay = new Date();
+const ConfirmationOfBookReturn = (id) => {
+  var orders = JSON.parse(localStorage.getItem('orders'))
+  if (orders) {
+    const currentDay = new Date()
     orders = orders.map((order) => {
-      if(order.idBook == id && order.action == 'Đã mượn')
-      {
-        const returnDate = new Date(order.paymentDate);
-        if(returnDate < currentDay){
-          return {...order, action: 'Quá hạn',paymentDate:formatDate( currentDay)}
+      if (order.idBook == id && order.action == 'Đã mượn') {
+        const returnDate = new Date(order.paymentDate)
+        if (returnDate < currentDay) {
+          return { ...order, action: 'Quá hạn', paymentDate: formatDate(currentDay) }
         }
-        return {...order, action: 'Đã trả', paymentDate: formatDate( currentDay)}
+        return { ...order, action: 'Đã trả', paymentDate: formatDate(currentDay) }
       }
-      return order;
+      return order
     })
-    localStorage.setItem('orders' , JSON.stringify(orders));
-    console.log("Cập nhật thành công:", orders);
-  } 
-  else 
-  {
-    console.log("Không tìm thấy danh sách orders!");
+    localStorage.setItem('orders', JSON.stringify(orders))
+    console.log('Cập nhật thành công:', orders)
+  } else {
+    console.log('Không tìm thấy danh sách orders!')
   }
-
 }
 
 const fillterOrder = computed(() => {
@@ -131,10 +128,9 @@ const fillterOrder = computed(() => {
     return arrOrders.value
   }
   return arrOrders.value.filter((order) => order.action === selectedStatus.value)
-});
+})
 
-onMounted(() =>{
-  inittialOrder();
-});
-
+onMounted(() => {
+  inittialOrder()
+})
 </script>
