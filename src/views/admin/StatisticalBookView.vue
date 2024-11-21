@@ -45,7 +45,7 @@
               <v-select
                 v-model="dfSelect"
                 label="Thống kê theo"
-                :items="['Tuần', 'Tháng', 'Quý', 'Năm']"
+                :items="['Tất cả','Tuần', 'Tháng', 'Quý', 'Năm']"
               ></v-select>
             </div>
           </div>
@@ -77,67 +77,64 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-const dfSelect = ref('Tuần')
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+// Cấu hình dayjs với timezone
+dayjs.extend(timezone)
 
+
+const dfSelect = ref('Tất cả')
 const arrOrders = ref<any[]>([])
-const arrUsers = ref<any[]>([])
+
 
 // Thốn kê số sách mượn
 const totalBookBorrow = computed(() => arrOrders.value.length)
 
-// Thống kê số sách đc mượn nhiều
+// Lọc theo thời gian chọn
+const filteredOrders = computed(() => {
+  const now = new Date()
+
+  return arrOrders.value.filter((order) => {
+    const borrowDate = new Date(order.borrowDate)
+
+    if (dfSelect.value === 'Tuần') {
+      const lastWeek = new Date()
+      lastWeek.setDate(now.getDate() - 7)
+      console.log("ádasda",lastWeek);
+      return borrowDate >= lastWeek && borrowDate <= now
+    } else if (dfSelect.value === 'Tháng') {
+      return (
+        borrowDate.getMonth() === now.getMonth() && borrowDate.getFullYear() === now.getFullYear()
+      )
+    } else if (dfSelect.value === 'Quý') {
+      const currentQuarter = Math.floor(now.getMonth() / 3)
+      const borrowQuarter = Math.floor(borrowDate.getMonth() / 3)
+      return borrowQuarter === currentQuarter && borrowDate.getFullYear() === now.getFullYear()
+    } else if (dfSelect.value === 'Năm') {
+      return borrowDate.getFullYear() === now.getFullYear()
+    }
+    return true // Mặc định không lọc
+  })
+})
+
+// Đếm số lượng sách mượn sau khi đã lọc
 const bookStatistics = computed(() => {
   const countBook: Record<number, { count: number; nameBook: string }> = {}
 
-  arrOrders.value.forEach((order) => {
+  // Duyệt qua các đơn hàng đã lọc và đếm số lần mượn cho mỗi sách
+  filteredOrders.value.forEach((order) => {
     const { idBook, nameBook } = order
     if (!countBook[idBook]) {
       countBook[idBook] = { count: 0, nameBook }
     }
     countBook[idBook].count++
   })
-  // Sắp xếp theo số lần mượn giảm dần
+
+  // Chuyển kết quả thành mảng và sắp xếp theo số lần mượn giảm dần
   return Object.entries(countBook)
     .map(([idBook, data]) => ({ idBook: +idBook, ...data }))
     .sort((a, b) => b.count - a.count)
 })
-
-//   const now = new Date()
-//   const filteredOrders = arrOrders.value.filter((order) => {
-//     const borrowDate = new Date(order.borrowDate)
-
-//     if (dfSelect.value === 'Tuần') {
-//       const lastWeek = new Date()
-//       lastWeek.setDate(now.getDate() - 7)
-//       return borrowDate >= lastWeek && borrowDate <= now
-//     } else if (dfSelect.value === 'Tháng') {
-//       return (
-//         borrowDate.getMonth() === now.getMonth() && borrowDate.getFullYear() === now.getFullYear()
-//       )
-//     } else if (dfSelect.value === 'Quý') {
-//       const currentQuarter = Math.floor(now.getMonth() / 3)
-//       const borrowQuarter = Math.floor(borrowDate.getMonth() / 3)
-//       return borrowQuarter === currentQuarter && borrowDate.getFullYear() === now.getFullYear()
-//     } else if (dfSelect.value === 'Năm') {
-//       return borrowDate.getFullYear() === now.getFullYear()
-//     }
-//     return true // Mặc định không lọc
-//   })
-
-//   // Logic đếm và sắp xếp như cũ nhưng áp dụng với `filteredOrders`
-//   const countBook: Record<number, { count: number; nameBook: string }> = {}
-//   filteredOrders.forEach((order) => {
-//     const { idBook, nameBook } = order
-//     if (!countBook[idBook]) {
-//       countBook[idBook] = { count: 0, nameBook }
-//     }
-//     countBook[idBook].count++
-//   })
-
-//   return Object.entries(countBook)
-//     .map(([idBook, data]) => ({ idBook: +idBook, ...data }))
-//     .sort((a, b) => b.count - a.count)
-// })
 
 //Thống kê số người mượn
 const totalUserBorrow = computed(() => {

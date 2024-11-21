@@ -34,7 +34,7 @@
           <td>{{ item.publicationBook }}</td>
           <td>{{ item.category }}</td>
           <td>{{ item.status }}</td>
-          <td>
+          <td  >
             <v-icon @click="editBook(item.id)" class="mr-2 edit-icon" icon="mdi-pencil"></v-icon>
             <!-- <v-icon @click="deleteBook(item.id)" icon="mdi-delete delete-icon"></v-icon> -->
             <v-icon @click="confirmDelete(item.id)" icon="mdi-delete delete-icon"></v-icon>
