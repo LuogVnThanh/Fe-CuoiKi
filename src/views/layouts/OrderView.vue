@@ -31,7 +31,7 @@
               {{ order.nameBook }}
             </h3>
 
-            
+
             <p style="height: 50px">Ngày mượn:  <br>
               {{ order.borrowedDate }}</p>
             <p style="height: 50px">Ngày trả: <br>{{ order.paymentDate }}</p>
@@ -73,7 +73,7 @@
                 cursor: pointer;
               "
             >
-              Trả quá hạn
+                Quá hạn
             </button>
           </div>
         </div>

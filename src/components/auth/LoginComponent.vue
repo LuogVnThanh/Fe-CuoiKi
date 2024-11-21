@@ -384,7 +384,7 @@ const arrOrders = reactive<IOrder[]>([
     nameUser: 'Thủ thư 1',
     image:
       'https://upload.wikimedia.org/wikipedia/commons/6/6e/The_Fountain_Head_%281943_1st_ed%29_-_Ayn_Rand.jpg',
-    action: 'Đã trả',
+    action: 'Đã mượn',
     borrowedDate: '2024-1-8',
     paymentDate: '2024-1-15',
   },
@@ -395,7 +395,7 @@ const arrOrders = reactive<IOrder[]>([
     nameUser: 'Admin',
     image:
       'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
-    action: 'Đã trả',
+    action: 'Đã mượn',
     borrowedDate: '2024-1-10',
     paymentDate: '2024-1-17',
 
@@ -407,9 +407,9 @@ const arrOrders = reactive<IOrder[]>([
     nameUser: 'Admin',
     image:
       'https://upload.wikimedia.org/wikipedia/vi/5/51/Harry_Potter_v%C3%A0_H%C3%B2n_%C4%91%C3%A1_ph%C3%B9_th%E1%BB%A7y_b%C3%ACa_2003.jpeg',
-    action: 'Quá hạn',
+    action: 'Đã mượn',
     borrowedDate: '2024-1-10',
-    paymentDate: '2024-1-19',
+    paymentDate: '2024-1-17',
   },
 ])
 
