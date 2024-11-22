@@ -153,6 +153,7 @@ const updatePage = (newPage: number) => {
 
   // Lấy đối tượng người dùng từ localStorage và cập nhật currentPage
   const User = JSON.parse(localStorage.getItem('user') || '{}')
+
   if (User && typeof User === 'object') {
     User.currentPage = newPage
     localStorage.setItem('user', JSON.stringify(User))
@@ -210,7 +211,6 @@ const borrowInfo = ref<IOrder>({
 const user = ref<IUser>(JSON.parse(localStorage.getItem('user') || '{}'))
 
 const books = ref<IBooks[]>(JSON.parse(localStorage.getItem('books') || '[]'))
-
 const order = ref<IOrder[]>(JSON.parse(localStorage.getItem('order') || '[]'))
 const orders = ref<IOrder[]>(JSON.parse(localStorage.getItem('orders') || '[]'))
 
@@ -278,6 +278,7 @@ const confirmBorrow = () => {
   // Đóng modal và reset form
   closeBorrowModal()
 }
+
 
 // Thiết lập trang ban đầu khi đăng nhập
 const setInitialPageOnLogin = () => {

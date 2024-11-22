@@ -2,7 +2,7 @@
   <div class="container">
     <div class="header-br">
       <h2>Thông tin mượn trả sách</h2>
-      <button class="btn-new">+ Thêm mới</button>
+      <!-- <button class="btn-new">+ Thêm mới</button> -->
       <!-- thêm mới ở đây -->
     </div>
     <table class="Borrow__table-list">
