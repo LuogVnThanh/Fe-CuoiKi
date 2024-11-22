@@ -321,7 +321,7 @@ const arrOrders = reactive<IOrder[]>([
     action: 'Quá hạn',
     borrowedDate: '2023-12-4',
     paymentDate: '2023-12-12',
-        image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
+    image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
   },
   {
     idBook: 1,
@@ -333,7 +333,6 @@ const arrOrders = reactive<IOrder[]>([
     action: 'Đã trả',
     borrowedDate: '2023-12-10',
     paymentDate: '2023-12-17',
-
   },
   {
     idBook: 11,
@@ -352,9 +351,9 @@ const arrOrders = reactive<IOrder[]>([
     idUser: 3,
     nameUser: 'Thủ thư 1',
     action: 'Quá hạn',
-    borrowedDate: '2024-1-4',
+    borrowedDate: '2024-10-4',
     paymentDate: '2024-1-12',
-        image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
+    image: 'https://th.bing.com/th/id/OIP.Stw79Vr0ngHYYtuP279VaQHaJ-?rs=1&pid=ImgDetMain',
   },
   {
     idBook: 5,
@@ -365,7 +364,6 @@ const arrOrders = reactive<IOrder[]>([
     image: 'https://upload.wikimedia.org/wikipedia/vi/f/f4/Godfather-Novel-Cover.png',
     borrowedDate: '2024-1-1',
     paymentDate: '2024-1-8',
-
   },
   {
     idBook: 8,
@@ -398,7 +396,6 @@ const arrOrders = reactive<IOrder[]>([
     action: 'Đã mượn',
     borrowedDate: '2024-1-10',
     paymentDate: '2024-1-17',
-
   },
   {
     idBook: 1,
