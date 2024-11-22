@@ -45,7 +45,7 @@
               <v-select
                 v-model="dfSelect"
                 label="Thống kê theo"
-                :items="['Tất cả','Tuần', 'Tháng', 'Quý', 'Năm']"
+                :items="['Tất cả', 'Tuần', 'Tháng', 'Quý', 'Năm']"
               ></v-select>
             </div>
           </div>
@@ -82,40 +82,49 @@ import timezone from 'dayjs/plugin/timezone'
 // Cấu hình dayjs với timezone
 dayjs.extend(timezone)
 
-
 const dfSelect = ref('Tất cả')
 const arrOrders = ref<any[]>([])
-
 
 // Thốn kê số sách mượn
 const totalBookBorrow = computed(() => arrOrders.value.length)
 
+const normalizeDate = (dateString) => {
+  const [year, month, day] = dateString.split('-').map(Number)
+  return dayjs(`${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`)
+}
+
 // Lọc theo thời gian chọn
 const filteredOrders = computed(() => {
-  const now = new Date()
+  const now = dayjs() // Thời gian hiện tại
 
   return arrOrders.value.filter((order) => {
-    const borrowDate = new Date(order.borrowDate)
+    const borrowDate = normalizeDate(order.borrowedDate) // Sử dụng hàm chuẩn hóa
 
-    if (dfSelect.value === 'Tuần') {
-      const lastWeek = new Date()
-      lastWeek.setDate(now.getDate() - 7)
-      console.log("ádasda",lastWeek);
-      return borrowDate >= lastWeek && borrowDate <= now
-    } else if (dfSelect.value === 'Tháng') {
-      return (
-        borrowDate.getMonth() === now.getMonth() && borrowDate.getFullYear() === now.getFullYear()
-      )
-    } else if (dfSelect.value === 'Quý') {
-      const currentQuarter = Math.floor(now.getMonth() / 3)
-      const borrowQuarter = Math.floor(borrowDate.getMonth() / 3)
-      return borrowQuarter === currentQuarter && borrowDate.getFullYear() === now.getFullYear()
-    } else if (dfSelect.value === 'Năm') {
-      return borrowDate.getFullYear() === now.getFullYear()
+    // Kiểm tra tính hợp lệ của borrowDate
+    if (!borrowDate.isValid()) {
+      console.error(`Ngày không hợp lệ: ${order.borrowedDate}`)
+      return false
     }
-    return true // Mặc định không lọc
+    // Lọc theo lựa chọn
+    switch (dfSelect.value) {
+      case 'Tuần':
+        const lastWeek = now.subtract(7, 'days')
+        return borrowDate.isBetween(lastWeek, now, null, '[]')
+      case 'Tháng':
+        return borrowDate.month() === now.month() && borrowDate.year() === now.year()
+      case 'Quý':
+        const currentQuarter = Math.floor(now.month() / 3)
+        return (
+          Math.floor(borrowDate.month() / 3) === currentQuarter && borrowDate.year() === now.year()
+        )
+      case 'Năm':
+        return borrowDate.year() === now.year()
+      default: // 'Tất cả'
+        return true
+    }
   })
 })
+
 
 // Đếm số lượng sách mượn sau khi đã lọc
 const bookStatistics = computed(() => {
