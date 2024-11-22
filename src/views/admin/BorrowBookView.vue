@@ -45,7 +45,7 @@
     <v-btn
       v-if="order.action == 'Đã mượn'"
       color="primary"
-      @click="ConfirmationOfBookReturn(order.idBook)"
+      @click="ConfirmationOfBookReturn(index)"
     >
       Xác nhận
     </v-btn>
