@@ -78,9 +78,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
-import timezone from 'dayjs/plugin/timezone'
-// Cấu hình dayjs với timezone
-dayjs.extend(timezone)
+import isBetween from 'dayjs/plugin/isBetween';
+dayjs.extend(isBetween);
 
 const dfSelect = ref('Tất cả')
 const arrOrders = ref<any[]>([])
@@ -105,11 +104,13 @@ const filteredOrders = computed(() => {
       console.error(`Ngày không hợp lệ: ${order.borrowedDate}`)
       return false
     }
+
     // Lọc theo lựa chọn
     switch (dfSelect.value) {
       case 'Tuần':
-        const lastWeek = now.subtract(7, 'days')
-        return borrowDate.isBetween(lastWeek, now, null, '[]')
+  const startOfWeek = now.startOf('week'); // Bắt đầu tuần
+  const endOfWeek = now.endOf('week'); // Kết thúc tuần
+  return borrowDate.isBetween(startOfWeek, endOfWeek, null, '[]');
       case 'Tháng':
         return borrowDate.month() === now.month() && borrowDate.year() === now.year()
       case 'Quý':
