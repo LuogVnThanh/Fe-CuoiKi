@@ -33,7 +33,7 @@
       <div class="KhachVip">
         <h3 class="khachvip-year">TOP KHÁCH VIP</h3>
         <div class="khachvip-pd" v-for="user in totalTopUserBorrow" :key="user.idUser">
-          <p>{{ user.nameUser }} - {{ user.count }} lần mượn</p>
+          <p>{{ user.nameUser }} - tổng: {{ user.count }} lần mượn</p>
         </div>
       </div>
       <!-- phải....Top sách yêu thích -->
@@ -51,25 +51,27 @@
           </div>
           <!-- Table sắp xếp Rank sách -->
 
-          <v-table height="300px" class="table-mobile">
-            <thead>
-              <tr>
-                <th class="text-left">Hạng</th>
-                <th class="text-left">Id Sách</th>
+          <div class="table-container">
+            <v-table height="300px" class="table-mobile">
+              <thead>
+                <tr>
+                  <th class="text-left">Hạng</th>
+                  <th class="text-left">Id Sách</th>
 
-                <th class="text-left">Tên Sách</th>
-                <th class="text-left">Số lượng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in bookStatistics" :key="item.idBook">
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.idBook }}</td>
-                <td class="nameBookMobile">{{ item.nameBook }}</td>
-                <td>{{ item.count }}</td>
-              </tr>
-            </tbody>
-          </v-table>
+                  <th class="text-left">Tên Sách</th>
+                  <th class="text-left">Số lượng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in bookStatistics" :key="item.idBook">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.idBook }}</td>
+                  <td class="nameBookMobile">{{ item.nameBook }}</td>
+                  <td>{{ item.count }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </div>
         </div>
       </div>
     </div>
@@ -78,14 +80,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
-import timezone from 'dayjs/plugin/timezone'
-// Cấu hình dayjs với timezone
-dayjs.extend(timezone)
+import isBetween from 'dayjs/plugin/isBetween'
+dayjs.extend(isBetween)
 
 const dfSelect = ref('Tất cả')
 const arrOrders = ref<any[]>([])
 
-// Thốn kê số sách mượn
+// Thống kê số sách mượn
 const totalBookBorrow = computed(() => arrOrders.value.length)
 
 const normalizeDate = (dateString) => {
@@ -95,21 +96,22 @@ const normalizeDate = (dateString) => {
 
 // Lọc theo thời gian chọn
 const filteredOrders = computed(() => {
-  const now = dayjs() // Thời gian hiện tại
+  const now = dayjs()
 
   return arrOrders.value.filter((order) => {
-    const borrowDate = normalizeDate(order.borrowedDate) // Sử dụng hàm chuẩn hóa
+    const borrowDate = normalizeDate(order.borrowedDate)
 
-    // Kiểm tra tính hợp lệ của borrowDate
     if (!borrowDate.isValid()) {
       console.error(`Ngày không hợp lệ: ${order.borrowedDate}`)
       return false
     }
+
     // Lọc theo lựa chọn
     switch (dfSelect.value) {
       case 'Tuần':
-        const lastWeek = now.subtract(7, 'days')
-        return borrowDate.isBetween(lastWeek, now, null, '[]')
+        const startOfWeek = now.startOf('week') // Bắt đầu tuần
+        const endOfWeek = now.endOf('week') // Kết thúc tuần
+        return borrowDate.isBetween(startOfWeek, endOfWeek, null, '[]')
       case 'Tháng':
         return borrowDate.month() === now.month() && borrowDate.year() === now.year()
       case 'Quý':
@@ -124,7 +126,6 @@ const filteredOrders = computed(() => {
     }
   })
 })
-
 
 // Đếm số lượng sách mượn sau khi đã lọc
 const bookStatistics = computed(() => {
@@ -167,7 +168,6 @@ const totalTopUserBorrow = computed(() => {
     countUser[idUser].count++
   })
 
-  // Lọc ra số người mượn nhiều hơn 5 lần
   return Object.entries(countUser)
     .map(([idUser, data]) => ({ idUser: +idUser, ...data }))
     .filter((user) => user.count > 1)
@@ -178,7 +178,6 @@ const totalTopUserBorrow = computed(() => {
 onMounted(() => {
   const storeOrders = JSON.parse(localStorage.getItem('orders') || '[]')
   arrOrders.value = Array.isArray(storeOrders) ? storeOrders : []
-  console.log('Loaded orders:', arrOrders.value)
 })
 </script>
 
@@ -368,14 +367,12 @@ h2 {
   .KhachVip {
     margin-top: 20px;
     width: 100%;
-    height: 900px;
   }
   .khachvip-year {
     text-align: center;
   }
   .sachyeuthich {
     width: 100%;
-    height: 900px;
     margin-top: 20px;
   }
   .sachyeuthichtheo {
@@ -386,10 +383,14 @@ h2 {
   .sach-sl {
     width: 50%;
   }
+  .table-container {
+    max-height: 320px;
+    overflow-y: auto; /* Cuộn dọc */
+    margin-top: 10px; /* Khoảng cách trên bảng */
+  }
   .table-mobile {
-    height: 200px;
+    width: 100%;
+    border-collapse: collapse; /* Đảm bảo không có khoảng trống giữa các ô */
   }
 }
 </style>
-<!-- Báo cáo và thống kê: Cung cấp các báo cáo về số lượng sách, lượt mượn, tỷ lệ trả sách đúng hạn, và
-  các thống kê khác. -->
