@@ -33,7 +33,7 @@
       <div class="KhachVip">
         <h3 class="khachvip-year">TOP KHÁCH VIP</h3>
         <div class="khachvip-pd" v-for="user in totalTopUserBorrow" :key="user.idUser">
-          <p>{{ user.nameUser }} - {{ user.count }} lần mượn</p>
+          <p>{{ user.nameUser }} - tổng: {{ user.count }} lần mượn</p>
         </div>
       </div>
       <!-- phải....Top sách yêu thích -->
@@ -86,7 +86,7 @@ dayjs.extend(isBetween)
 const dfSelect = ref('Tất cả')
 const arrOrders = ref<any[]>([])
 
-// Thốn kê số sách mượn
+// Thống kê số sách mượn
 const totalBookBorrow = computed(() => arrOrders.value.length)
 
 const normalizeDate = (dateString) => {
@@ -96,12 +96,11 @@ const normalizeDate = (dateString) => {
 
 // Lọc theo thời gian chọn
 const filteredOrders = computed(() => {
-  const now = dayjs() // Thời gian hiện tại
+  const now = dayjs()
 
   return arrOrders.value.filter((order) => {
-    const borrowDate = normalizeDate(order.borrowedDate) // Sử dụng hàm chuẩn hóa
+    const borrowDate = normalizeDate(order.borrowedDate)
 
-    // Kiểm tra tính hợp lệ của borrowDate
     if (!borrowDate.isValid()) {
       console.error(`Ngày không hợp lệ: ${order.borrowedDate}`)
       return false
@@ -169,7 +168,6 @@ const totalTopUserBorrow = computed(() => {
     countUser[idUser].count++
   })
 
-  // Lọc ra số người mượn nhiều hơn 5 lần
   return Object.entries(countUser)
     .map(([idUser, data]) => ({ idUser: +idUser, ...data }))
     .filter((user) => user.count > 1)
@@ -180,7 +178,6 @@ const totalTopUserBorrow = computed(() => {
 onMounted(() => {
   const storeOrders = JSON.parse(localStorage.getItem('orders') || '[]')
   arrOrders.value = Array.isArray(storeOrders) ? storeOrders : []
-  console.log('Loaded orders:', arrOrders.value)
 })
 </script>
 
