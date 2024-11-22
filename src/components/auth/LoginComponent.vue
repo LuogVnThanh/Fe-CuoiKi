@@ -362,7 +362,7 @@ const arrOrders = reactive<IOrder[]>([
     nameUser: 'Thủ thư 1',
     action: 'Đã mượn',
     image: 'https://upload.wikimedia.org/wikipedia/vi/f/f4/Godfather-Novel-Cover.png',
-    borrowedDate: '2024-1-1',
+    borrowedDate: '2024-11-20',
     paymentDate: '2024-1-8',
   },
   {
