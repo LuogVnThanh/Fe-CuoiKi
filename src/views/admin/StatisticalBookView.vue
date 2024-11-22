@@ -51,25 +51,27 @@
           </div>
           <!-- Table sắp xếp Rank sách -->
 
-          <v-table height="300px" class="table-mobile">
-            <thead>
-              <tr>
-                <th class="text-left">Hạng</th>
-                <th class="text-left">Id Sách</th>
+          <div class="table-container">
+            <v-table height="300px" class="table-mobile">
+              <thead>
+                <tr>
+                  <th class="text-left">Hạng</th>
+                  <th class="text-left">Id Sách</th>
 
-                <th class="text-left">Tên Sách</th>
-                <th class="text-left">Số lượng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in bookStatistics" :key="item.idBook">
-                <td>{{ index + 1 }}</td>
-                <td>{{ item.idBook }}</td>
-                <td class="nameBookMobile">{{ item.nameBook }}</td>
-                <td>{{ item.count }}</td>
-              </tr>
-            </tbody>
-          </v-table>
+                  <th class="text-left">Tên Sách</th>
+                  <th class="text-left">Số lượng</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in bookStatistics" :key="item.idBook">
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ item.idBook }}</td>
+                  <td class="nameBookMobile">{{ item.nameBook }}</td>
+                  <td>{{ item.count }}</td>
+                </tr>
+              </tbody>
+            </v-table>
+          </div>
         </div>
       </div>
     </div>
@@ -78,8 +80,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import dayjs from 'dayjs'
-import isBetween from 'dayjs/plugin/isBetween';
-dayjs.extend(isBetween);
+import isBetween from 'dayjs/plugin/isBetween'
+dayjs.extend(isBetween)
 
 const dfSelect = ref('Tất cả')
 const arrOrders = ref<any[]>([])
@@ -108,9 +110,9 @@ const filteredOrders = computed(() => {
     // Lọc theo lựa chọn
     switch (dfSelect.value) {
       case 'Tuần':
-  const startOfWeek = now.startOf('week'); // Bắt đầu tuần
-  const endOfWeek = now.endOf('week'); // Kết thúc tuần
-  return borrowDate.isBetween(startOfWeek, endOfWeek, null, '[]');
+        const startOfWeek = now.startOf('week') // Bắt đầu tuần
+        const endOfWeek = now.endOf('week') // Kết thúc tuần
+        return borrowDate.isBetween(startOfWeek, endOfWeek, null, '[]')
       case 'Tháng':
         return borrowDate.month() === now.month() && borrowDate.year() === now.year()
       case 'Quý':
@@ -125,7 +127,6 @@ const filteredOrders = computed(() => {
     }
   })
 })
-
 
 // Đếm số lượng sách mượn sau khi đã lọc
 const bookStatistics = computed(() => {
@@ -369,14 +370,12 @@ h2 {
   .KhachVip {
     margin-top: 20px;
     width: 100%;
-    height: 900px;
   }
   .khachvip-year {
     text-align: center;
   }
   .sachyeuthich {
     width: 100%;
-    height: 900px;
     margin-top: 20px;
   }
   .sachyeuthichtheo {
@@ -387,10 +386,14 @@ h2 {
   .sach-sl {
     width: 50%;
   }
+  .table-container {
+    max-height: 320px;
+    overflow-y: auto; /* Cuộn dọc */
+    margin-top: 10px; /* Khoảng cách trên bảng */
+  }
   .table-mobile {
-    height: 200px;
+    width: 100%;
+    border-collapse: collapse; /* Đảm bảo không có khoảng trống giữa các ô */
   }
 }
 </style>
-<!-- Báo cáo và thống kê: Cung cấp các báo cáo về số lượng sách, lượt mượn, tỷ lệ trả sách đúng hạn, và
-  các thống kê khác. -->
